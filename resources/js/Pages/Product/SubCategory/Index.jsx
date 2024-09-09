@@ -13,18 +13,20 @@ import { useState, useEffect } from "react";
     },
     ar: {
         translation: {
-                "Units": "الوحدات القياسيه",
+            "Sub Categories": "الفئات الفرعية",
+            "Main Category": "الفئة الرئيسية",
                 "Add new": "إضافة جديد",
                 "ID": "الرقم التعريفي",
                 "Name": "الاسم",
+                "Email": "البريد الإلكتروني",
                 "Create Date": "تاريخ الإنشاء",
                 'Update Date': 'تاريخ التحديث',
                 "Actions": "الإجراءات",
-                "Unit Name": "اسم واحدة القياس",
+                "Category Name": "اسم الفئة",
                 "Edit": "تعديل",
                 "Delete": "حذف",
-                "Are you sure you want to delete the Unit?": "هل أنت متأكد أنك تريد حذف وحدة القياس؟",
-                "No units available": "لا يوجد  وحدات قياس",
+                "Are you sure you want to delete the Category?": "هل أنت متأكد أنك تريد حذف الفئه؟",
+                "No categories available": "لا يوجد فئات متاحة",
                 'Active': 'نشط',
                 "Inactive":'غير نشط',
         },
@@ -35,7 +37,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, units, queryParams = null, success }) {
+export default function Index({ auth, subCategories, queryParams = null, success }) {
 
 
   const { t } = useTranslation();
@@ -48,7 +50,7 @@ export default function Index({ auth, units, queryParams = null, success }) {
     } else {
       delete queryParams[name];
     }
-    router.get(route("unit.index"), queryParams);
+    router.get(route("subCategory.index"), queryParams);
   };
 
   const onKeyPress = (name, e) => {
@@ -68,7 +70,7 @@ export default function Index({ auth, units, queryParams = null, success }) {
       queryParams.sort_field = name;
       queryParams.sort_direction = "asc";
     }
-    router.get(route("unit.index"), queryParams);
+    router.get(route("subCategory.index"), queryParams);
   };
 
       const [visibleSuccess, setVisibleSuccess] = useState(success);
@@ -85,13 +87,13 @@ export default function Index({ auth, units, queryParams = null, success }) {
     }
   }, [success]);
 
-    const deleteunit = (unit) => {
-    const confirmationMessage = t("Are you sure you want to delete the Unit?");
+    const deletecategory = (category) => {
+    const confirmationMessage = t("Are you sure you want to delete the Category?");
     if (!window.confirm(confirmationMessage)) {
       return;
     }
 
-    router.delete(route("unit.destroy", unit.id), {
+    router.delete(route("subCategory.destroy", category.id), {
       onSuccess: (page) => {
         setVisibleSuccess(page.props.success);
       }
@@ -104,12 +106,12 @@ export default function Index({ auth, units, queryParams = null, success }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            {t("Units")}
+            {t("Sub Categories")}
               </h2>
-              {auth.user.permissions.includes("create-unit") && (
+              {auth.user.permissions.includes("create-sub-category") && (
 
                   <Link
-                      href={route("unit.create")}
+                      href={route("subCategory.create")}
                       className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
                   >
                       {t("Add new")}
@@ -118,7 +120,7 @@ export default function Index({ auth, units, queryParams = null, success }) {
         </div>
       }
     >
-      <Head title={t("Units")} />
+      <Head title={t("Sub Categories")} />
 
       <div className="py-12">
         <div className="mx-auto sm:px-6 lg:px-8">
@@ -149,6 +151,7 @@ export default function Index({ auth, units, queryParams = null, success }) {
                       >
                         {t("Name")}
                       </TableHeading>
+                    <td className=" text-nowrap">{t('Main Category')}</td>
                     <td className="text-center text-nowrap">{t('Active')}</td>
                       <TableHeading
                         name="created_at"
@@ -178,10 +181,8 @@ export default function Index({ auth, units, queryParams = null, success }) {
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
-                          placeholder={t("Unit Name")}
-                          onBlur={(e) =>
-                            searchFieldChanged("name", e.target.value)
-                          }
+                          placeholder={t("Category Name")}
+
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
@@ -189,47 +190,49 @@ export default function Index({ auth, units, queryParams = null, success }) {
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                     <tbody>
-                        {units && units.data.length > 0 ? ( units.data.map((unit) => (
+                        {subCategories && subCategories.data.length > 0 ? ( subCategories.data.map((category) => (
                         <tr
                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                            key={unit.id}
+                            key={category.id}
                         >
-                            <td className="px-3 py-2">{unit.id}</td>
-                            <th className="px-3 py-2 text-nowrap">{unit.name}</th>
+                            <td className="px-3 py-2">{category.id}</td>
+                            <th className="px-3 py-2 text-nowrap">{category.name}</th>
+                            <th className="text-nowrap">{category.main_category_name}</th>
                            <th className="px-3 py-2 text-center text-nowrap">
                             <span
                                 className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
-                                unit.is_active ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                                category.is_active ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
                                 }`}
                             >
-                                {unit.is_active ? t('Active') : t('Inactive')}
+                                {category.is_active ? t('Active') : t('Inactive')}
                             </span>
                             </th>
 
                             <td className="px-3 py-2 text-nowrap">
-                            {unit.created_at}
+                            {category.created_at}
                                 </td>
                                 <td className="px-3 py-2 text-nowrap">
-                            {unit.updated_at}
+                            {category.updated_at}
                             </td>
                             <td className="px-3 py-2 text-nowrap">
-                            {/* Check if the user has permission to update the unit */}
-                            {auth.user.permissions.includes("update-unit") && (
+                            {/* Check if the user has permission to update the category */}
+                            {auth.user.permissions.includes("update-sub-category") && (
                                 <Link
-                                href={route("unit.edit", unit.id)}
+                                href={route("subCategory.edit", category.id)}
                                 className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                 >
                                 {t("Edit")}
                                 </Link>
                             )}
 
-                            {/* Check if the user has permission to delete the unit */}
-                            {auth.user.permissions.includes("delete-unit") && (
+                            {/* Check if the user has permission to delete the category */}
+                            {auth.user.permissions.includes("delete-sub-category") && (
                                 <button
-                                onClick={(e) => deleteunit(unit)}
+                                onClick={(e) => deletecategory(category)}
                                 className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
                                 >
                                 {t("Delete")}
@@ -241,14 +244,14 @@ export default function Index({ auth, units, queryParams = null, success }) {
                         ))) : (
                            <tr>
                                 <td colSpan="5" className="px-3 py-2 text-center">
-                                    {t("No units available")}
+                                    {t("No categories available")}
                                 </td>
                             </tr>
                         )}
                     </tbody>
                 </table>
               </div>
-              {units && <Pagination links={units.meta.links} />}
+              {subCategories && <Pagination links={subCategories.meta.links} />}
             </div>
           </div>
         </div>

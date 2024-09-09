@@ -102,7 +102,7 @@ export default function Create({ auth, user }) {
 
               <div className="flex gap-2 mt-4 text-right">
                 <Link
-                  href={route("model.index")}
+                  href={route("category.index")}
                   className="px-3 py-1 mr-2 text-gray-800 transition-all bg-gray-100 rounded shadow hover:bg-gray-200"
                 >
                   {t("Cancel")}

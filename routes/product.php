@@ -1,96 +1,53 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Admin\User\UserCRUDController;
-use App\Http\Controllers\Product\BrandController;
-use App\Http\Controllers\Product\ModelController;
-use App\Http\Controllers\Product\ProductCategoryController;
+
+// use App\Http\Controllers\Product\ModelController;
+use App\Http\Controllers\Product\CategoryController;
 use App\Http\Controllers\Product\ProductController;
-use App\Http\Controllers\Product\UnitController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Product\SubCategoryController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
 
 
 //--------------------------------------------------------------------------------------------- categories
-Route::group(['middleware' => ['permission:create-category']], function () {
-    Route::get('/product/category/create', [ProductCategoryController::class, 'create'])->name('category.create');
-    Route::post('/product/category', [ProductCategoryController::class, 'store'])->name('category.store');
+Route::group(['middleware' => ['permission:create-main-category']], function () {
+    Route::get('/product/category/create', [CategoryController::class, 'create'])->name('category.create');
+    Route::post('/product/category', [CategoryController::class, 'store'])->name('category.store');
 });
 
-Route::group(['middleware' => ['permission:read-category']], function () {
-    Route::get('/product/category', [ProductCategoryController::class, 'index'])->name('category.index');
+Route::group(['middleware' => ['permission:read-main-category']], function () {
+    Route::get('/product/category', [CategoryController::class, 'index'])->name('category.index');
 });
 
-Route::group(['middleware' => ['permission:update-category']], function () {
-    Route::get('/product/category/{category}/edit', [ProductCategoryController::class, 'edit'])->name('category.edit');
-    Route::put('/product/category/{category}', [ProductCategoryController::class, 'update'])->name('category.update');
+Route::group(['middleware' => ['permission:update-main-category']], function () {
+    Route::get('/product/category/{category}/edit', [CategoryController::class, 'edit'])->name('category.edit');
+    Route::put('/product/category/{category}', [CategoryController::class, 'update'])->name('category.update');
 });
 
-Route::group(['middleware' => ['permission:delete-category']], function () {
-    Route::delete('/product/category/{category}', [ProductCategoryController::class, 'destroy'])->name('category.destroy');
+Route::group(['middleware' => ['permission:delete-main-category']], function () {
+    Route::delete('/product/category/{category}', [CategoryController::class, 'destroy'])->name('category.destroy');
 });
 
-
-//--------------------------------------------------------------------------------------------- models
-Route::group(['middleware' => ['permission:create-model']], function () {
-    Route::get('/product/model/create', [ModelController::class, 'create'])->name('model.create');
-    Route::post('/product/model', [ModelController::class, 'store'])->name('model.store');
+//--------------------------------------------------------------------------------------------- categories
+Route::group(['middleware' => ['permission:create-sub-category']], function () {
+    Route::get('/product/subcategory/create', [SubCategoryController::class, 'create'])->name('subCategory.create');
+    Route::post('/product/subcategory', [SubCategoryController::class, 'store'])->name('subCategory.store');
 });
 
-Route::group(['middleware' => ['permission:read-model']], function () {
-    Route::get('/product/model', [ModelController::class, 'index'])->name('model.index');
-    // Route::get('/product/model/{model}', [ModelController::class, 'show'])->name('model.show');
+Route::group(['middleware' => ['permission:read-sub-category']], function () {
+    Route::get('/product/subcategory', [SubCategoryController::class, 'index'])->name('subCategory.index');
 });
 
-Route::group(['middleware' => ['permission:update-model']], function () {
-    Route::get('/product/model/{model}/edit', [ModelController::class, 'edit'])->name('model.edit');
-    Route::put('/product/model/{model}', [ModelController::class, 'update'])->name('model.update');
+Route::group(['middleware' => ['permission:update-sub-category']], function () {
+    Route::get('/product/subcategory/{subcategory}/edit', [SubCategoryController::class, 'edit'])->name('subCategory.edit');
+    Route::put('/product/subcategory/{subcategory}', [SubCategoryController::class, 'update'])->name('subCategory.update');
 });
 
-Route::group(['middleware' => ['permission:delete-model']], function () {
-    Route::delete('/product/model/{model}', [ModelController::class, 'destroy'])->name('model.destroy');
-});
-//--------------------------------------------------------------------------------------------- brands
-Route::group(['middleware' => ['permission:create-brand']], function () {
-    Route::get('/product/brand/create', [BrandController::class, 'create'])->name('brand.create');
-    Route::post('/product/brand', [BrandController::class, 'store'])->name('brand.store');
+Route::group(['middleware' => ['permission:delete-sub-category']], function () {
+    Route::delete('/product/subcategory/{subcategory}', [SubCategoryController::class, 'destroy'])->name('subCategory.destroy');
 });
 
-Route::group(['middleware' => ['permission:read-brand']], function () {
-    Route::get('/product/brand', [BrandController::class, 'index'])->name('brand.index');
-    // Route::get('/product/brand/{brand}', [BrandController::class, 'show'])->name('brand.show');
-});
-
-Route::group(['middleware' => ['permission:update-brand']], function () {
-    Route::get('/product/brand/{brand}/edit', [BrandController::class, 'edit'])->name('brand.edit');
-    Route::put('/product/brand/{brand}', [BrandController::class, 'update'])->name('brand.update');
-});
-
-Route::group(['middleware' => ['permission:delete-brand']], function () {
-    Route::delete('/product/brand/{brand}', [BrandController::class, 'destroy'])->name('brand.destroy');
-});
-
-//--------------------------------------------------------------------------------------------- units
-Route::group(['middleware' => ['permission:create-unit']], function () {
-    Route::get('/product/unit/create', [UnitController::class, 'create'])->name('unit.create');
-    Route::post('/product/unit', [UnitController::class, 'store'])->name('unit.store');
-});
-
-Route::group(['middleware' => ['permission:read-unit']], function () {
-    Route::get('/product/unit', [UnitController::class, 'index'])->name('unit.index');
-    // Route::get('/product/unit/{unit}', [UnitController::class, 'show'])->name('unit.show');
-});
-
-Route::group(['middleware' => ['permission:update-unit']], function () {
-    Route::get('/product/unit/{unit}/edit', [UnitController::class, 'edit'])->name('unit.edit');
-    Route::put('/product/unit/{unit}', [UnitController::class, 'update'])->name('unit.update');
-});
-
-Route::group(['middleware' => ['permission:delete-unit']], function () {
-    Route::delete('/product/unit/{unit}', [UnitController::class, 'destroy'])->name('unit.destroy');
-});
 //--------------------------------------------------------------------------------------------- products
 Route::group(['middleware' => ['permission:create-product']], function () {
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');

@@ -8,8 +8,9 @@ use App\Models\Product\ProductCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
-class ProductCategoryController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -32,6 +33,7 @@ class ProductCategoryController extends Controller
             "categories" => ProductCategoryResource::collection($productCategories),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
+            'danger' => session('danger'),
         ]);
     }
 
@@ -50,11 +52,10 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:product_categories,name'],
+            'name' => ['required', 'string', 'unique:product_categories,name'],
             'is_active'=>['required','boolean'],
         ]);
 
-        $data['created_by'] = auth()->user()->id;
         $category= ProductCategory::create($data);
 
 
@@ -82,35 +83,63 @@ class ProductCategoryController extends Controller
      */
     public function edit(ProductCategory $category)
     {
+        $hasSubCategories = $category->subCategories()->exists(); // Check if the category has subcategories
+
         return inertia('Product/ProductCategory/Edit', [
             'category' => new ProductCategoryResource($category),
+            'hasSubCategories' => $hasSubCategories,
+
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
+
     public function update(Request $request, ProductCategory $category)
     {
-        $data = $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('product_categories')->ignore($category->id, 'id')],
-            'is_active'=>['required','boolean'],
+        $rules = [
+            'name' => ['required', 'string', Rule::unique('product_categories')->ignore($category->id, 'id')],
+            'is_active' => ['required', 'boolean'],
+        ];
 
-        ]);
+        $data = $request->validate($rules);
 
-        $data['updated_by'] = auth()->user()->id;
+        // Check if the category has subcategories
+        $hasSubCategories = $category->subCategories()->exists();
+
+        // If the category has subcategories and the is_active field is being set to false
+        if ($hasSubCategories && $data['is_active'] == false) {
+            // Create a validator instance to add a custom validation message
+            $validator = Validator::make($request->all(), $rules);
+
+            $locale = session('app_locale', 'en');
+            $message = "Cannot deactivate the category because it has subcategories";
+
+            // Add custom validation error to the validator
+            $validator->after(function ($validator) use ($message) {
+                $validator->errors()->add('is_active', $message);
+            });
+
+            // If the validator fails, redirect back with errors
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+        }
+
+        // Update the category if no validation errors occur
         $category->update($data);
 
-
+        // Prepare success message
         $locale = session('app_locale', 'en');
-
         $message = $locale === 'ar'
-            ? "تم تحديث الفئه \"{$category->name}\" بنجاح"
+            ? "تم تحديث الفئة \"{$category->name}\" بنجاح"
             : "Category \"{$category->name}\" was updated successfully";
 
         return to_route('category.index')
             ->with('success', $message);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -119,6 +148,16 @@ class ProductCategoryController extends Controller
     {
 
         $name = $category->name;
+        if ($category->subCategories()->count() > 0) {
+        $locale = session('app_locale', 'en');
+
+        $message = $locale === 'ar'
+            ? "لا يمكن حذف الفئة \"{$name}\" لأنها تحتوي على فئات فرعية"
+            : "Cannot delete category \"{$name}\" because it has subcategories";
+
+        return to_route('category.index')
+            ->with('danger', $message);
+        }
         $category->delete();
 
         $locale = session('app_locale', 'en');

@@ -5,30 +5,26 @@ import TextAreaInput from "@/Components/TextAreaInput";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { useTranslation } from "react-i18next"; // Import the useTranslation hook
+import { useTranslation } from "react-i18next";
 import i18n from "@/i18nConfig";
+
     const resources = {
     en: {
         translation: {},
     },
     ar: {
         translation: {
-                "Models": "النمائج",
-                "Edit Model": "تعديل النموذج",
-                "ID": "الرقم التعريفي",
-                "Name": "الاسم",
-                "Email": "البريد الإلكتروني",
-                "Create Date": "تاريخ الإنشاء",
-                "Actions": "الإجراءات",
-                "Select Status": "اختر الحاله",
-                "Status": "الحالة",
-                'Active': 'نشط',
-                'Inactive': 'غير نشط',
-                "Cancel": "إلغاء",
-                "Submit": "إرسال",
-
-
-
+            "Create Sub Category": "انشاء فئة فرعية",
+            "Categories": "الفئات",
+            "Sub Category Name": " اسم الفئة الفرعيه",
+            "Main Category": "الفئة الرئيسية",
+            "Select Main Category": "اختر الفئة الرئيسية",
+            "Status": "الحالة",
+            "Select Status": "اختر الحاله",
+            "Cancel": "إلغاء",
+            "Submit": "إرسال",
+            'Active': 'نشط',
+            'Inactive': 'غير نشط',
         },
     },
 };
@@ -36,20 +32,18 @@ import i18n from "@/i18nConfig";
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Create({ auth, model }) {
-  const { t } = useTranslation();
-
+export default function Create({ auth, user,mainCategories }) {
+  const { t } = useTranslation(); // Hook to get translations
 
   const { data, setData, post, errors, reset } = useForm({
-    name: model.name || "",
-    is_active: model.is_active !== undefined ? model.is_active : "",
-
-    _method: "PUT",
+    name: "",
+    is_active: "",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    post(route("model.update", model.id));
+
+    post(route("subCategory.store"));
   };
 
   return (
@@ -58,12 +52,13 @@ export default function Create({ auth, model }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            {t("Edit Model")} "{data.name}"
+            {t("Create Sub Category")}
           </h2>
         </div>
       }
     >
-          <Head title={t("Models")} />
+          <Head title={t("Sub Categories")} />
+          {JSON.stringify(errors)}
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -71,13 +66,13 @@ export default function Create({ auth, model }) {
             <form
               onSubmit={onSubmit}
               className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg"
-                      >
+            >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
-              <div className="mt-4">
-                <InputLabel htmlFor="name" value={t("Name")} />
+            <div className="mt-4">
+                <InputLabel htmlFor="category_name" value={t("Category Name")} />
 
                 <TextInput
-                  id="name"
+                  id="category_name"
                   type="text"
                   name="name"
                   value={data.name}
@@ -87,6 +82,25 @@ export default function Create({ auth, model }) {
                 />
 
                 <InputError message={errors.name} className="mt-2" />
+              </div>
+
+                <div className="mt-4">
+                  <InputLabel htmlFor="mainCategory" value={t("Main Category")} />
+                  <SelectInput
+                    name="mainCategory"
+                    id="mainCategory"
+                    className="block w-full mt-1"
+                    value={data.catgeory_id}
+                    onChange={(e) => setData("category_id", e.target.value)}
+                  >
+                    <option value="">{t("Select Main Category")}</option>
+                    {mainCategories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </SelectInput>
+                  <InputError message={errors.catgeory_id} className="mt-2" />
                 </div>
               <div className="mt-4">
                 <InputLabel htmlFor="is_active" value={t("Status")} />
@@ -95,20 +109,21 @@ export default function Create({ auth, model }) {
                         name="is_active"
                         id="is_active"
                         className="block w-full mt-1"
-                        value={data.is_active === true ? "true" : "false"}
-                        onChange={(e) => setData("is_active", e.target.value === "true") }
+                        value={data.is_active}
+                        onChange={(e) => setData("is_active", e.target.value === "true") }  // Convert string to boolean
                     >
                         <option value="">{t("Select Status")}</option>
                         <option value="true" key="1">{t('Active')}</option>
                         <option value="false" key="2">{t('Inactive')}</option>
                     </SelectInput>
 
-                <InputError message={errors.isactive} className="mt-2" />
+                <InputError message={errors.is_active} className="mt-2" />
+              </div>
               </div>
 
               <div className="flex gap-2 mt-4 text-right">
                 <Link
-                  href={route("model.index")}
+                  href={route("subCategory.index")}
                   className="px-3 py-1 mr-2 text-gray-800 transition-all bg-gray-100 rounded shadow hover:bg-gray-200"
                 >
                   {t("Cancel")}
@@ -116,9 +131,7 @@ export default function Create({ auth, model }) {
                 <button className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover">
                   {t("Submit")}
                 </button>
-                              </div>
-                          </div>
-
+              </div>
             </form>
           </div>
         </div>

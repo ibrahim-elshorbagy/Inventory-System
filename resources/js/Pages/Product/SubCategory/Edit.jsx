@@ -13,8 +13,8 @@ import i18n from "@/i18nConfig";
     },
     ar: {
         translation: {
-                "Brands": "العلامات التجارية",
-                "Edit Brand": "تعديل العلامة التجارية",
+                "Categories": "الفئات",
+                "Edit Category": "تعديل الفئة",
                 "ID": "الرقم التعريفي",
                 "Name": "الاسم",
                 "Email": "البريد الإلكتروني",
@@ -36,20 +36,21 @@ import i18n from "@/i18nConfig";
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Create({ auth, brand }) {
+export default function Create({ auth, category ,mainCategories}) {
   const { t } = useTranslation();
 
 
   const { data, setData, post, errors, reset } = useForm({
-    name: brand.name || "",
-    is_active: brand.is_active !== undefined ? brand.is_active : "",
+    name: category.name || "",
+      is_active: category.is_active !== undefined ? category.is_active : "",
+    category_id:category.category_id || "",
 
     _method: "PUT",
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    post(route("brand.update", brand.id));
+    post(route("subCategory.update", category.id));
   };
 
   return (
@@ -58,12 +59,13 @@ export default function Create({ auth, brand }) {
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            {t("Edit Brand")} "{data.name}"
+            {t("Edit Category")} "{data.name}"
           </h2>
         </div>
       }
     >
-          <Head title={t("Brands")} />
+          <Head title={t("Categories")} />
+
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -88,6 +90,24 @@ export default function Create({ auth, brand }) {
 
                 <InputError message={errors.name} className="mt-2" />
                 </div>
+                <div className="mt-4">
+                  <InputLabel htmlFor="mainCategory" value={t("Main Category")} />
+                  <SelectInput
+                    name="mainCategory"
+                    id="mainCategory"
+                    className="block w-full mt-1"
+                    value={data.category_id}
+                    onChange={(e) => setData("category_id", e.target.value)}
+                  >
+                    <option value="">{t("Select Main Category")}</option>
+                    {mainCategories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.name}
+                      </option>
+                    ))}
+                  </SelectInput>
+                  <InputError message={errors.catgeory_id} className="mt-2" />
+                </div>
               <div className="mt-4">
                 <InputLabel htmlFor="is_active" value={t("Status")} />
 
@@ -106,18 +126,19 @@ export default function Create({ auth, brand }) {
                 <InputError message={errors.isactive} className="mt-2" />
               </div>
 
-              <div className="flex gap-2 mt-4 text-right">
-                <Link
-                  href={route("brand.index")}
-                  className="px-3 py-1 mr-2 text-gray-800 transition-all bg-gray-100 rounded shadow hover:bg-gray-200"
-                >
-                  {t("Cancel")}
-                </Link>
-                <button className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover">
-                  {t("Submit")}
-                </button>
-                              </div>
-                          </div>
+
+                </div>
+                <div className="flex gap-2 mt-4 text-right">
+                    <Link
+                    href={route("subCategory.index")}
+                    className="px-3 py-1 mr-2 text-gray-800 transition-all bg-gray-100 rounded shadow hover:bg-gray-200"
+                    >
+                    {t("Cancel")}
+                    </Link>
+                    <button className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover">
+                    {t("Submit")}
+                    </button>
+                </div>
 
             </form>
           </div>

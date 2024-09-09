@@ -5,15 +5,15 @@ namespace App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ProductCategory extends Model
+class SubCategory extends Model
 {
     use HasFactory;
-
     protected $guarded = ['id'];
     public $timestamps = false;
 
-    public function subCategories()
+    public function category()
     {
-        return $this->hasMany(SubCategory::class, 'category_id');
+        return $this->belongsTo(ProductCategory::class);
     }
+
 }

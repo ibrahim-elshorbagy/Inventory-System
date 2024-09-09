@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\Customer\CustomerController;
 use App\Http\Controllers\Customer\ReportController;
 use App\Http\Controllers\Customer\StockReleaseRequestController;
-use App\Http\Controllers\Product\ProductCategoryController;
+use App\Http\Controllers\Product\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 

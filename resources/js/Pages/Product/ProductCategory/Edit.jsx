@@ -36,7 +36,7 @@ import i18n from "@/i18nConfig";
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Create({ auth, category }) {
+export default function Create({ auth, category,hasSubCategories  }) {
   const { t } = useTranslation();
 
 
@@ -66,6 +66,7 @@ export default function Create({ auth, category }) {
           <Head title={t("Categories")} />
 
 
+          {JSON.stringify(errors)}
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
@@ -97,7 +98,8 @@ export default function Create({ auth, category }) {
                         id="is_active"
                         className="block w-full mt-1"
                         value={data.is_active === true ? "true" : "false"}
-                        onChange={(e) => setData("is_active", e.target.value === "true") }
+                        onChange={(e) => setData("is_active", e.target.value === "true")}
+                        disabled={hasSubCategories}
                     >
                         <option value="">{t("Select Status")}</option>
                         <option value="true" key="1">{t('Active')}</option>
@@ -105,6 +107,7 @@ export default function Create({ auth, category }) {
                     </SelectInput>
 
                 <InputError message={errors.isactive} className="mt-2" />
+                <InputError message={errors.is_active} className="mt-2" />
               </div>
 
               <div className="flex gap-2 mt-4 text-right">

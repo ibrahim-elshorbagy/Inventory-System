@@ -18,11 +18,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Base entities for CRUD operations
         $basePermissions = [
-            'category',
-            'brand',
-            'model',
+            'main-category',
+            'sub-category',
             'product',
-            'unit',
             'customer',
             'warehouse',
             'stock',
@@ -98,21 +96,13 @@ class RolesAndPermissionsSeeder extends Seeder
         $adminPermissions = [
             'view-admin-dashboard',
 
-            'create-category',
-            'read-category',
-            'update-category',
+            'create-main-category',
+            'read-main-category',
+            'update-main-category',
 
-            'create-brand',
-            'read-brand',
-            'update-brand',
-
-            'create-model',
-            'read-model',
-            'update-model',
-
-            'create-unit',
-            'read-unit',
-            'update-unit',
+            'create-sub-category',
+            'read-sub-category',
+            'update-sub-category',
 
             'create-product',
             'read-product',
