@@ -15,8 +15,8 @@ import i18n from "@/i18nConfig";
     ar: {
         translation: {
             "Create Category": "انشاء فئة",
-            "Categories": "الفئات",
-            "Category Name": "اسم الفئة",
+            "Categories": "الاصناف",
+            "Category Name": "اسم الصنف",
             "Status": "الحالة",
             "Select Status": "اختر الحاله",
             "Cancel": "إلغاء",

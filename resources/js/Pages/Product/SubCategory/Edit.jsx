@@ -13,8 +13,8 @@ import i18n from "@/i18nConfig";
     },
     ar: {
         translation: {
-                "Categories": "الفئات",
-                "Edit Category": "تعديل الفئة",
+                "Categories": "الاصناف",
+                "Edit Category": "تعديل الصنف",
                 "ID": "الرقم التعريفي",
                 "Name": "الاسم",
                 "Email": "البريد الإلكتروني",

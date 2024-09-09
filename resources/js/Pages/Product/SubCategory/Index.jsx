@@ -13,8 +13,8 @@ import { useState, useEffect } from "react";
     },
     ar: {
         translation: {
-            "Sub Categories": "الفئات الفرعية",
-            "Main Category": "الفئة الرئيسية",
+            "Sub Categories": "الاصناف الفرعية",
+            "Main Category": "الصنف الرئيسي",
                 "Add new": "إضافة جديد",
                 "ID": "الرقم التعريفي",
                 "Name": "الاسم",

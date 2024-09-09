@@ -65,7 +65,7 @@ class SubCategoryController extends Controller
         $locale = session('app_locale', 'en');
 
         $message = $locale === 'ar'
-            ? "تم إنشاء الفئه الفرعيه \"{$category->name}\" بنجاح"
+            ? "تم إنشاء الصنف الفرعي \"{$category->name}\" بنجاح"
             : "Sub Category \"{$category->name}\" was created successfully";
 
         return to_route('subCategory.index')
@@ -105,7 +105,7 @@ class SubCategoryController extends Controller
         $locale = session('app_locale', 'en');
 
         $message = $locale === 'ar'
-            ? " تم تحديث الفئه الفرعيه \"{$subcategory->name}\" بنجاح"
+            ? " تم تحديث الصنف الفرعي \"{$subcategory->name}\" بنجاح"
             : "Sub Category \"{$subcategory->name}\" was updated successfully";
 
         return to_route('subCategory.index')
@@ -124,7 +124,7 @@ class SubCategoryController extends Controller
         $locale = session('app_locale', 'en');
 
         $message = $locale === 'ar'
-            ? "تم حذف الفئه الفرعيه \"{$name}\" بنجاح"
+            ? "تم حذف الصنف الفرعي \"{$name}\" بنجاح"
             : "Sub Category \"{$name}\" was deleted successfully";
 
         return to_route('subCategory.index')

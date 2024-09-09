@@ -62,7 +62,7 @@ class CategoryController extends Controller
         $locale = session('app_locale', 'en');
 
         $message = $locale === 'ar'
-            ? "تم إنشاء الفئه \"{$category->name}\" بنجاح"
+            ? "تم إنشاء الصنف \"{$category->name}\" بنجاح"
             : "Category \"{$category->name}\" was created successfully";
 
         return to_route('category.index')
@@ -133,7 +133,7 @@ class CategoryController extends Controller
         // Prepare success message
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar'
-            ? "تم تحديث الفئة \"{$category->name}\" بنجاح"
+            ? "تم تحديث الصنف \"{$category->name}\" بنجاح"
             : "Category \"{$category->name}\" was updated successfully";
 
         return to_route('category.index')
@@ -152,7 +152,7 @@ class CategoryController extends Controller
         $locale = session('app_locale', 'en');
 
         $message = $locale === 'ar'
-            ? "لا يمكن حذف الفئة \"{$name}\" لأنها تحتوي على فئات فرعية"
+            ? "لا يمكن حذف الصنف \"{$name}\" لأنها تحتوي على فئات فرعية"
             : "Cannot delete category \"{$name}\" because it has subcategories";
 
         return to_route('category.index')
@@ -163,7 +163,7 @@ class CategoryController extends Controller
         $locale = session('app_locale', 'en');
 
         $message = $locale === 'ar'
-            ? "تم حذف الفئه \"{$name}\" بنجاح"
+            ? "تم حذف الصنف \"{$name}\" بنجاح"
             : "Category \"{$name}\" was deleted successfully";
 
         return to_route('category.index')

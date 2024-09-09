@@ -15,10 +15,10 @@ import i18n from "@/i18nConfig";
     ar: {
         translation: {
             "Create Sub Category": "انشاء فئة فرعية",
-            "Categories": "الفئات",
-            "Sub Category Name": " اسم الفئة الفرعيه",
-            "Main Category": "الفئة الرئيسية",
-            "Select Main Category": "اختر الفئة الرئيسية",
+            "Categories": "الاصناف",
+            "Sub Category Name": " اسم الصنف الفرعي",
+            "Main Category": "الصنف الرئيسي",
+            "Select Main Category": "اختر الصنف الرئيسية",
             "Status": "الحالة",
             "Select Status": "اختر الحاله",
             "Cancel": "إلغاء",

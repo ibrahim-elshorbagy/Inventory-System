@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
     },
     ar: {
         translation: {
-                "Categories": "الفئات",
+                "Categories": "الاصناف",
                 "Add new": "إضافة جديد",
                 "ID": "الرقم التعريفي",
                 "Name": "الاسم",
