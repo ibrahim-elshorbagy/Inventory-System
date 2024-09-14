@@ -268,6 +268,10 @@ class StockController extends Controller
      */
     public function destroyOrder(ReceiveOrder $order)
     {
+        if($order->status === 'approved'){
+            return redirect()->back()->with('error', 'You Can\'t Delete This Order');
+        }
+
         // Define the folder path where the specific order's images are stored
         $imageFolderPath = 'uploads/' . $order->user_id . '/' . $order->id;
 

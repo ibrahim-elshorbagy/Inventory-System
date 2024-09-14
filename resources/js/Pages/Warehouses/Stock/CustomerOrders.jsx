@@ -165,7 +165,7 @@ export default function Index({ auth, user = null, orders, queryParams = null, s
                                                                 {t("Edit")}
                                                             </Link>
                                                             )}
-                                                            {auth.user.permissions.includes("delete-stock-order") && order.status === 'pending' && (
+                                                            {auth.user.permissions.includes("delete-stock-order") && (order.status === 'pending' || order.status === 'rejected') && (
                                                             <button
                                                                     onClick={(e) => deleteOrder(order.id)}
                                                                     className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"
