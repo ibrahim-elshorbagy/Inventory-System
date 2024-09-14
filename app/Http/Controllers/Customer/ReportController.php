@@ -18,7 +18,7 @@ this to print any reports
 
 
     public function MyProductRport(){ //report about the products the customer has on the warehouse
-        
+
         $user = Auth::user();
 
 
@@ -26,8 +26,11 @@ this to print any reports
             ->where('user_id', $user->id)
             ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
             ->with([
-                'product:id,name,unit',
                 'warehouse:id,name',
+
+                'product:id,name,image_url,category_id,subcategory_id',
+                'product.category:id,name',
+                'product.subCategory:id,name',
             ]);
 
         // Implementing the search for product name
