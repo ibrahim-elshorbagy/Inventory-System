@@ -17,8 +17,6 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->boolean('is_active');
-            $table->string('created_by', 20)->nullable();
-            $table->string('updated_by', 20)->nullable();
             $table->timestamps();
         });
     }

@@ -66,7 +66,6 @@ class WarehouseController extends Controller
             'is_active'=>['required','boolean'],
         ]);
 
-        $data['created_by'] = auth()->user()->id;
         $warehouse= Warehouse::create($data);
 
         $locale = session('app_locale', 'en');
@@ -151,7 +150,6 @@ class WarehouseController extends Controller
 
         ]);
 
-        $data['updated_by'] = auth()->user()->id;
         $warehouse->update($data);
 
 
