@@ -23,7 +23,7 @@ import { FaWarehouse } from "react-icons/fa6";
 import { CiSquareQuestion } from "react-icons/ci";
 import { VscRequestChanges } from "react-icons/vsc";
 import { FaBox } from "react-icons/fa";
-import { IoLogoDropbox } from "react-icons/io5";
+import { IoLogoDropbox,IoNewspaperOutline } from "react-icons/io5";
 import { RiNewspaperLine } from "react-icons/ri";
 import { BsBoxes } from "react-icons/bs";
 import { SiSpringsecurity } from "react-icons/si";
@@ -49,6 +49,7 @@ const resources = {
             "Requests Management": 'ادارة الطلبات',
             "Orders": 'الطلبات',
             "Permissions": 'الصلاحيات',
+            "Additions Orders":'طلبات الاضافة'
         },
     },
 };
@@ -127,12 +128,6 @@ const MySidebar = ({ user, direction }) => {
                     icon: <MdOutlineCategory />,
                     permissions: ["read-sub-category"],
                 },
-                {
-                    text: t("Products"),
-                    href: "product.index",
-                    icon: <AiFillProduct   />,
-                    permissions: ["read-product"],
-                },
             ],
             icon: <AiOutlineProduct />,
         }, //manage warehouse
@@ -150,6 +145,12 @@ const MySidebar = ({ user, direction }) => {
                     href: "warehouse.index",
                     icon: <FaWarehouse />,
                     permissions: ["read-warehouse"],
+                },
+                {
+                    text: t("Additions Orders"),
+                    href: "stock.all.orders",
+                    icon: <IoNewspaperOutline  />,
+                    permissions: ["all-stock-orders"],
                 },
 
             ],
@@ -246,7 +247,7 @@ const MySidebar = ({ user, direction }) => {
                                     active={route().current(link.href)}
                                     className="flex items-center justify-between px-4 py-2"
                                 >
-                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-500 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
+                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-400 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
                                         {link.icon}{link.text}
                                     </div>
                                 </SideNavLink>

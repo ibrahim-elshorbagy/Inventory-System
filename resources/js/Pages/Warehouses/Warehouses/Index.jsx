@@ -38,7 +38,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, warehouses, queryParams = null, success }) {
+export default function Index({ auth, warehouses, queryParams = null, success,danger }) {
 
 
   const { t } = useTranslation();
@@ -86,7 +86,23 @@ export default function Index({ auth, warehouses, queryParams = null, success })
 
       return () => clearTimeout(timer);
     }
-  }, [success]);
+ }, [success]);
+
+      const [visibleDanger, setVisibleDanger] = useState(danger);
+
+    useEffect(() => {
+
+        if (danger) {
+
+        setVisibleDanger(danger);
+
+        const timer = setTimeout(() => {
+        setVisibleDanger(null);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+    }, [danger]);
 
     const deletewarehouse = (warehouse) => {
     const confirmationMessage = t("Are you sure you want to delete the Warehouses?");
@@ -106,7 +122,7 @@ export default function Index({ auth, warehouses, queryParams = null, success })
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight  dark:text-gray-200">
+          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             {t("Warehouses")}
               </h2>
               {auth.user.permissions.includes("create-warehouse") && (
@@ -130,6 +146,11 @@ export default function Index({ auth, warehouses, queryParams = null, success })
               {visibleSuccess}
             </div>
                   )}
+          {visibleDanger && (
+        <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+            {visibleDanger}
+        </div>
+        )}
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">

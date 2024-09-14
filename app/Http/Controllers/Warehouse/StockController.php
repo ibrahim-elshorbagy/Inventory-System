@@ -9,125 +9,331 @@ use App\Models\Warehouse\Stock;
 use App\Models\Warehouse\Warehouse;
 use Illuminate\Http\Request;
 use App\Http\Resources\Warehouse\CustomerStockResource;
+use App\Models\Product\ProductCategory;
 use App\Models\Warehouse\StockTransaction;
-use Illuminate\Support\Facades\DB;
+use App\Http\Requests\Product\ReceiveProductRequest;
+use App\Http\Resources\Product\ProductOrderDetailsResource;
+use App\Http\Resources\Product\ProductOrdersResource;
+use App\Models\Product\ReceiveOrder;
+use Illuminate\Support\Facades\Storage;
 
+//Create Additions order controller
 class StockController extends Controller
 {
 
-    /*
-    Stock Controller :for adding updating and deleting stock from warehouse
-    */
-
-
-
     /**
-     * Display a listing of the resource.
+     * Show Add Form for making new adding order for Customer.
      */
-    public function index()
+    public function addPage(Customer $customer)
     {
-        //
-    }
 
-    /**
-     * Show Create Form for Adding Stock to Warehouse for Customer.
-     */
-    public function create(Customer $customer)
-    {
             $customer->load(['user:id,name']);
 
-            $proudcts=Product::query()->where('is_active', 1)->select('id', 'name','unit')->get();
+            $categories = ProductCategory::with(['subCategories' => function ($query) {
+                $query->where('is_active', true)->select('id', 'name', 'category_id');
+            }])->where('is_active', true)->get();
 
             $warehouses = Warehouse::query()->where('is_active', 1)->select('id', 'name')->get();
 
-            return inertia("Warehouses/Stock/Create",
+            return inertia("Warehouses/Stock/CreateOrder",
             [
-                'products' => $proudcts,
                 'customer' => $customer,
-                'warehouses' => $warehouses
+                'warehouses' => $warehouses,
+                'categories' => $categories
             ]
         );
 
     }
 
     /**
-     * Added the stock to the warehouse create new record or update the existing.
+     * Added products to order and wait for admin approved.
      */
-        public function store(Request $request)
-        {
+    public function addProduct(ReceiveProductRequest $request)
+    {
+            $data = $request->validated();
 
-            // Validate the request
-            $data = $request->validate([
-                'user_id' => ['required', 'exists:users,id'],
-                'warehouse_id' => ['required', 'exists:warehouses,id'],
-                'product_quantities' => ['required', 'array', 'min:1'],
-                'product_quantities.*.product_id' => ['required', 'exists:products,id'],
-                'product_quantities.*.quantity' => ['required', 'numeric', 'gt:0'],
-            ], [
-                'product_quantities.required' => 'The Full Product selection is required.',
-                'product_quantities.*.product_id.required' => 'The product field is required.',
-                'product_quantities.*.quantity.required' => 'The quantity field is required.',
-                'product_quantities.*.quantity.gt' => 'The quantity must be greater than zero.',
+            // Create the receive order
+            $receiveOrder = ReceiveOrder::create([
+                'user_id' => $data['user_id'],
+                'status' => 'pending',
             ]);
 
-
-            // Loop through the product quantities
+            // Iterate over the product quantities
             foreach ($data['product_quantities'] as $productData) {
 
-                // Check if a stock record already exists
-                $existingStock = Stock::where('user_id', $data['user_id'])
-                    ->where('warehouse_id', $data['warehouse_id'])
-                    ->where('product_id', $productData['product_id'])
-                    ->first();
+                // Handle the image upload
+                if (isset($productData['image_url']) && $productData['image_url']->isValid()) {
+                    // Generate the path: userid/orderid/
+                    $path = 'uploads/' . $data['user_id'] . '/' . $receiveOrder->id;
 
-                if (!$existingStock) {
-                    // If it doesn't exist, create a new stock record
-                    $existingStock = Stock::create([
-                        'user_id' => $data['user_id'],
-                        'warehouse_id' => $data['warehouse_id'],
-                        'product_id' => $productData['product_id'],
-                        'quantity' => 0, // Initialize with 0, actual balance will be updated
-                    ]);
+                    // Get the original file name and store the image
+                    $imageName = $productData['image_url']->getClientOriginalName();
+                    $imagePath = $productData['image_url']->storeAs($path, $imageName, 'public');
+
+                    // Use Storage::url() to generate the full image URL
+                    $imageUrl = Storage::url($imagePath); // No need to manually add /storage/
+                }
+                else {
+                    // No image provided, store null
+                    $imageUrl = 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png';
                 }
 
-                // Record the transaction in the stock_transactions table
-                StockTransaction::create([
-                    'stock_id' => $existingStock->id,
-                    'quantity' => $productData['quantity'],
-                    'transaction_type' => 'addition',
-                ]);
+                // Create a product record
+                Product::create([
+                    'receive_order_id' => $receiveOrder->id,
 
-                // Update the balance in the stocks table
-                $this->updateStockBalance($existingStock->id);
+                    'name' => $productData['name'],
+                    'quantity' => $productData['quantity'],
+                    'description' => $productData['description'],
+                    'notes' => $productData['notes'],
+                    'image_url' => $imageUrl, // Save the image URL
+
+                    'category_id' => $productData['category_id'],
+                    'subcategory_id' => $productData['subcategory_id'],
+
+                    'user_id' => $data['user_id'],
+                    'warehouse_id' => $productData['warehouse_id'],
+
+                ]);
             }
 
             $locale = session('app_locale', 'en');
             $message = $locale === 'ar' ? "تم اضافة المنتجات بنجاح" : "Products were added successfully";
 
-            return to_route('customer.stock.show', $data['user_id'])->with('success', $message);
+            return to_route('stock.customer.orders', $data['user_id'])->with('success', $message);
+
+    }
+
+
+    /**
+     * Show ALL Orders for all customers
+     */
+
+    public function ShowAllOrders(){
+
+        $orders = ReceiveOrder::orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia('Warehouses/Stock/CustomerOrders', [
+            'orders' => ProductOrdersResource::collection($orders),
+            'success'=> session('success')
+        ]);
+
+    }
+
+
+    /**
+     * Show ALL Orders for one customer
+     */
+
+    public function ShowOrders(Customer $customer)
+    {
+        $customerInfo = $customer->user->only('id', 'name', 'email');
+
+        $orders = ReceiveOrder::where('user_id', $customer->user_id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->onEachSide(1);
+
+        return inertia('Warehouses/Stock/CustomerOrders', [
+            'orders' => ProductOrdersResource::collection($orders),
+            'user' => $customerInfo,
+        ]);
+    }
+
+    /**
+     *  Show Detailed for a single order
+     *  so he can change status of the order
+     */
+
+    public function ShowOrderDetails(ReceiveOrder $order){
+
+        $products = Product::where('receive_order_id', $order->id)->with('category', 'subcategory', 'warehouse','user.customer')->paginate(10)->onEachSide(1);
+
+        return inertia('Warehouses/Stock/OrderDetails', [
+            'products' => ProductOrderDetailsResource::collection($products),
+            "order" => $order
+        ]);
+    }
+
+
+
+    /**
+     *  Update the order Page
+     */
+    public function EditOrderPage(ReceiveOrder $order){
+
+            if($order->status !== 'pending')
+            {return redirect()->back()->with('error', 'You Cant Edit This Order');}
+
+            $products = Product::where('receive_order_id', $order->id)->with('category', 'subcategory', 'warehouse','user.customer')->paginate(10)->onEachSide(1);
+
+            $warehouses = Warehouse::query()->where('is_active', 1)->select('id', 'name')->get();
+
+            $categories = ProductCategory::with(['subCategories' => function ($query) {
+                $query->where('is_active', true)->select('id', 'name', 'category_id');
+            }])->where('is_active', true)->get();
+
+            return inertia("Warehouses/Stock/EditOrder",
+            [
+                'warehouses' => $warehouses,
+                'products' => ProductOrderDetailsResource::collection($products),
+                'categories' => $categories,
+                'order' => $order,
+            ]
+        );
+    }
+
+    /**
+     *  Update the order
+     */
+    public function updateOrder(ReceiveProductRequest $request, $orderId)
+    {
+        $data = $request->validated();
+
+        // Retrieve the existing order
+        $existingOrder = ReceiveOrder::findOrFail($orderId);
+
+        // Get existing product IDs
+        $existingProductIds = $existingOrder->products->pluck('id')->toArray();
+
+        // Track product IDs that are updated or created
+        $updatedProductIds = [];
+
+        // Iterate over the product quantities
+        foreach ($data['product_quantities'] as $productData) {
+            // Handle the image upload
+            if (isset($productData['image_url']) && !is_string($productData['image_url'])) {
+                // Generate the path: userid/orderid/
+                $path = 'uploads/' . $data['user_id'] . '/' . $existingOrder->id;
+
+                // Get the original file name and store the image
+                $imageName = $productData['image_url']->getClientOriginalName();
+                $imagePath = $productData['image_url']->storeAs($path, $imageName, 'public');
+
+                // Use Storage::url() to generate the full image URL
+                $imageUrl = Storage::url($imagePath);
+            }
+            else {
+                // No new image provided, keep the existing image URL or set to null
+                $imageUrl = $productData['image_url'] ?? 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png';
+            }
+
+            // Update or create the product
+            $product = Product::updateOrCreate(
+                ['id' => $productData['id'] ?? null],
+                [
+                    'receive_order_id' => $existingOrder->id,
+                    'name' => $productData['name'],
+                    'quantity' => $productData['quantity'],
+                    'description' => $productData['description'],
+                    'notes' => $productData['notes'],
+                    'image_url' => $imageUrl,
+                    'category_id' => $productData['category_id'],
+                    'subcategory_id' => $productData['subcategory_id'],
+                    'user_id' => $data['user_id'],
+                    'warehouse_id' => $productData['warehouse_id'],
+                ]
+            );
+
+            $updatedProductIds[] = $product->id;
         }
 
-        private function updateStockBalance($stockId)
-        {
-            $balanceQuery = DB::table('stock_transactions')
-                ->select(
-                    DB::raw('SUM(CASE WHEN transaction_type = "addition" THEN quantity ELSE 0 END) as total_in'),
-                    DB::raw('SUM(CASE WHEN transaction_type = "release" THEN quantity ELSE 0 END) as total_out')
-                )
-                ->where('stock_id', $stockId)
-                ->first();
-
-            $balance = $balanceQuery->total_in - $balanceQuery->total_out;
-
-            // Update the balance in the stocks table
-            Stock::where('id', $stockId)->update(['quantity' => $balance]);
+        // Delete products that were not updated or created
+        $productsToDelete = array_diff($existingProductIds, $updatedProductIds);
+        foreach ($productsToDelete as $productId) {
+            $product = Product::find($productId);
+            if ($product) {
+                // Delete image from storage if it exists
+                if ($product->image_url) {
+                    $imagePath = str_replace('/storage/', '', $product->image_url);
+                    if (Storage::disk('public')->exists($imagePath)) {
+                        Storage::disk('public')->delete($imagePath);
+                    }
+                }
+                $product->delete();
+            }
         }
+
+        $locale = session('app_locale', 'en');
+        $message = $locale === 'ar' ? "تم تحديث المنتجات بنجاح" : "Products were updated successfully";
+
+        return to_route('stock.all.orders')->with('success', $message);
+    }
+
+
+    /**
+     *  Destroy the order
+     */
+    public function destroyOrder(ReceiveOrder $order)
+    {
+        // Define the folder path where the specific order's images are stored
+        $imageFolderPath = 'uploads/' . $order->user_id . '/' . $order->id;
+
+        // Check if the folder exists, then delete the entire folder for that order
+        if (Storage::disk('public')->exists($imageFolderPath)) {
+            Storage::disk('public')->deleteDirectory($imageFolderPath);
+        }
+
+        $order->delete();
+
+        $locale = session('app_locale', 'en');
+        $message = $locale === 'ar' ? "تم حذف الطلب بنجاح" : "Order was deleted successfully";
+
+        return to_route('stock.all.orders')->with('success', $message);
+    }
+
+    /**
+     *  change status of the order
+     */
+    public function ChangeStatus(Request $request,ReceiveOrder $order){
+
+        $data = $request->validate([
+            'status' => ['required', 'in:pending,approved,rejected'],
+        ]);
+
+        if ($order->status === 'approved') {
+        return redirect()->back()->with('error', 'You can\'t change the status of this order');
+        }
+
+        $newStatus = $request->status;
+        $order->update(['status' => $newStatus]);
+
+        if ($newStatus === 'approved') {
+            foreach ($order->products as $product) {
+                // Create a new stock record
+                $stock = Stock::create([
+                    'user_id' => $order->user_id,
+                    'warehouse_id' => $product->warehouse_id,
+                    'product_id' => $product->id,
+                    'quantity' => $product->quantity,
+                ]);
+
+                // Record the transaction in the stock_transactions table
+                StockTransaction::create([
+                    'stock_id' => $stock->id,
+                    'quantity' => $product->quantity,
+                    'transaction_type' => 'addition',
+                ]);
+            }
+        }
+
+
+        $locale = session('app_locale', 'en');
+        $message = $locale === 'ar' ? "تم تحديث حالة الطلب بنجاح" : "Order status was updated successfully";
+
+        return to_route('stock.all.orders', $order->user_id)->with('success', $message);
+
+    }
+
+
 
 
     /**
      * Show Cusomter Stock Report.
      */
-    public function show(Customer $customer)
+    public function showStock(Customer $customer)
     {
         $user = $customer->user->only('id', 'name', 'email');
 
@@ -141,9 +347,13 @@ class StockController extends Controller
             ->where('user_id', $customer->user_id)
             ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
             ->with([
-                'product:id,name,unit',
                 'warehouse:id,name',
+
+                'product:id,name,image_url,category_id,subcategory_id',
+                'product.category:id,name',
+                'product.subCategory:id,name',
             ]);
+
 
         // Implementing the search for product name
         if (request("name")) {
@@ -182,8 +392,11 @@ class StockController extends Controller
             ->where('user_id', $customer->user_id)
             ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
             ->with([
-                'product:id,name,unit',
                 'warehouse:id,name',
+
+                'product:id,name,image_url,category_id,subcategory_id',
+                'product.category:id,name',
+                'product.subCategory:id,name',
             ])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -195,177 +408,4 @@ class StockController extends Controller
     }
 
 
-    /**
-     * Show the form for editing the Customer Stock.
-     */
-    public function edit(Customer $customer)
-    {
-            $customer->load(['user:id,name']);
-
-            $proudcts=Product::query()->where('is_active', 1)->select('id', 'name','unit')->get();
-
-            $warehouses = Warehouse::query()->where('is_active', 1)->select('id', 'name')->get();
-
-            $myProducts = Stock::query()
-            ->where('user_id', $customer->user_id)
-            ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
-            ->with([
-                'product:id,name,unit',
-                'warehouse:id,name',
-            ])
-            ->get();
-            return inertia("Warehouses/Stock/Edit",
-            [
-                'products' => $proudcts,
-                'customer' => $customer,
-                'warehouses' => $warehouses,
-                'myProducts' => $myProducts
-            ]
-        );
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Customer $customer)
-    {
-    $locale = session('app_locale', 'en');
-
-    DB::beginTransaction();
-    try {
-        $data = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'warehouse_id' => ['required', 'exists:warehouses,id'],
-            'product_quantities' => ['array'],
-            'product_quantities.*.product_id' => ['required_with:product_quantities', 'exists:products,id'],
-            'product_quantities.*.quantity' => ['required_with:product_quantities', 'numeric', 'gt:0'],
-        ]);
-
-          if (empty($data['product_quantities'])) {
-            // Delete all stock records for this user and warehouse
-            Stock::where('user_id', $data['user_id'])
-                 ->where('warehouse_id', $data['warehouse_id'])
-                 ->delete();
-
-            DB::commit();
-
-            $message = $locale === 'ar' ? "تم حذف جميع المنتجات بنجاح" : "All products were successfully removed";
-            return to_route('customer.stock.show', $data['user_id'])->with('success', $message);
-        }
-
-
-        // Get the current stock records for the user and warehouse
-        $existingStocks = Stock::where('user_id', $data['user_id'])
-            ->where('warehouse_id', $data['warehouse_id'])
-            ->get();
-
-        // Get an array of the current product IDs
-        $existingProductIds = $existingStocks->pluck('product_id')->toArray();
-
-        // Get an array of the updated product IDs
-        $updatedProductIds = array_column($data['product_quantities'], 'product_id');
-
-        // Find products that have been removed in the update (present in existing but not in updated)
-        $productsToDelete = array_diff($existingProductIds, $updatedProductIds);
-
-        // Delete the removed products and log transactions
-        foreach ($productsToDelete as $productId) {
-            $existingStock = Stock::where('user_id', $data['user_id'])
-                ->where('warehouse_id', $data['warehouse_id'])
-                ->where('product_id', $productId)
-                ->first();
-
-            if ($existingStock) {
-                // Log the adjustment transaction for the entire quantity
-                StockTransaction::create([
-                    'stock_id' => $existingStock->id,
-                    'quantity' => $existingStock->quantity,
-                    'transaction_type' => 'release', //We release the the deleted product from the stock but it does not mean that they will go to someone
-                ]);
-
-                // Remove the stock record
-                $existingStock->delete();
-            }
-        }
-
-        // Process the remaining or new products
-        foreach ($data['product_quantities'] as $productData) {
-            $existingStock = Stock::where('user_id', $data['user_id'])
-                ->where('warehouse_id', $data['warehouse_id'])
-                ->where('product_id', $productData['product_id'])
-                ->first();
-
-            if ($existingStock) {
-                // Calculate the difference between the old and new quantities
-                $difference = $productData['quantity'] - $existingStock->quantity;
-
-                // Log the transaction based on the difference
-                if ($difference > 0) {
-                    StockTransaction::create([
-                        'stock_id' => $existingStock->id,
-                        'quantity' => $difference,
-                        'transaction_type' => 'addition',
-                    ]);
-                } elseif ($difference < 0) {
-                    StockTransaction::create([
-                        'stock_id' => $existingStock->id,
-                        'quantity' => abs($difference),
-                        'transaction_type' => 'release',   //We release the difference from the stock but it does not mean that they will go to someone
-                    ]);
-                }
-
-                // No direct update of quantity, balance will be recalculated
-            } else {
-                // If it doesn't exist, create a new stock record and log an addition transaction
-                $newStock = Stock::create([
-                    'user_id' => $data['user_id'],
-                    'warehouse_id' => $data['warehouse_id'],
-                    'product_id' => $productData['product_id'],
-                    'quantity' => 0, // Initialize with 0, actual balance will be updated
-                ]);
-
-                StockTransaction::create([
-                    'stock_id' => $newStock->id,
-                    'quantity' => $productData['quantity'],
-                    'transaction_type' => 'addition',
-                ]);
-            }
-
-            // Update the balance in the stocks table
-            $this->updateStockBalance($existingStock ? $existingStock->id : $newStock->id);
-        }
-    DB::commit();
-        $message = $locale === 'ar' ? "تم تحديث المنتجات بنجاح" : "Products were updated successfully";
-
-        return to_route('customer.stock.show', $data['user_id'])->with('success', $message);
-    } catch (\Exception $e) {
-        // If any exception is thrown, rollback the transaction
-        DB::rollBack();
-
-        // Handle the error (log it, show a user-friendly message, etc.)
-        $errorMessage = $locale === 'ar' ? "حدث خطأ أثناء تحديث المنتجات" : "An error occurred while updating products";
-        return back()->with('error', $errorMessage);
-    }
-
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Stock $stock)
-    {
-        $stock->delete();
-
-        $locale = session('app_locale', 'en');
-
-        $message = $locale === 'ar'
-            ? "تم حذف المنتج من المخزن بنجاح"
-            : "Product was Removed From Warehouse successfully";
-
-        return to_route('customer.stock.show', $stock->user_id)
-            ->with('success', $message);
-
-    }
 }

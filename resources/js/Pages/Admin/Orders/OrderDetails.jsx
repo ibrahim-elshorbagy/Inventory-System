@@ -92,8 +92,7 @@ export default function Index({ auth, order, error,success }) {
             }
         >
             <Head title={t("Orders Report")} />
-            {JSON.stringify(error)}
-            {JSON.stringify(success)}
+
 
             <div className="py-12">
                 <div className="mx-auto sm:px-6 lg:px-8">

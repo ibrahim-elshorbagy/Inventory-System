@@ -14,7 +14,7 @@ import i18n from "@/i18nConfig";
     },
     ar: {
         translation: {
-            "Create Category": "انشاء فئة",
+            "Create Category": "انشاء صنف",
             "Categories": "الاصناف",
             "Category Name": "اسم الصنف",
             "Status": "الحالة",
@@ -49,7 +49,7 @@ export default function Create({ auth, user }) {
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight  dark:text-gray-200">
+          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             {t("Create Category")}
           </h2>
         </div>

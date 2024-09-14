@@ -25,6 +25,13 @@ class CustomerStockResource extends JsonResource
 
             'product_id' =>  $this->whenLoaded('product',function(){return $this->product->id;}),
             'product_name' =>  $this->whenLoaded('product',function(){return $this->product->name;}),
+            'product_image' =>  $this->whenLoaded('product',function(){return $this->product->image_url;}),
+
+            'category_id' =>  $this->whenLoaded('product',function(){return $this->product->category->id;}),
+            'category_name' =>  $this->whenLoaded('product',function(){return $this->product->category->name;}),
+
+            'subcategory_id' =>  $this->whenLoaded('product',function(){return $this->product->subCategory->id;}),
+            'subcategory_name' =>  $this->whenLoaded('product',function(){return $this->product->subCategory->name;}),
 
             'quantity' => $this->quantity,
 

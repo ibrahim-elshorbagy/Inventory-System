@@ -37,7 +37,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, subCategories, queryParams = null, success }) {
+export default function Index({ auth, subCategories, queryParams = null, success,danger }) {
 
 
   const { t } = useTranslation();
@@ -87,6 +87,22 @@ export default function Index({ auth, subCategories, queryParams = null, success
     }
   }, [success]);
 
+      const [visibleDanger, setVisibleDanger] = useState(danger);
+
+    useEffect(() => {
+
+        if (danger) {
+
+        setVisibleDanger(danger);
+
+        const timer = setTimeout(() => {
+        setVisibleDanger(null);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+    }, [danger]);
+
     const deletecategory = (category) => {
     const confirmationMessage = t("Are you sure you want to delete the Category?");
     if (!window.confirm(confirmationMessage)) {
@@ -95,7 +111,9 @@ export default function Index({ auth, subCategories, queryParams = null, success
 
     router.delete(route("subCategory.destroy", category.id), {
       onSuccess: (page) => {
-        setVisibleSuccess(page.props.success);
+            setVisibleSuccess(page.props.success);
+            setVisibleDanger(page.props.danger);
+
       }
     });
   };
@@ -129,6 +147,11 @@ export default function Index({ auth, subCategories, queryParams = null, success
               {visibleSuccess}
             </div>
                   )}
+                                            {visibleDanger && (
+        <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+            {visibleDanger}
+        </div>
+        )}
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">

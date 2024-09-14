@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('stock_release_orders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('user_id')->on('customers')->onDelete('cascade');
+
+            $table->foreignId('customer_id')->references('user_id')->on('customers')->onDelete('cascade');
             $table->foreignId('created_by')->references('id')->on('users')->onDelete('cascade');
+
             $table->text('description')->nullable();
             $table->text('delivery_address')->nullable();
             $table->enum('status', ['pending', 'approved', 'rejected','delivered'])->default('pending');

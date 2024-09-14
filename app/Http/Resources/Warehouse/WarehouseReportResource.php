@@ -25,11 +25,16 @@ class WarehouseReportResource extends JsonResource
 
             'product_id' =>  $this->whenLoaded('product',function(){return $this->product->id;}),
             'product_name' =>  $this->whenLoaded('product',function(){return $this->product->name;}),
+            'product_image' =>  $this->whenLoaded('product',function(){return $this->product->image_url;}),
+
+            'category_id' =>  $this->whenLoaded('product',function(){return $this->product->category->id;}),
+            'category_name' =>  $this->whenLoaded('product',function(){return $this->product->category->name;}),
+
+            'subcategory_id' =>  $this->whenLoaded('product',function(){return $this->product->subCategory->id;}),
+            'subcategory_name' =>  $this->whenLoaded('product',function(){return $this->product->subCategory->name;}),
 
             'quantity' => $this->quantity,
 
-            'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
-            'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
 
             'user_id' =>  $this->whenLoaded('customer',function(){return $this->customer->user->id;}),
             'user_name' =>  $this->whenLoaded('customer',function(){return $this->customer->user->name;}),

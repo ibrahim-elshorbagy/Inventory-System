@@ -13,12 +13,9 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('user_id')->on('customers')->onDelete('cascade');
-
+            $table->foreignId('user_id')->references('user_id')->on('customers')->onDelete('cascade');
             $table->foreignId('warehouse_id')->constrained('warehouses')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-
             $table->decimal('quantity', 10, 2);
             $table->timestamps();
             $table->unique(['user_id', 'warehouse_id', 'product_id'], 'unique_product_per_user_in_warehouse');

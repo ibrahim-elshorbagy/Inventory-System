@@ -35,12 +35,13 @@ import {
                 "Phone": "الهاتف",
                 "Address": "العنوان",
                 "Info": "بيانات العميل",
-                "Add Products": "اضافة منتجات",
-            "Stock": "المخزن",
-            "View Products": "منتجاته",
-            "Edit Products": "تعديل المنتجات",
-            "Orders": "الطلبات",
+                "Stock": "المخزن",
+                "View Products": "منتجاته",
+                "Edit Products": "تعديل المنتجات",
+                "Orders": "الطلبات",
                 "Add Order": "اضافة طلب",
+                "Add Products Order": "اضافة منتجات",
+                "Additions Orders": "طلبات الاضافة ",
         },
     },
 };
@@ -272,30 +273,30 @@ export default function Index({ auth, users, queryParams = null, success }) {
                                     )}
 
 
-                                    {(auth.user.permissions.includes("create-stock") || auth.user.permissions.includes("delete-stock") || auth.user.permissions.includes("update-stock")) && (
+                                    {(auth.user.permissions.includes("add-stock-order") || auth.user.permissions.includes("delete-stock")) && (
                                         <>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuLabel>{t("Stock")}</DropdownMenuLabel>
                                             <DropdownMenuSeparator />
                                         </>
                                     )}
-                                    {auth.user.permissions.includes("create-stock") && (
+                                    {auth.user.permissions.includes("add-stock-order") && (
                                         <DropdownMenuItem>
                                             <Link
-                                                    href={route("stock.create", user.id)}
+                                                    href={route("stock.add.page", user.id)}
                                                     className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                 >
-                                                    {t("Add Products")}
+                                                    {t("Add Products Order")}
                                             </Link>
                                         </DropdownMenuItem>
                                         )}
-                                        {auth.user.permissions.includes("update-stock") && (
+                                    {auth.user.permissions.includes("all-stock-orders") && (
                                         <DropdownMenuItem>
                                             <Link
-                                                    href={route("stock.edit", user.id)}
+                                                    href={route("stock.customer.orders", user.id)}
                                                     className="mx-1 font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                 >
-                                                    {t("Edit Products")}
+                                                    {t("Additions Orders")}
                                             </Link>
                                         </DropdownMenuItem>
                                         )}

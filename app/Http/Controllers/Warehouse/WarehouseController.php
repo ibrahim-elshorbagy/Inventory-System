@@ -42,6 +42,7 @@ class WarehouseController extends Controller
             "warehouses" => WarehouseResource::collection($warehouses),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
+            'danger' => session('danger'),
         ]);
     }
 
@@ -89,10 +90,13 @@ class WarehouseController extends Controller
 
         $query = Stock::query()
             ->where('warehouse_id', $warehouse->id)
-            ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
+            ->select('id', 'user_id', 'product_id', 'quantity')
             ->with([
-                'product:id,name',
-                'warehouse:id,name',
+
+                'product:id,name,image_url,category_id,subcategory_id',
+                'product.category:id,name',
+                'product.subCategory:id,name',
+
                 "customer.user:id,name"
             ]);
 
@@ -167,6 +171,16 @@ class WarehouseController extends Controller
     public function destroy(Warehouse $warehouse)
     {
         $name = $warehouse->name;
+        if ($warehouse->products()->count() > 0) {
+        $locale = session('app_locale', 'en');
+
+        $message = $locale === 'ar'
+            ? "لا يمكن حذف المخزن \"{$name}\" بسبب وجود منتجات بداخله "
+            : "Cannot delete warehouse \"{$name}\" because it has products inside it ";
+
+        return to_route('warehouse.index')
+            ->with('danger', $message);
+        }
         $warehouse->delete();
 
         $locale = session('app_locale', 'en');

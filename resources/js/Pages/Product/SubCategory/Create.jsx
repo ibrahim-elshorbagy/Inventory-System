@@ -14,7 +14,7 @@ import i18n from "@/i18nConfig";
     },
     ar: {
         translation: {
-            "Create Sub Category": "انشاء فئة فرعية",
+            "Create Sub Category": "انشاء صنف فرعية",
             "Categories": "الاصناف",
             "Sub Category Name": " اسم الصنف الفرعي",
             "Main Category": "الصنف الرئيسي",
@@ -58,7 +58,6 @@ export default function Create({ auth, user,mainCategories }) {
       }
     >
           <Head title={t("Sub Categories")} />
-          {JSON.stringify(errors)}
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">

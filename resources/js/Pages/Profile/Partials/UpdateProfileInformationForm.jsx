@@ -10,27 +10,13 @@ import i18n from "@/i18nConfig";
 
 const resources = {
     en: {
-        translation: {
-            "Profile Information": "Profile Information",
-            "Profile Information Description":
-                "Update your account's profile information and email address.",
-            Name: "Name",
-            Email: "Email",
-            "Your email address is unverified.":
-                "Your email address is unverified.",
-            "Click here to re-send the verification email.":
-                "Click here to re-send the verification email.",
-            "A new verification link has been sent to your email address.":
-                "A new verification link has been sent to your email address.",
-            Save: "Save",
-            Saved: "Saved.",
-        },
+        translation: {},
     },
     ar: {
         translation: {
             "Profile Information": "معلومات الملف الشخصي",
             "Profile Information Description":
-                "قم بتحديث معلومات ملفك الشخصي وعنوان بريدك الإلكتروني.",
+                "قم بتحديث معلومات ملفك الشخصي.",
             Name: "الاسم",
             Email: "البريد الإلكتروني",
             "Your email address is unverified.":

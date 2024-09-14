@@ -33,6 +33,7 @@ class SubCategoryController extends Controller
             "subCategories" => SubCategoryResource::collection($subCategories),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
+            'danger' => session('danger'),
         ]);
     }
 
@@ -119,6 +120,17 @@ class SubCategoryController extends Controller
     {
 
         $name = $subcategory->name;
+        if ($subcategory->products()->count() > 0) {
+        $locale = session('app_locale', 'en');
+
+        $message = $locale === 'ar'
+            ? "لا يمكن حذف الصنف \"{$name}\" بسبب وجود منتجات مرتبطه بها"
+            : "Cannot delete category \"{$name}\" because it has Products associated with it";
+
+        return to_route('subCategory.index')
+            ->with('danger', $message);
+        }
+
         $subcategory->delete();
 
         $locale = session('app_locale', 'en');

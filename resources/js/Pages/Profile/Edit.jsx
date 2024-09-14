@@ -27,9 +27,9 @@ const Edit = ({ auth, mustVerifyEmail, status,  }) => {
                     <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
                         <UpdatePasswordForm className="max-w-xl" />
                     </div>
-                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    {/* <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
                         <DeleteUserForm className="max-w-xl" />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </>
@@ -40,7 +40,7 @@ Edit.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
         header={
-            <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+            <h2 className="text-xl font-semibold leading-tight text-white dark:text-gray-200">
                 Profile
             </h2>
         }

@@ -38,7 +38,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 export default function Create({ auth, user, roles }) {
-  const { t } = useTranslation(); // Hook to get translations
+  const { t } = useTranslation();
 
   const { data, setData, post, errors, reset } = useForm({
     name: "",

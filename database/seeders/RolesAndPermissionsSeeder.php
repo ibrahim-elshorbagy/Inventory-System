@@ -20,7 +20,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $basePermissions = [
             'main-category',
             'sub-category',
-            'product',
+
             'customer',
             'warehouse',
             'stock',
@@ -49,6 +49,13 @@ class RolesAndPermissionsSeeder extends Seeder
             'for-Acustomer-make-release-repuest',
 
             //admin
+            "add-stock-order",
+            "all-stock-orders",
+            "show-stock-order",
+            "ChangeStatus-stock-order",
+            "edit-stock-order",
+            "delete-stock-order",
+
             'admin-orders-index',
             'admin-orders-change-status',
             'admin-orders-make',
@@ -104,9 +111,6 @@ class RolesAndPermissionsSeeder extends Seeder
             'read-sub-category',
             'update-sub-category',
 
-            'create-product',
-            'read-product',
-            'update-product',
 
             'create-customer',
             'read-customer',
@@ -118,8 +122,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
             'create-stock',
             'read-stock',
-            'update-stock',
             'delete-stock',
+
+            "add-stock-order",
+            "all-stock-orders",
+            "edit-stock-order",
+            "delete-stock-order",
 
             'admin-orders-index',
             'admin-orders-change-status',
