@@ -36,9 +36,8 @@ class UpdateStockReleaseRequestValidation extends FormRequest
             'product_quantities' => 'required|array|min:1',
             'product_quantities.*.stock_id' => 'required|exists:stocks,id',
             'product_quantities.*.quantity' => [
-                'nullable',
                 'numeric',
-                'min:0',
+                'min:1',
                 function ($attribute, $value, $fail) {
                     // Validation to ensure the user has enough stock
                     $productIndex = explode('.', $attribute)[1];

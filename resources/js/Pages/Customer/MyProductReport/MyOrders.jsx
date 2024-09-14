@@ -30,14 +30,14 @@ import TableHeading from "@/Components/TableHeading";
                 "Request Name": "اسم المنتج",
                 "Quantity": "الكمية",
                 "My Requests Report": "تقرير طلباتي",
-            "Order Requests Release": "طلب ارجاع منتجات",
-            "description": "البيان",
-            "Status": "الحالة",
-            "Pending": "قيد الانتظار",
-            "Approved": "موافقة",
-            "Rejected": "مرفوضة",
-            "Are you sure you want to Cancel The Request?": "هل تريد الغاء الطلب؟",
-            "Delivery Address": "عنوان التسليم",
+                "Order Requests Release": "طلب ارجاع منتجات",
+                "description": "البيان",
+                "Status": "الحالة",
+                "Pending": "قيد الانتظار",
+                "Approved": "موافقة",
+                "Rejected": "مرفوضة",
+                "Are you sure you want to Cancel The Request?": "هل تريد الغاء الطلب؟",
+                "Delivery Address": "عنوان التسليم",
         },
     },
 };
@@ -100,7 +100,7 @@ export default function Index({ auth, requests, queryParams = null, success,dang
       return;
     }
 
-    router.delete(route("customer.destroy.release.repuest", request), {
+    router.delete(route("customer.destroy-release-order", request), {
       onSuccess: (page) => {
          if (page.props.success) {
         setVisibleSuccess(page.props.success);
@@ -123,7 +123,7 @@ export default function Index({ auth, requests, queryParams = null, success,dang
               </h2>
               <div className="flex gap-3">
           <Link
-            href={route("customer.make-release-request")}
+            href={route("customer.make-release-order")}
             className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
           >
             {t("Order Requests Release")}
@@ -223,7 +223,7 @@ export default function Index({ auth, requests, queryParams = null, success,dang
 
                                         <div className="flex gap-3">
                                                 <Link
-                                                    href={route("customer.edit-release-request", request.id)}
+                                                    href={route("customer.edit-release-order", request.id)}
                                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                 >
                                                 {t("Edit")}

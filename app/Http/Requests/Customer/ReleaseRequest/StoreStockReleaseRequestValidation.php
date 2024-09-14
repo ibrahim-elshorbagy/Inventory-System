@@ -31,7 +31,6 @@ class StoreStockReleaseRequestValidation extends FormRequest
                 'exists:stocks,id',
             ],
             'product_quantities.*.quantity' => [
-                'nullable',
                 'numeric',
                 'min:1',
                 function ($attribute, $value, $fail) {

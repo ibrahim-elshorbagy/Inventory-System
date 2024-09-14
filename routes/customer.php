@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\Customer\CustomerController;
 use App\Http\Controllers\Customer\ReportController;
-use App\Http\Controllers\Customer\StockReleaseRequestController;
+use App\Http\Controllers\Customer\StockReleaseOrderController;
 use App\Http\Controllers\Product\CategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +33,7 @@ Route::group(['middleware' => ['permission:delete-customer']], function () {
 //--------------------------------------------------------------------------------------------- My Products Report
 
 Route::group(['middleware' => ['permission:for-Acustomer-my-products-report']], function () {
-    Route::get('/customer/my-products-report', [ReportController::class, 'MyProductRport'])->name('for-Acustomer-my-products-report');
+    Route::get('/customer/dashboard/my-products-report', [ReportController::class, 'MyProductRport'])->name('for-Acustomer-my-products-report');
 
 });
 
@@ -41,14 +41,14 @@ Route::group(['middleware' => ['permission:for-Acustomer-my-products-report']], 
 
 Route::group(['middleware' => ['permission:for-Acustomer-make-release-repuest']], function () {
 
-    Route::get('/customer/make-release-request',[StockReleaseRequestController::class,'MakeReleaseRequest'])->name('customer.make-release-request');
-    Route::post('/customer/store-release-request',[StockReleaseRequestController::class,'MakeReleaseRequestStore'])->name('customer.store.release.repuest');
+    Route::get('/customers/dashboard/release-order/add',[StockReleaseOrderController::class,'MakeReleaseOrder'])->name('customer.make-release-order');
+    Route::post('/customers/dashboard/release-order/save',[StockReleaseOrderController::class,'ReleaseOrderStore'])->name('customer.store-release-order');
 
-    Route::get('/customer/my-repuests',[StockReleaseRequestController::class,'MyRequests'])->name('customer.show.my-requests');
+    Route::get('/customers/dashboard/my-release-orders',[StockReleaseOrderController::class,'MyOrders'])->name('customer.show.my-requests');
 
-    Route::get('/customer/edit-release-request/{id}',[StockReleaseRequestController::class,'EditReleaseRequest'])->name('customer.edit-release-request');
-    Route::put('/customer/updte-release-request/{id}',[StockReleaseRequestController::class,'UpdateReleaseRequest'])->name('customer.update.release.repuest');
+    Route::get('/customers/dashboard/release-order/edit/{id}',[StockReleaseOrderController::class,'EditReleaseOrder'])->name('customer.edit-release-order');
+    Route::put('/customers/dashboard/release-order/update/{id}',[StockReleaseOrderController::class,'UpdateReleaseOrder'])->name('customer.update-release-order');
 
-    Route::delete('/customer/delete-release-request/{id}', [StockReleaseRequestController::class, 'destroyReleaseRequest'])->name('customer.destroy.release.repuest');
+    Route::delete('/customers/dashboard/release-order/delete/{id}', [StockReleaseOrderController::class, 'destroyReleaseRequest'])->name('customer.destroy-release-order');
 
 });

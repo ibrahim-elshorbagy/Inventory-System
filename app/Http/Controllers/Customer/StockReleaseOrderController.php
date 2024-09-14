@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\ReleaseRequest\StoreStockReleaseRequestValidation;
 use App\Http\Requests\Customer\ReleaseRequest\UpdateStockReleaseRequestValidation;
-use App\Http\Resources\Customer\MyRequestsResource;
+use App\Http\Resources\Customer\CustomerProductsResource;
+use App\Http\Resources\Customer\MyOrdersResource;
 use App\Http\Resources\Customer\StockReleaseOrderResource;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\Warehouse\CustomerStockResource;
 use App\Models\Warehouse\Stock;
@@ -18,13 +18,13 @@ use App\Models\User;
 use App\Notifications\PlaceOrderNotification;
 use Illuminate\Support\Facades\Notification;
 
-class StockReleaseRequestController extends Controller
+class StockReleaseOrderController extends Controller
 {
 
 
     /*
-    for the customer to make a request updated and delete
-    request consist of tow tables
+    for the customer to make a release order updated and delete
+    release order consist of tow tables
     one stock_release_orders table and other one request table
     order table consist of    {customer_id ,description,status}
     second stock_release_requests : data about the products and quantity and order_id
@@ -33,7 +33,7 @@ class StockReleaseRequestController extends Controller
 
     //To make release request
 
-    public function MakeReleaseRequest(){
+    public function MakeReleaseOrder(){
         $user = Auth::user();
 
 
@@ -41,25 +41,24 @@ class StockReleaseRequestController extends Controller
             ->where('user_id', $user->id)
             ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
             ->with([
-                'product:id,name,unit',
+                'product:id,name,image_url',
                 'warehouse:id,name',
             ]);
 
         $products = $query->orderBy('created_at', 'desc')
             ->get();
 
-        return inertia('Customer/MyProductReport/MakeReleaseRequest', [
-            'products' => CustomerStockResource::collection($products),
+        return inertia('Customer/MyProductReport/MakeReleaseOrder', [
+            'products' => CustomerProductsResource::collection($products),
 
         ]);
 
     }
 
     //To store release request
-    public function MakeReleaseRequestStore(StoreStockReleaseRequestValidation $request)
+    public function ReleaseOrderStore(StoreStockReleaseRequestValidation $request)
     {
         $validated = $request->validated();
-
         $user = Auth::user();
 
         // Create the StockReleaseOrder
@@ -95,7 +94,7 @@ class StockReleaseRequestController extends Controller
 
     //To show All Customer requests
 
-    public function MyRequests(){
+    public function MyOrders(){
         $user = Auth::user();
         $query = StockReleaseOrder::query()
             ->where('customer_id', $user->id);
@@ -107,8 +106,8 @@ class StockReleaseRequestController extends Controller
             ->paginate(10)
             ->onEachSide(1);
 
-        return inertia("Customer/MyProductReport/MyRequests", [
-            "requests" => MyRequestsResource::collection($requests),
+        return inertia("Customer/MyProductReport/MyOrders", [
+            "requests" => MyOrdersResource::collection($requests),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
             'danger' => session('danger'),
@@ -116,7 +115,7 @@ class StockReleaseRequestController extends Controller
 
     }
 
-    public function EditReleaseRequest($id){
+    public function EditReleaseOrder($id){
     $user = Auth::user();
 
         // Fetch the specific StockReleaseOrder with its requests
@@ -129,24 +128,24 @@ class StockReleaseRequestController extends Controller
         $productsInStock = Stock::where('user_id', $user->id)
             ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
             ->with([
-                'product:id,name,unit',
+                'product:id,name,image_url',
                 'warehouse:id,name',
             ])
             ->get();
 
         // Transform the data using Resource if needed
-        $orderResource = new StockReleaseOrderResource($order);//as you here editing order that order has requests
-        $productsResource = CustomerStockResource::collection($productsInStock);
+        $orderResource = new StockReleaseOrderResource($order); //as you here editing order that order has requests
+        $productsResource = CustomerProductsResource::collection($productsInStock);
 
         // dd($orderResource,$productsResource);
-        return inertia('Customer/MyProductReport/EditReleaseRequest', [
+        return inertia('Customer/MyProductReport/EditReleaseOrder', [
             'order' => $orderResource,
             'products' => $productsResource,
         ]);
 
     }
 
-    public function UpdateReleaseRequest(UpdateStockReleaseRequestValidation $request, $id)
+    public function UpdateReleaseOrder(UpdateStockReleaseRequestValidation $request, $id)
     {
         $validated = $request->validated();
 

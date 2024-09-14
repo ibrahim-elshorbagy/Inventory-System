@@ -22,7 +22,9 @@ class StockReleaseRequestResource extends JsonResource
             'stock_id' => $this->stock_id,
             'quantity' => $this->quantity,
             'product_name' => $this->whenLoaded('stock', fn() => $this->stock->product->name),
+            'product_image' => $this->whenLoaded('stock', fn() => $this->stock->product->image_url),
             'max_quantity' => $this->whenLoaded('stock', fn() => $this->stock->quantity),
+            ''
 
         ];
     }

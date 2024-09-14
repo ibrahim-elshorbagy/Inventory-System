@@ -84,7 +84,7 @@ export default function Index({ auth, products, queryParams = null, success }) {
           </h2>
           <div className="flex gap-3">
             <Link
-              href={route("customer.make-release-request")}
+              href={route("customer.make-release-order")}
               className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
             >
               {t("Order Products Release")}

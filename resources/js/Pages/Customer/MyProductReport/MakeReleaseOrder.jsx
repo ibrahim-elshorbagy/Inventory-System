@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ChevronsUpDown, Trash } from "lucide-react";
+import {ChevronsUpDown, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -51,9 +51,9 @@ const resources = {
       "Description": "بيان",
       "Max Quantity": "الكميه الكاملة",
       "Quantity to Release": "الكميه المطلوبه",
-      "Select Product": "اختر المنتج",
+        "Select Product": "اختر المنتج",
           "No product found": "لا يوجد منتجات",
-          "Edit Release Request": "تعديل طلب الاعادة",
+          "Delivery Address": "عنوان التسليم",
           "No products selected": "لم يتم تحديد المنتجات",
             "Orders": "الطلبات",
     },
@@ -63,51 +63,46 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function EditReleaseRequest({ auth, products = { data: [] }, order }) {
+export default function MakeReleaseOrder({ auth, products = { data: [] } }) {
   const { t } = useTranslation();
 
-  // Form + submit
+
+    // Form + submit
   const { data, setData, post, errors } = useForm({
-      description: order?.description || "",
-      delivery_address: order?.delivery_address || "",
-
-    product_quantities: order?.requests?.map(request => ({
-      stock_id: request.stock_id,
-        quantity: request.quantity,
-        product_name: request.product_name,
-        max_quantity: request.max_quantity,
-
-    })) || [],
-    _method: "PUT",
+    warehouse_id: "",
+    product_quantities: [],
+    description: "",
   });
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    post(route("customer.update.release.repuest", order.id), {
-      preserveScroll: true,
-    });
-  };
+const onSubmit = (e) => {
 
-  const [productSelections, setProductSelections] = useState(data.product_quantities);
-  const [availableProducts, setAvailableProducts] = useState(
-    products.data.filter(product => !productSelections.some(ps => ps.stock_id === product.id))
-  );
+        e.preventDefault();
+        post(route("customer.store-release-order"), {
+        preserveScroll: true,
+        });
+};
 
-  useEffect(() => {
-    setData("product_quantities", productSelections);
-  }, [productSelections]);
+  //----------------------------------------
+
+  const [productSelections, setProductSelections] = useState([]);
+  const [availableProducts, setAvailableProducts] = useState(products.data);
+
+    useEffect(() => {
+        setData("product_quantities", productSelections);
+    }, [productSelections]);
 
   const handleProductSelect = (product) => {
     setProductSelections([
       ...productSelections,
       {
-        stock_id: product.id,
+        stock_id: product.id, // this is right product.id is the coming from products from database and this represent stocks so he is  stock_id
         quantity: "",
         product_name: product.product_name,
         max_quantity: product.quantity,
+        product_image: product.product_image,
       },
     ]);
-    setAvailableProducts(availableProducts.filter((p) => p.id !== product.id));
+    setAvailableProducts(availableProducts.filter((p) => p.id !== product.id)); //products on search box
   };
 
   const handleProductChange = (index, field, value) => {
@@ -116,6 +111,7 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
     setProductSelections(newSelections);
   };
 
+
   const handleDeleteProduct = (index, e) => {
     e.preventDefault();
     const deletedProduct = productSelections[index];
@@ -123,9 +119,12 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
     setAvailableProducts([...availableProducts, {
       id: deletedProduct.stock_id,
       product_name: deletedProduct.product_name,
-      quantity: deletedProduct.max_quantity
+        quantity: deletedProduct.max_quantity,
+      product_image: deletedProduct.product_image,
+
     }]);
   };
+
 
   return (
     <AuthenticatedLayout
@@ -133,7 +132,7 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            {t("Edit Release Request")}
+            {t("Make Release Request")}
           </h2>
         </div>
       }
@@ -159,7 +158,8 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
                   />
                   <InputError message={errors.description} className="mt-2" />
                               </div>
-                                                  <div>
+
+                    <div>
                   <InputLabel htmlFor={`delivery_address`} value={t("Delivery Address")} />
                   <TextAreaInput
                     id={`delivery_address`}
@@ -191,8 +191,8 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
                 <div
                   key={index}
                   className="grid items-center justify-center grid-cols-8 gap-4 m-4 mb-4 text-center sm:gap-6 sm:mb-6"
-                  >
-                  <div className="grid items-center w-full grid-cols-1 col-span-4">
+                >
+                  <div className="grid items-center w-full grid-cols-1 col-span-4 ">
                     <div className="flex items-center justify-center gap-2">
                       <div className="w-full">
                         <InputLabel value={product.product_name} />
@@ -210,16 +210,17 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
                   </div>
 
                   <div className="grid items-center w-full grid-cols-1 col-span-4">
-                    <div className="flex items-center justify-center gap-2">
+                    <div className="flex items-center justify-center gap-10">
                       <InputLabel value={t("Quantity to Release")} />
                       <TextInput
                         type="number"
                         value={product.quantity}
-                        className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
+                        className="block w-1/4 mt-1 dark:bg-gray-700 dark:text-gray-200"
                         onChange={(e) =>
                           handleProductChange(index, "quantity", e.target.value)
                         }
-                      />
+                              />
+                        <img className="object-cover w-32 rounded-md" src={product.product_image} alt={product.product_name}  />
                       <Button
                         type="button"
                         variant="outline"
@@ -239,16 +240,14 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
 
               <div className="flex gap-2 mt-4 text-right">
                 <Link
-                  href={route("customer.show.my-requests")}
+                  href={route("for-Acustomer-my-products-report")}
                   className="px-3 py-1 mr-2 text-gray-800 transition-all bg-gray-100 rounded shadow hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                 >
                   {t("Cancel")}
                 </Link>
                 <button className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover">
                   {t("Submit")}
-                              </button>
-                  <InputError message={errors.status} className="mt-2" />
-
+                </button>
               </div>
             </form>
           </div>
@@ -259,53 +258,57 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
 }
 
 function ComboboxDemo({ availableProducts, onProductSelect }) {
+
   const { t } = useTranslation();
+
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
+
         <Button
           variant="outline"
-          role="combobox"
+            role="combobox"
           aria-expanded={open}
           className="w-[300px] justify-between dark:bg-gray-700 dark:text-gray-200"
         >
-          {t("Select Product")}
+            {t("Select Product")}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>
-      </PopoverTrigger>
+          </PopoverTrigger>
 
       <PopoverContent className="w-[300px] p-0 dark:bg-gray-800 dark:border-gray-600">
         <Command>
           <CommandInput
             placeholder="Search product..."
-            className="dark:text-gray-200"
+            className=" dark:text-gray-200"
           />
           <CommandList className="dark:bg-gray-800">
             <CommandEmpty className="text-center dark:text-gray-400">
-              {t("No product found")}
+              {t('No product found')}
             </CommandEmpty>
             <CommandGroup className="dark:bg-gray-800">
-              {availableProducts.map((product) => (
-                <CommandItem
-                  key={product.id}
-                  value={product.id}
-                  onSelect={() => {
-                    setValue(product.id);
-                    onProductSelect(product);
-                    setOpen(false);
-                  }}
-                  className="dark:hover:bg-gray-700 dark:text-gray-200"
-                >
-                  {product.product_name}
-                </CommandItem>
-              ))}
+                {availableProducts.map((product) => (
+                    <CommandItem
+                    key={product.id}
+                    value={product.id}
+                    onSelect={() => {
+                        setValue(product.id);
+                        onProductSelect(product);
+                        setOpen(false);
+                    }}
+                    className="dark:hover:bg-gray-700 dark:text-gray-200"
+                    >
+                    {product.product_name}
+                    </CommandItem>
+                ))}
             </CommandGroup>
           </CommandList>
         </Command>
-      </PopoverContent>
+          </PopoverContent>
+
     </Popover>
   );
 }

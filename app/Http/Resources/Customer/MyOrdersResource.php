@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 
-class MyRequestsResource extends JsonResource
+class MyOrdersResource extends JsonResource
 {
         public static $wrap = false;
 
