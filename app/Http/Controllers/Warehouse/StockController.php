@@ -295,6 +295,7 @@ class StockController extends Controller
 
         $data = $request->validate([
             'status' => ['required', 'in:pending,approved,rejected'],
+            "description" => ['nullable', 'string'],
         ]);
 
         if ($order->status === 'approved') {
@@ -302,7 +303,7 @@ class StockController extends Controller
         }
 
         $newStatus = $request->status;
-        $order->update(['status' => $newStatus]);
+        $order->update(['status' => $newStatus, 'description' => $data['description']]);
 
         if ($newStatus === 'approved') {
             foreach ($order->products as $product) {

@@ -32,6 +32,8 @@ const resources = {
             "Pending and approved orders": "الطلبات المعلقة والموافقة عليها",
             "Total number of delivered orders": "عدد الطلبات المسلمة",
             "Total number of customers": "عدد العملاء",
+            "Orders": "الطلبات",
+
         },
     },
 };

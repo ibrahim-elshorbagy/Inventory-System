@@ -7,6 +7,7 @@ import React from "react";
 import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
 import { useState } from 'react';
+import TextAreaInput from "@/Components/TextAreaInput";
 
 
 
@@ -41,7 +42,8 @@ const resources = {
             "Approved": "موافقة",
             "Rejected": "مرفوضة",
             "Pending": "قيد الانتظار",
-            "You Can't Undo This Action. Are You Sure?":"لا يمكن التراجع عن هذا الإجراء. هل أنت متاكد؟",
+            "You Can't Undo This Action. Are You Sure?": "لا يمكن التراجع عن هذا الإجراء. هل أنت متاكد؟",
+            "Order Description":"بيان"
 
 
         },
@@ -56,6 +58,7 @@ export default function Index({ auth, products,order }) {
 
     const { data, setData, post } = useForm({
         status: order.status,
+        description:order.description,
     });
 
     const [status,setStatus]= useState(order.status);
@@ -100,35 +103,50 @@ export default function Index({ auth, products,order }) {
                         <p>{t("Customer Name")}: {products.data[0].user.name}</p>
                         <p>{t("Customer Email")}: {products.data[0].user.email}</p>
                         <p>{t("Customer Phone")}: {products.data[0].user.phone}</p>
+                        <br/>
+                        <p>{t("Order Description")}:</p>
+                        <p>{data.description}</p>
 
                     {/* Status Change Form */}
                     <form onSubmit={onSubmit} className="grid grid-cols-6 gap-6">
-                    <div>
-                        <div className="mt-4">
-                            <InputLabel htmlFor="status" value={t("Status")} />
+                            <div className="grid grid-cols-2 col-span-2">
+                                    <div className="col-span-1 mt-4">
+                                        <InputLabel htmlFor="status" value={t("Status")} />
 
-                            <SelectInput
-                                name="status"
-                                id="status"
-                                className="block w-full mt-1"
-                                value={data.status}
-                                onChange={handleStatusChange}
-                                disabled={!auth.user.permissions.includes("ChangeStatus-stock-order") || status === "approved"}
+                                        <SelectInput
+                                            name="status"
+                                            id="status"
+                                            className="block w-full mt-1"
+                                            value={data.status}
+                                            onChange={handleStatusChange}
+                                            disabled={!auth.user.permissions.includes("ChangeStatus-stock-order") || status === "approved"}
 
-                            >
-                                <option value="pending">{t("Pending")}</option>
-                                <option value="approved">{t("Approved")}</option>
-                                <option value="rejected">{t("Rejected")}</option>
-                            </SelectInput>
-                        </div>
-                        {auth.user.permissions.includes("ChangeStatus-stock-order") && status !== "approved" &&(
+                                        >
+                                            <option value="pending">{t("Pending")}</option>
+                                            <option value="approved">{t("Approved")}</option>
+                                            <option value="rejected">{t("Rejected")}</option>
+                                        </SelectInput>
+                                    </div>
+                        {auth.user.permissions.includes("ChangeStatus-stock-order") && status !== "approved" && (
+                                < div className="col-span-2">
+                                    <div>
+                                    <InputLabel htmlFor={`description`} value={t("Description")} />
+                                    <TextAreaInput
+                                        id={`description`}
+                                        name="description"
+                                        value={data.description}
+                                        className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
+                                        onChange={(e) => setData("description", e.target.value)}
+                                    />
+                                            </div>
 
-                        <div className="mt-4">
-                            <button type="submit" className="px-4 py-2 text-white rounded bg-burntOrange">
-                                {t("Update Status")}
-                            </button>
-                        </div>
-                        )}
+                                    <div className="mt-4">
+                                        <button type="submit" className="px-4 py-2 text-white rounded bg-burntOrange">
+                                            {t("Update Status")}
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
 
                     </form>
