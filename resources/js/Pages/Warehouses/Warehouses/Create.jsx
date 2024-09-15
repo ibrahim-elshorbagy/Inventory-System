@@ -92,7 +92,7 @@ export default function Create({ auth, user }) {
                         id="is_active"
                         className="block w-full mt-1"
                         value={data.is_active}
-                        onChange={(e) => setData("is_active", e.target.value === "true") }  // Convert string to boolean
+                        onChange={(e) => setData("is_active", e.target.value === "true") }
                     >
                         <option value="">{t("Select Status")}</option>
                         <option value="true" key="1">{t('Active')}</option>

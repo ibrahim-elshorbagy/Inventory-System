@@ -24,6 +24,7 @@ class OrdersResource extends JsonResource
             'customer_name' => $this->whenLoaded('customer', fn() => $this->customer->user->name),
             'delivery_address' => $this->delivery_address,
             'status' => $this->status,
+            'confirmed'=>$this->confirmed,
 
             // 'is_created_by_admin' => $this->createdBy ? $this->createdBy->hasAnyRole(['admin', 'SystemAdmin']) : false,
             'is_created_by_admin' => $this->createdBy ? $this->createdBy->hasAnyRole(['admin', 'SystemAdmin']) : false,

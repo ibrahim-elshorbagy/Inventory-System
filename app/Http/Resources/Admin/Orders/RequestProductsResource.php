@@ -14,6 +14,11 @@ class RequestProductsResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+
+
+
+     // get info from table stock_release_requests
+
     public function toArray(Request $request): array
     {
         return [
@@ -22,8 +27,18 @@ class RequestProductsResource extends JsonResource
             'stock_release_order_id' => $this->stock_release_order_id,
             'stock_id' => $this->stock_id,
             'quantity' => $this->quantity,
+            
+
             'product_name' => $this->whenLoaded('stock', fn() => $this->stock->product->name),
+            'product_image' => $this->whenLoaded('stock', fn() => $this->stock->product->image_url),
+
             'max_quantity' => $this->whenLoaded('stock', fn() => $this->stock->quantity),
+
+            'warehouse_name' => $this->whenLoaded('stock', fn() => $this->stock->warehouse->name),
+
+
+            'product_category' => $this->whenLoaded('stock', fn() => $this->stock->product->category->name),
+            'product_subcategory' => $this->whenLoaded('stock', fn() => $this->stock->product->subCategory->name),
 
         ];
     }

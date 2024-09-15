@@ -2,27 +2,32 @@
 
 use App\Http\Controllers\Admin\Orders\OrdersController;
 use App\Http\Controllers\Admin\Orders\OrdersCRUDController;
-use App\Http\Controllers\Admin\Orders\OrdersDashboardController;
+use App\Http\Controllers\Admin\Orders\ReleaseOrdersDashboardController;
 use App\Http\Controllers\Admin\RolesPermissionsController;
 use Illuminate\Support\Facades\Route;
 
 
 
 
-//--------------------------------------------------------------------------------------------- Requests Dashboard
+//--------------------------------------------------------------------------------------------- Release Order Dashboard
 
 Route::group(['middleware' => ['permission:admin-orders-index']], function () {
 
-    Route::get('/admin/orders',[OrdersDashboardController::class,'index'])->name('admin.index.orders');
-    Route::get('/admin/orders/{order}',[OrdersDashboardController::class,'show'])->name('admin.show.order');
+    Route::get('/admin/release-orders',[ReleaseOrdersDashboardController::class,'index'])->name('admin.index.orders');
+    Route::get('/admin/release-orders/{order}',[ReleaseOrdersDashboardController::class,'show'])->name('admin.show.order');
 
 });
+
+//--------------------------------------------------------------------------------------------- Change Status Data Entry +  Confirmation for Admin only
 
 Route::group(['middleware' => ['permission:admin-orders-change-status']], function () {
 
     Route::post('/admin/orders/change-status/{order}',[OrdersController::class,'ChangeStatus'])->name('admin.orders.changeStatus');
 
 });
+
+
+//--------------------------------------------------------------------------------------------- Release Order Admin CRUD Methods
 
 Route::group(['middleware' => ['permission:admin-orders-make']], function () {
 

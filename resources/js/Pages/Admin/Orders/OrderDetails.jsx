@@ -50,6 +50,13 @@ const resources = {
             "Max Quantity": "الكمية الكاملة",
             "Orderd Quantity": "الكمية المطلوبة",
             "Delivery Address": "عنوان التسليم",
+            "Category": "الصنف",
+            "Subcategory": "الصنف الفرعي",
+            "Image": "الصورة",
+            "Admin Confirmation": "تأكيد الادارة",
+            "You Can't Undo This Action. Are You Sure?":"لا يمكن التراجع عن هذا الإجراء. هل أنت متاكد؟",
+
+
 
         },
     },
@@ -63,19 +70,29 @@ export default function Index({ auth, order, error,success }) {
 
 
     const { data, setData, post } = useForm({
+
         status: order.status,
+        confirmed: order.confirmed,
     });
 
-    const handleStatusChange = (e) => {
-        setData("status", e.target.value);
-    };
 
     const onSubmit = (e) => {
+        console.log(data.status === "delivered")
+        console.log(data.confirmed === "approved")
+        if (data.status === "delivered" && data.confirmed === "approved") {
+            const confirmationMessage = t("You Can't Undo This Action. Are You Sure?");
+            
+            if (!window.confirm(confirmationMessage)) {
+            return;
+
+        }
+        }
+
         e.preventDefault();
         post(route("admin.orders.changeStatus", order.id));
     };
 
-
+    const [confirmed,setConfirmed]= useState(order.confirmed);
 
     return (
         <AuthenticatedLayout
@@ -111,33 +128,55 @@ export default function Index({ auth, order, error,success }) {
                                 </section>
 
                                 {/* Status Change Form */}
-                                <form onSubmit={onSubmit} className="grid grid-cols-6 gap-6">
-                                <div>
-                                    <div className="mt-4">
-                                        <InputLabel htmlFor="status" value={t("Status")} />
+                                <form onSubmit={onSubmit} >
+                                    <div className="grid grid-cols-8 gap-6">
 
-                                        <SelectInput
-                                            name="status"
-                                            id="status"
-                                            className="block w-full mt-1"
-                                            value={data.status}
-                                            onChange={handleStatusChange}
-                                        >
-                                            <option value="pending">{t("Pending")}</option>
-                                            <option value="approved">{t("Approved")}</option>
-                                            <option value="rejected">{t("Rejected")}</option>
-                                            <option value="delivered">{t("Delivered")}</option>
-                                        </SelectInput>
+                                        <div className="col-span-1 mt-4">
+                                            <InputLabel htmlFor="status" value={t("Status")} />
+
+                                            <SelectInput
+                                                name="status"
+                                                id="status"
+                                                className="block w-full mt-1"
+                                                value={data.status}
+                                                onChange={(e) => setData("status", e.target.value)}
+                                                disabled={confirmed == "approved"}
+
+                                            >
+                                                <option value="pending">{t("Pending")}</option>
+                                                <option value="approved">{t("Approved")}</option>
+                                                <option value="rejected">{t("Rejected")}</option>
+                                                <option value="delivered">{t("Delivered")}</option>
+                                            </SelectInput>
+                                        </div>
+                                        <div className="col-span-1 mt-4">
+                                            <InputLabel htmlFor="confirmed" value={t("Admin Confirmation")} />
+                                            <SelectInput
+                                                name="status"
+                                                id="status"
+                                                className="block w-full mt-1"
+                                                value={data.confirmed}
+                                                onChange={(e) => setData("confirmed", e.target.value)}
+                                                disabled={!auth.user.permissions.includes("release-order-confirme") || confirmed == "approved"}
+
+                                            >
+                                                <option value="pending">{t("Pending")}</option>
+                                                <option value="approved">{t("Approved")}</option>
+                                                <option value="rejected">{t("Rejected")}</option>
+                                            </SelectInput>
+                                        </div>
+
                                     </div>
-
+                                    {(confirmed !== "approved") && (
                                     <div className="mt-4">
                                         <button type="submit" className="px-4 py-2 text-white rounded bg-burntOrange">
-                                            {t("Update Status")}
+                                        {t("Update Status")}
                                         </button>
-                                        </div>
                                     </div>
-                                </form>
+                                    )}
 
+
+                                </form>
                                 {/* Orders Table */}
                                 <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                                     <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -146,21 +185,35 @@ export default function Index({ auth, order, error,success }) {
                                             <th className="px-3 py-3">{t("Product Name")}</th>
                                             <th className="px-3 py-3">{t("Orderd Quantity")}</th>
                                             <th className="px-3 py-3">{t("Max Quantity")}</th>
+                                            <th className="px-3 py-3">{t("Category")}</th>
+                                            <th className="px-3 py-3">{t("Subcategory")}</th>
                                             <th className="px-3 py-3">{t("Warehouse")}</th>
+                                            <th className="px-3 py-3 text-center" colSpan="3">{t("Image")}</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {
                                             order.requests.map((request, index) => (
                                                 <tr
-                                                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                    className="text-base bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                                                     key={index}
                                                 >
                                                     <td className="px-3 py-2">{request.id}</td>
                                                     <td className="px-3 py-2 text-nowrap">{request.product_name}</td>
                                                     <td className="px-3 py-2 text-nowrap">{request.quantity}</td>
                                                     <td className="px-3 py-2 text-nowrap">{request.max_quantity}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{order.warehouse_name}</td>
+                                                    <td className="px-3 py-2 text-nowrap">{request.product_category}</td>
+                                                    <td className="px-3 py-2 text-nowrap">{request.product_subcategory}</td>
+                                                    <td className="px-3 py-2 text-nowrap">{request.warehouse_name}</td>
+                                                    <td className="flex justify-center px-3 py-2" colSpan="3">
+                                                        <img
+                                                            src={request.product_image}
+                                                            alt={request.product_name}
+                                                            className="object-cover w-32 rounded-md"
+                                                        />
+                                                    </td>
+
                                                 </tr>
                                             ))
                                         }

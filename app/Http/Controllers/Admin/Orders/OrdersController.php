@@ -7,28 +7,75 @@ use App\Models\Warehouse\Stock;
 use App\Models\Warehouse\StockReleaseOrder;
 use App\Models\Warehouse\StockTransaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class OrdersController extends Controller
 {
+
+
+    // Change order status normal change
+
     public function changeStatus(Request $request, StockReleaseOrder $order)
     {
+
+        $request->validate([
+            'status' => ['required', 'in:pending,approved,rejected,delivered'],
+            'confirmed'=>['in:pending,approved,rejected'],
+        ]);
+
         $newStatus = $request->input('status');
-        $oldStatus = $order->status;
+
         $locale = session('app_locale', 'en');
 
+
+        //can't change if it is confirmed
+        if($order->confirmed === 'approved' ){
+            return to_route('admin.index.orders');
+        }
+
+        // Update the order status
+        $order->status = $newStatus;
+        $order->save();
+
+
+        //change to approved
+        if(Auth::user()->hasPermissionTo('release-order-confirme') && $order->status === "delivered" && $request->input('confirmed') == "approved"  ){
+
+                $this->confirmed($order);
+
+        }
+
+        //change to rejected or pending
+        if(Auth::user()->hasPermissionTo('release-order-confirme') && $order->status !== "delivered" && $request->input('confirmed') !== "approved"  ){
+
+            $order->confirmed = $request->input('confirmed');
+            $order->save();
+
+
+        }
+
+
+        $message = $locale === 'ar'
+            ? "تم تحديث حالة الطلب بنجاح"
+            : "Order status updated successfully";
+        return to_route('admin.index.orders')
+        ->with('success', $message);
+
+
+
+
+    }
+    public function confirmed(StockReleaseOrder $order)
+    {
+        $locale = session('app_locale', 'en');
         DB::beginTransaction();
         try {
-            if ($newStatus === 'delivered' && $oldStatus !== 'delivered') {
-                // Release stock when changing to delivered
-                $this->releaseStock($order);
-            } elseif ($oldStatus === 'delivered' && $newStatus !== 'delivered') {
-                 // Revert stock release when changing from delivered to any other status
-                $this->revertStockRelease($order);
-            }
 
+
+            $this->releaseStock($order);
             // Update the order status
-            $order->status = $newStatus;
+            $order->confirmed = "approved";
             $order->save();
 
             DB::commit();
@@ -54,7 +101,7 @@ class OrdersController extends Controller
 
     private function releaseStock(StockReleaseOrder $order)
     {
-        $stockReleaseRequests = $order->requests; //get all stock requests from the order
+        $stockReleaseRequests = $order->requests; //get all stock Release requests from the order
 
         foreach ($stockReleaseRequests as $request) { //loop through the requests and start to make new transactions
             $stock = Stock::findOrFail($request->stock_id);
@@ -70,24 +117,24 @@ class OrdersController extends Controller
         }
     }
 
-    private function revertStockRelease(StockReleaseOrder $order) //revert the stock add the stock to the customer again
-    {
-        $stockReleaseRequests = $order->requests;
+    // private function revertStockRelease(StockReleaseOrder $order) //revert the stock add the stock to the customer again //Stoped
+    // {
+    //     $stockReleaseRequests = $order->requests;
 
-        // Create an addition transaction to revert the release
-        foreach ($stockReleaseRequests as $request) {
-            $stock = Stock::findOrFail($request->stock_id);
+    //     // Create an addition transaction to revert the release
+    //     foreach ($stockReleaseRequests as $request) {
+    //         $stock = Stock::findOrFail($request->stock_id);
 
-            StockTransaction::create([
-                'stock_id' => $stock->id,
-                'quantity' => $request->quantity,
-                'transaction_type' => 'addition',
-            ]);
+    //         StockTransaction::create([
+    //             'stock_id' => $stock->id,
+    //             'quantity' => $request->quantity,
+    //             'transaction_type' => 'addition',
+    //         ]);
 
-            // Update the stock balance
-            $this->updateStockBalance($stock->id);
-        }
-    }
+    //         // Update the stock balance
+    //         $this->updateStockBalance($stock->id);
+    //     }
+    // }
 
     private function updateStockBalance($stockId)
     {

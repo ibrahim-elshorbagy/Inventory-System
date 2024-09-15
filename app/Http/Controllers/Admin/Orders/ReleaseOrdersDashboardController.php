@@ -8,10 +8,10 @@ use App\Http\Resources\Admin\Orders\OrdereDetialsResource;
 use App\Models\Warehouse\StockReleaseOrder;
 use Illuminate\Http\Request;
 
-class OrdersDashboardController extends Controller
+class ReleaseOrdersDashboardController extends Controller
 {
 
-    //indexing all orders
+    //indexing all Release Orders
     public function index()
     {
         $query = StockReleaseOrder::query()->with('customer.user','createdBy');
@@ -37,14 +37,17 @@ class OrdersDashboardController extends Controller
 
     }
 
-    //showing order details
+    //showing Release Order  details
     public function show(StockReleaseOrder $order)
     {
-       $order->load([
-        'requests.stock.customer.user',
-        'requests.stock.warehouse',
-        'requests.stock.product'
-    ])->paginate(20)->onEachSide(1);;
+
+        $order->load([
+            'requests.stock.customer.user',
+            'requests.stock.warehouse',
+            'requests.stock.product.category',
+            'requests.stock.product.subCategory'
+        ])->paginate(20)->onEachSide(1);
+
 
         return inertia("Admin/Orders/OrderDetails", [
             "order" => OrdereDetialsResource::make($order),

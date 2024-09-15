@@ -15,6 +15,9 @@ class OrdereDetialsResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+
+    // get info from table stock_release_order
+
     public function toArray(Request $request): array
     {
         return [
@@ -25,8 +28,8 @@ class OrdereDetialsResource extends JsonResource
             'status' => $this->status,
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
-
-            // Include requests data
+            'confirmed'=>$this->confirmed,
+            // Include requests data (products)
             'requests' => RequestProductsResource::collection($this->whenLoaded('requests')),
 
             // Get customer and warehouse info from the first request
@@ -41,12 +44,6 @@ class OrdereDetialsResource extends JsonResource
             }),
              'customer_phone' => $this->whenLoaded('requests', function () {
                 return optional($this->requests->first()->stock->customer)->phone;
-            }),
-            'warehouse_id' => $this->whenLoaded('requests', function () {
-                return optional($this->requests->first()->stock->warehouse)->id;
-            }),
-            'warehouse_name' => $this->whenLoaded('requests', function () {
-                return optional($this->requests->first()->stock->warehouse)->name;
             }),
         ];
 

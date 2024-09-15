@@ -38,6 +38,8 @@ const resources = {
             "Rejected": "مرفوضة",
             "Pending": "قيد الانتظار",
             "Details": "تفاصيل",
+            "New Add Order": "طلب أضافة جديد",
+
         },
     },
 };

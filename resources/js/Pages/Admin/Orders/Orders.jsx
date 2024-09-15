@@ -39,6 +39,8 @@ import TableHeading from "@/Components/TableHeading";
             "Details": "تفاصيل",
             "Delivery Address": "عنوان التسليم",
             "Customer Name": "اسم العميل",
+            "Admin Confirmation": "تأكيد الادارة",
+
         },
     },
 };
@@ -174,6 +176,7 @@ const deleteorder = (order) => {
                                               {t("Update Date")}
                                           </TableHeading>
                         <th className="text-center">{t("Status")}</th>
+                        <th className="text-center">{t("Admin Confirmation")}</th>
 
                         <th className="px-3 py-3">{t("Actions")}</th>
 
@@ -195,6 +198,7 @@ const deleteorder = (order) => {
                           onKeyPress={(e) => onKeyPress("customer_name", e)}
                         />
                       </th>
+                      <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
@@ -230,6 +234,22 @@ const deleteorder = (order) => {
                                             order.status === 'rejected' ? t('Rejected') :
                                             order.status === 'approved' ? t('Approved') :
                                             order.status === 'delivered' ? t('Delivered') :
+                                            t('Unknown')}
+                                        </span>
+                                    </th>
+                                    <th className="px-3 py-2 text-center text-nowrap">
+                                        <span
+                                            className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
+                                                order.confirmed === 'pending' ? 'bg-yellow-500 text-black' :
+                                                order.confirmed === 'rejected' ? 'bg-red-500 text-white' :
+                                                order.confirmed === 'approved' ? 'bg-green-500 text-white' :
+                                                'bg-gray-500 text-white'
+                                            }`}
+                                        >
+                                            {
+                                            order.confirmed === 'pending' ? t('Pending') :
+                                            order.confirmed === 'rejected' ? t('Rejected') :
+                                            order.confirmed === 'approved' ? t('Approved') :
                                             t('Unknown')}
                                         </span>
                                     </th>

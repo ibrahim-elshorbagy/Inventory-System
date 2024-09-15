@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-//--------------------------------------------------------------------------------------------- warehouses
+//--------------------------------------------------------------------------------------------- warehouses CRUD
 
 Route::group(['middleware' => ['permission:create-warehouse']], function () {
     Route::get('/warehouse/create', [WarehouseController::class, 'create'])->name('warehouse.create');
@@ -27,7 +27,7 @@ Route::group(['middleware' => ['permission:delete-warehouse']], function () {
     Route::delete('/warehouse/{warehouse}', [WarehouseController::class, 'destroy'])->name('warehouse.destroy');
 });
 
-//--------------------------------------------------------------------------------------------- stock
+//--------------------------------------------------------------------------------------------- stock // addition-order the route called stock. But Relase order called order
 
 Route::group(['middleware' => ['permission:add-stock-order']], function () {                 // make product order for admin / data entry
     Route::get('/stock/addition-order/add/{customer}', [StockController::class, 'addPage'])->name('stock.add.page');

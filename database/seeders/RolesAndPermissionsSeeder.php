@@ -48,7 +48,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'for-Acustomer-my-products-report',
             'for-Acustomer-make-release-repuest',
 
-            //admin
+            //admin or data entry  for addition-orders
             "add-stock-order",
             "all-stock-orders",
             "show-stock-order",
@@ -56,6 +56,8 @@ class RolesAndPermissionsSeeder extends Seeder
             "edit-stock-order",
             "delete-stock-order",
 
+            // Roles for release-orders
+            "release-order-confirme",
             'admin-orders-index',
             'admin-orders-change-status',
             'admin-orders-make',
@@ -129,6 +131,8 @@ class RolesAndPermissionsSeeder extends Seeder
             "edit-stock-order",
             "delete-stock-order",
 
+            "release-order-confirme",
+            
             'admin-orders-index',
             'admin-orders-change-status',
             'admin-orders-make',
