@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Admin\Orders;
+namespace App\Http\Resources\Admin\ReleaseOrder;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -26,8 +26,7 @@ class OrdersResource extends JsonResource
             'status' => $this->status,
             'confirmed'=>$this->confirmed,
 
-            // 'is_created_by_admin' => $this->createdBy ? $this->createdBy->hasAnyRole(['admin', 'SystemAdmin']) : false,
-            'is_created_by_admin' => $this->createdBy ? $this->createdBy->hasAnyRole(['admin', 'SystemAdmin']) : false,
+            'created_by_user' => $this->created_by_user,
 
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),

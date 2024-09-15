@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Admin\Orders;
+namespace App\Http\Resources\Admin\ReleaseOrder;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,7 +27,7 @@ class RequestProductsResource extends JsonResource
             'stock_release_order_id' => $this->stock_release_order_id,
             'stock_id' => $this->stock_id,
             'quantity' => $this->quantity,
-            
+
 
             'product_name' => $this->whenLoaded('stock', fn() => $this->stock->product->name),
             'product_image' => $this->whenLoaded('stock', fn() => $this->stock->product->image_url),

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('customer_id')->references('user_id')->on('customers')->onDelete('cascade');
-            $table->foreignId('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->boolean('created_by_user');
 
             $table->text('description')->nullable();
             $table->text('delivery_address')->nullable();

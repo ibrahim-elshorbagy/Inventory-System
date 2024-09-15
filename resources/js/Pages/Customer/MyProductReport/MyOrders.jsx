@@ -218,8 +218,7 @@ export default function Index({ auth, requests, queryParams = null, success,dang
 
                                     </th>
                                     <td>
-
-                                        {auth.user.permissions.includes("for-Acustomer-make-release-repuest") && (
+                                        {auth.user.permissions.includes("for-Acustomer-make-release-repuest") && !(request.confirmed === 'approved') && (
 
                                         <div className="flex gap-3">
                                                 <Link

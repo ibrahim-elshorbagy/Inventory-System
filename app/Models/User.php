@@ -59,10 +59,6 @@ class User extends Authenticatable
     {
         parent::boot();
 
-        // Listen for the deleting event
-        static::deleting(function ($user) {
-            StockReleaseOrder::where('created_by', $user->id)->update(['created_by' => 1]);
-        });
     }
 
 

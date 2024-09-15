@@ -41,7 +41,8 @@ import {
                 "Orders": "الطلبات",
                 "Add Order": "اضافة طلب",
                 "Add Products Order": "اضافة منتجات",
-                "Additions Orders": "طلبات الاضافة ",
+            "Additions Orders": "طلبات الاضافة ",
+            "Release Orders": 'طلبات الاسترجاع',
         },
     },
 };
@@ -314,7 +315,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                                         {auth.user.permissions.includes("admin-orders-make") && (
                                             <>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuLabel>{t("Orders")}</DropdownMenuLabel>
+                                                <DropdownMenuLabel>{t("Release Orders")}</DropdownMenuLabel>
                                                 <DropdownMenuSeparator />
                                             </>
                                         )}

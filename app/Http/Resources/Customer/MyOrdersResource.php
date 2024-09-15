@@ -22,6 +22,7 @@ class MyOrdersResource extends JsonResource
             'description' => $this->description,
             'delivery_address'=> $this->delivery_address,
             'status' => $this->status,
+            'confirmed' => $this->confirmed,
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
 

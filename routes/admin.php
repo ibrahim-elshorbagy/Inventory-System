@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\Orders\OrdersController;
-use App\Http\Controllers\Admin\Orders\OrdersCRUDController;
-use App\Http\Controllers\Admin\Orders\ReleaseOrdersDashboardController;
+use App\Http\Controllers\Admin\ReleaseOrder\OrdersController;
+use App\Http\Controllers\Admin\ReleaseOrder\OrdersCRUDController;
+use App\Http\Controllers\Admin\ReleaseOrder\ReleaseOrdersDashboardController;
 use App\Http\Controllers\Admin\RolesPermissionsController;
 use Illuminate\Support\Facades\Route;
 

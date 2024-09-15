@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Orders;
+namespace App\Http\Controllers\Admin\ReleaseOrder;
 
 use App\Http\Controllers\Controller;
 use App\Models\Warehouse\Stock;
@@ -13,7 +13,12 @@ use Illuminate\Support\Facades\DB;
 class OrdersController extends Controller
 {
 
-
+    /**
+     * FULL approval system + change Status System
+     * change balance stock when release when only order confirmed
+     * old revert code stoped
+     *
+     */
     // Change order status normal change
 
     public function changeStatus(Request $request, StockReleaseOrder $order)

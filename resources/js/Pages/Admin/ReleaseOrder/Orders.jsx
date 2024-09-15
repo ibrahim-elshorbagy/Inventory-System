@@ -268,7 +268,7 @@ const deleteorder = (order) => {
                                             </div>)
                                             }
 
-                                    {auth.user.permissions.includes("admin-orders-index") && order.is_created_by_admin && (
+                                    {auth.user.permissions.includes("admin-orders-index") && !order.created_by_user && !(order.confirmed === 'approved') && (
                                         <div className="flex gap-3">
                                             <Link
                                                 href={route("admin.edit-order", { orderId: order.id, customerId: order.customer_id })}
@@ -279,7 +279,7 @@ const deleteorder = (order) => {
                                         </div>
                                     )}
 
-                                    {auth.user.permissions.includes("admin-orders-delete") && order.is_created_by_admin && (
+                                    {auth.user.permissions.includes("admin-orders-delete") && !order.created_by_user && !(order.confirmed === 'approved') && (
                                         <button
                                             onClick={(e) => deleteorder(order)}
                                             className="mx-1 font-medium text-red-600 dark:text-red-500 hover:underline"

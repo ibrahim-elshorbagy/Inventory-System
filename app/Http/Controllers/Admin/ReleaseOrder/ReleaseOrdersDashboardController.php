@@ -1,20 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Orders;
+namespace App\Http\Controllers\Admin\ReleaseOrder;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\Orders\OrdersResource;
-use App\Http\Resources\Admin\Orders\OrdereDetialsResource;
+use App\Http\Resources\Admin\ReleaseOrder\OrdersResource;
+use App\Http\Resources\Admin\ReleaseOrder\OrdereDetialsResource;
 use App\Models\Warehouse\StockReleaseOrder;
 use Illuminate\Http\Request;
 
 class ReleaseOrdersDashboardController extends Controller
 {
 
+
+    /**
+     * indexing all Release Orders
+     * Show Order Detials
+     */
+
+
+
     //indexing all Release Orders
     public function index()
     {
-        $query = StockReleaseOrder::query()->with('customer.user','createdBy');
+        $query = StockReleaseOrder::query()->with('customer.user');
 
         if (request("customer_name")) {
             $query->whereHas('customer.user', function($q) {
@@ -28,7 +36,7 @@ class ReleaseOrdersDashboardController extends Controller
             ->paginate(10)
             ->onEachSide(1);
 
-        return inertia("Admin/Orders/Orders", [
+        return inertia("Admin/ReleaseOrder/Orders", [
             "orders" => OrdersResource::collection($orders),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
@@ -49,7 +57,7 @@ class ReleaseOrdersDashboardController extends Controller
         ])->paginate(20)->onEachSide(1);
 
 
-        return inertia("Admin/Orders/OrderDetails", [
+        return inertia("Admin/ReleaseOrder/OrderDetails", [
             "order" => OrdereDetialsResource::make($order),
         ]);
     }

@@ -63,7 +63,7 @@ class StockReleaseOrderController extends Controller
 
         // Create the StockReleaseOrder
         $order = StockReleaseOrder::create([
-            'created_by' => $user->id,
+            'created_by_user' => true,
             'customer_id' => $user->id,
             'description' => $validated['description'] ?? '',
             'delivery_address' => $validated['delivery_address'] ?? '',
@@ -124,6 +124,9 @@ class StockReleaseOrderController extends Controller
             ->where('customer_id', $user->id)
             ->firstOrFail();
 
+        if ($order->confirmed === 'approved') {
+                return redirect()->back()->with('error', 'Cannot edit the completed order');
+            }
         // Fetch the user's other products in stock
         $productsInStock = Stock::where('user_id', $user->id)
             ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
@@ -155,7 +158,9 @@ class StockReleaseOrderController extends Controller
         $order = StockReleaseOrder::where('id', $id)
             ->where('customer_id', $user->id)
             ->firstOrFail();
-
+        if ($order->confirmed === 'approved') {
+                return redirect()->back()->with('error', 'Cannot edit the completed order');
+            }
         // Update the StockReleaseOrder
         $order->update([
             'description' => $validated['description'] ?? '',

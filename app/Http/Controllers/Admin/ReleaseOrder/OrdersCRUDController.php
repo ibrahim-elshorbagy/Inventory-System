@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Orders;
+namespace App\Http\Controllers\Admin\ReleaseOrder;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Warehouse\CustomerStockResource;
@@ -13,17 +13,17 @@ use App\Models\Warehouse\StockReleaseOrder;
 use App\Models\Warehouse\StockReleaseRequest;
 use App\Http\Requests\Customer\ReleaseRequest\StoreStockReleaseRequestValidation;
 use App\Http\Requests\Customer\ReleaseRequest\UpdateStockReleaseRequestValidation;
+use App\Http\Resources\Customer\CustomerProductsResource;
 
 
 class OrdersCRUDController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     *  Full CRUD System for admin to make a release orde
+     *
+     *
      */
-    public function index()
-    {
-        //
-    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,12 +37,12 @@ class OrdersCRUDController extends Controller
             ->where('user_id', $customer->user_id)
             ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
             ->with([
-                'product:id,name,unit',
+                'product:id,name,image_url',
                 'warehouse:id,name',
             ]) ->get();
 
-        return inertia('Admin/Orders/CRUD/Create', [
-            'products' => CustomerStockResource::collection($products),
+        return inertia('Admin/ReleaseOrder/CRUD/Create', [
+            'products' => CustomerProductsResource::collection($products),
             'customer' => $customer,
         ]);
 
@@ -61,7 +61,7 @@ class OrdersCRUDController extends Controller
         // Create the StockReleaseOrder
         $order = StockReleaseOrder::create([
             'customer_id' => $request->customer_id,
-            'created_by' => $user->id,
+            'created_by_user' => false,
             'description' => $validated['description'] ?? '',
             'delivery_address' => $validated['delivery_address'] ?? '',
         ]);
@@ -105,21 +105,36 @@ class OrdersCRUDController extends Controller
                 ->where('customer_id', $customerId)
                 ->firstOrFail();
 
+            if ($order->created_by_user ) {
+                return redirect()->back()->with('error', 'You do not have permission to edit this order.');
+            }
+
+            $locale = session('app_locale', 'en');
+
+            if ($order->confirmed === 'approved') {
+                $message = $locale === 'ar'
+                    ? "لا يمكن تعديل الطلب المكتمل."
+                    : "Cannot edit the completed order.";
+
+                return to_route('admin.index.orders')
+                    ->with('danger', $message);
+            }
+
             // Fetch the user's other products in stock
             $productsInStock = Stock::where('user_id', $customerId)
                 ->select('id', 'user_id', 'warehouse_id', 'product_id', 'quantity')
                 ->with([
-                    'product:id,name,unit',
+                    'product:id,name,image_url',
                     'warehouse:id,name',
                 ])
                 ->get();
 
             // Transform the data using Resource if needed
             $orderResource = new StockReleaseOrderResource($order);//as you here editing order that order has requests
-            $productsResource = CustomerStockResource::collection($productsInStock);
+            $productsResource = CustomerProductsResource::collection($productsInStock);
 
             // dd($orderResource,$productsResource);
-            return inertia('Admin/Orders/CRUD/Edit', [
+            return inertia('Admin/ReleaseOrder/CRUD/Edit', [
                 'order' => $orderResource,
                 'products' => $productsResource,
             ]);
@@ -142,6 +157,13 @@ class OrdersCRUDController extends Controller
         $order = StockReleaseOrder::where('id', $id)
             ->where('customer_id', $customerId)
             ->firstOrFail();
+
+        if ($order->created_by_user ) {
+                return redirect()->back()->with('error', 'You do not have permission to edit this order.');
+        }
+        if ($order->confirmed === 'approved') {
+                return redirect()->back()->with('error', 'Cannot edit the completed order');
+            }
 
         // Update the StockReleaseOrder
         $order->update([
@@ -183,6 +205,11 @@ class OrdersCRUDController extends Controller
 
             return to_route('admin.index.orders')
                 ->with('danger', $message);
+        }
+
+
+        if ($order->created_by_user ) {
+                return redirect()->back()->with('error', 'You do not have permission to delete this order.');
         }
 
         $order->delete();

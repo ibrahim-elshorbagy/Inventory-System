@@ -47,7 +47,7 @@ const resources = {
             "My Products Report": 'تقرير المنتجات',
             "My Orders": 'طلبات ارجاع المنتجات',
             "Requests Management": 'ادارة الطلبات',
-            "Orders": 'الطلبات',
+            "Release Orders": 'طلبات الاسترجاع',
             "Permissions": 'الصلاحيات',
             "Additions Orders":'طلبات الاضافة'
         },
@@ -146,12 +146,7 @@ const MySidebar = ({ user, direction }) => {
                     icon: <FaWarehouse />,
                     permissions: ["read-warehouse"],
                 },
-                {
-                    text: t("Additions Orders"),
-                    href: "stock.all.orders",
-                    icon: <IoNewspaperOutline  />,
-                    permissions: ["all-stock-orders"],
-                },
+
 
             ],
             icon: <IoLogoDropbox  />,
@@ -160,7 +155,13 @@ const MySidebar = ({ user, direction }) => {
             title: t("Requests Management"),
             links: [
                 {
-                    text: t("Orders"),
+                    text: t("Additions Orders"),
+                    href: "stock.all.orders",
+                    icon: <IoNewspaperOutline  />,
+                    permissions: ["all-stock-orders"],
+                },
+                {
+                    text: t("Release Orders"),
                     href: "admin.index.orders",
                     icon: <FaBox  />,
                     permissions: ["admin-orders-index"],
