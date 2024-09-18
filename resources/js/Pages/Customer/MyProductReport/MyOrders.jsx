@@ -37,7 +37,8 @@ import TableHeading from "@/Components/TableHeading";
                 "Approved": "موافقة",
                 "Rejected": "مرفوضة",
                 "Are you sure you want to Cancel The Request?": "هل تريد الغاء الطلب؟",
-                "Delivery Address": "عنوان التسليم",
+            "Delivery Address": "عنوان التسليم",
+                "Details": "تفاصيل",
         },
     },
 };
@@ -118,7 +119,7 @@ export default function Index({ auth, requests, queryParams = null, success,dang
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
+          <h2 className="text-xl font-semibold leading-tight text-white">
             {t("My Requests Report")}
               </h2>
               <div className="flex gap-3">
@@ -227,6 +228,13 @@ export default function Index({ auth, requests, queryParams = null, success,dang
                                                 >
                                                 {t("Edit")}
                                                 </Link>
+                                                <Link
+                                                    href={route("customer.show-release-order", request.id)}
+                                                    className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
+                                                >
+                                                {t("Details")}
+                                                </Link>
+
 
                                                 <button
                                                         onClick={(e) => deleterequest(request.id)}

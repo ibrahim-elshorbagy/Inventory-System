@@ -51,4 +51,6 @@ Route::group(['middleware' => ['permission:for-Acustomer-make-release-repuest']]
 
     Route::delete('/customers/dashboard/release-order/delete/{id}', [StockReleaseOrderController::class, 'destroyReleaseRequest'])->name('customer.destroy-release-order');
 
+    Route::get('/customers/dashboard/release-order/show/{id}',[StockReleaseOrderController::class,'ShowMyorder'])->name('customer.show-release-order');
+
 });

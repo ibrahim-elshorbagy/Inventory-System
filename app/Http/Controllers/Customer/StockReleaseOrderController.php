@@ -13,6 +13,7 @@ use App\Http\Resources\Warehouse\CustomerStockResource;
 use App\Models\Warehouse\Stock;
 use App\Models\Warehouse\StockReleaseOrder;
 use App\Models\Warehouse\StockReleaseRequest;
+use App\Http\Resources\Admin\ReleaseOrder\OrdereDetialsResource;
 
 use App\Models\User;
 use App\Notifications\PlaceOrderNotification;
@@ -116,7 +117,7 @@ class StockReleaseOrderController extends Controller
     }
 
     public function EditReleaseOrder($id){
-    $user = Auth::user();
+        $user = Auth::user();
 
         // Fetch the specific StockReleaseOrder with its requests
         $order = StockReleaseOrder::with('requests.stock')
@@ -214,5 +215,22 @@ class StockReleaseOrderController extends Controller
 
         return to_route('customer.show.my-requests')
             ->with('success', $message);
+    }
+
+    public function ShowMyorder($id)
+    {
+
+        $order =StockReleaseOrder::find($id)->where('customer_id', Auth::user()->id)->firstOrFail();
+        $order->load([
+            'requests.stock.customer.user',
+            'requests.stock.warehouse',
+            'requests.stock.product.category',
+            'requests.stock.product.subCategory'
+        ])->paginate(20)->onEachSide(1);
+
+
+        return inertia("Customer/MyProductReport/OrderDetails", [
+            "order" => OrdereDetialsResource::make($order),
+        ]);
     }
 }
