@@ -44,9 +44,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'for-SystemAdmin-manage-roles-permissions',
 
             //customer
-            'for-Acustomer-view-dashboard',
-            'for-Acustomer-my-products-report',
-            'for-Acustomer-make-release-repuest',
+            'for-customer-view-dashboard',
+            'for-customer-my-products-report',
+            'for-customer-make-release-repuest',
 
             //admin or data entry  for addition-orders
             "add-stock-order",
@@ -69,22 +69,24 @@ class RolesAndPermissionsSeeder extends Seeder
         foreach ($additionalPermissions as $permission) {
             Permission::firstOrCreate(['name' => $permission]);
         }
+        //----------------------------------------------------------------------------------------------------------------
 
         // Define roles
         $SystemAdminRole = Role::firstOrCreate(['name' => 'SystemAdmin']);
         $adminRole = Role::firstOrCreate(['name' => 'admin']);
         $customerRole = Role::firstOrCreate(['name' => 'customer']);
+        $dataEntryRole = Role::firstOrCreate(['name' => 'dataEntry']);
 
 
+        //----------------------------------------------------------------------------------------------------------------
 
 
-
-
+        //System admin
 
         $permissionsForSystemAdmin = Permission::whereNotIn('name', [
-            'for-Acustomer-view-dashboard',
-            'for-Acustomer-my-products-report',
-            'for-Acustomer-make-release-repuest',
+            'for-customer-view-dashboard',
+            'for-customer-my-products-report',
+            'for-customer-make-release-repuest',
         ])->get();
 
         // Assign the filtered permissions to the SystemAdmin role
@@ -98,10 +100,12 @@ class RolesAndPermissionsSeeder extends Seeder
 
 
 
+        //----------------------------------------------------------------------------------------------------------------
 
 
 
         // Manually assign specific permissions to the 'admin' role
+
         $adminPermissions = [
             'view-admin-dashboard',
 
@@ -132,7 +136,7 @@ class RolesAndPermissionsSeeder extends Seeder
             "delete-stock-order",
 
             "release-order-confirme",
-            
+
             'admin-orders-index',
             'admin-orders-change-status',
             'admin-orders-make',
@@ -141,18 +145,34 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
         $adminRole->syncPermissions($adminPermissions);
 
+        
+        //----------------------------------------------------------------------------------------------------------------
+
+        // Manually assign specific permissions to the 'data entry' role
 
 
+
+        $dataEntryPermissions = [
+        ];
+        $dataEntryRole->syncPermissions($dataEntryPermissions);
+
+
+
+        //----------------------------------------------------------------------------------------------------------------
+
+        // Manually assign specific permissions to the 'customer' role
 
 
 
         $customerPermissions = [
-            "for-Acustomer-view-dashboard",
-            'for-Acustomer-my-products-report',
-            'for-Acustomer-make-release-repuest',
+            "for-customer-view-dashboard",
+            'for-customer-my-products-report',
+            'for-customer-make-release-repuest',
 
         ];
         $customerRole->syncPermissions($customerPermissions);
+
+
 
 
 

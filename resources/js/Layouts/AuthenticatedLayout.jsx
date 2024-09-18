@@ -86,7 +86,7 @@ export default function Authenticated({ user, header, children }) {
                                         <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
                                     </Link>
                                 )}
-                                {user.permissions.includes("for-Acustomer-view-dashboard") && (
+                                {user.permissions.includes("for-customer-view-dashboard") && (
                                     <Link href={route("customer.dashboard")}>
                                         <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
                                     </Link>
@@ -102,7 +102,7 @@ export default function Authenticated({ user, header, children }) {
                                         {t("Dashboard")}
                                     </NavLink>
                                 )}
-                                {user.permissions.includes("for-Acustomer-view-dashboard") && (
+                                {user.permissions.includes("for-customer-view-dashboard") && (
                                     <NavLink
                                         href={route("customer.dashboard")}
                                         active={route().current("customer.dashboard")}
@@ -233,7 +233,7 @@ export default function Authenticated({ user, header, children }) {
                                 {t("Dashboard")}
                             </ResponsiveNavLink>
                         )}
-                        {user.permissions.includes("for-Acustomer-view-dashboard") && (
+                        {user.permissions.includes("for-customer-view-dashboard") && (
                             <ResponsiveNavLink
                                 href={route("customer.dashboard")}
                                 active={route().current("customer.dashboard")}

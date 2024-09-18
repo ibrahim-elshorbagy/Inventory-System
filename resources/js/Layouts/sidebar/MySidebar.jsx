@@ -94,23 +94,23 @@ const MySidebar = ({ user, direction }) => {
                     text: t("Dashboard"),
                     href: "customer.dashboard",
                     icon: <MdDashboard />,
-                    permissions: ["for-Acustomer-view-dashboard"],
+                    permissions: ["for-customer-view-dashboard"],
                 },
                 {
                     text: t("My Products Report"),
-                    href: "for-Acustomer-my-products-report",
+                    href: "for-customer-my-products-report",
                     icon: <BsBoxes />,
-                    permissions: ["for-Acustomer-my-products-report"],
+                    permissions: ["for-customer-my-products-report"],
                 },
                 {
                     text: t("My Orders"),
                     href: "customer.show.my-requests",
                     icon: <RiNewspaperLine  />,
-                    permissions: ["for-Acustomer-my-products-report"],
+                    permissions: ["for-customer-my-products-report"],
                 },
             ],
             icon: <MdDashboard />,
-            permissions:['for-Acustomer-view-dashboard']
+            permissions:['for-customer-view-dashboard']
         },
         // only for admins to manage products
         {

@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
 
         $user = $request->user();
 
-        if ($user->can('for-Acustomer-view-dashboard')) {
+        if ($user->can('for-customer-view-dashboard')) {
             return redirect()->intended(route('customer.dashboard'));
         } elseif ($user->can('view-admin-dashboard')) {
             return redirect()->intended(route('admin.dashboard'));

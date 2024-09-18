@@ -84,7 +84,7 @@ export default function UpdateProfileInformation({
                     <InputError className="mt-2" message={errors.name} />
                 </div>
 
-                {user.permissions.includes("for-Acustomer-view-dashboard") && (
+                {user.permissions.includes("for-customer-view-dashboard") && (
 
                     <div>
 
@@ -104,7 +104,7 @@ export default function UpdateProfileInformation({
                     </div>
                 )}
 
-                {user.permissions.includes("for-Acustomer-view-dashboard") && (
+                {user.permissions.includes("for-customer-view-dashboard") && (
                     <div>
                         <InputLabel htmlFor="address" value={t("Address")} />
 

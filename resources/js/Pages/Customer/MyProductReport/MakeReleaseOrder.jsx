@@ -240,7 +240,7 @@ const onSubmit = (e) => {
 
               <div className="flex gap-2 mt-4 text-right">
                 <Link
-                  href={route("for-Acustomer-my-products-report")}
+                  href={route("for-customer-my-products-report")}
                   className="px-3 py-1 mr-2 text-gray-800 transition-all bg-gray-100 rounded shadow hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600"
                 >
                   {t("Cancel")}

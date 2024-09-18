@@ -51,7 +51,7 @@ export default function Index({ auth, products, queryParams = null, success }) {
     } else {
       delete queryParams[name];
     }
-    router.get(route("for-Acustomer-my-products-report"), queryParams);
+    router.get(route("for-customer-my-products-report"), queryParams);
   };
 
   const onKeyPress = (name, e) => {

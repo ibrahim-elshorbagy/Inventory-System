@@ -18,7 +18,7 @@ Route::get('/', function () {
 
         if ($user->can('view-admin-dashboard')) {
             return redirect()->route('admin.dashboard');
-        } elseif ($user->can('for-Acustomer-view-dashboard')) {
+        } elseif ($user->can('for-customer-view-dashboard')) {
             return redirect()->route('customer.dashboard');
         }
     }
@@ -34,7 +34,7 @@ Route::group(['middleware' => ['permission:view-admin-dashboard']], function () 
 Route::get('admins/dashboard', [DashboardController::class, 'adminDashboard'])->middleware(['auth'])->name('admin.dashboard');
 
 });
-Route::group(['middleware' => ['permission:for-Acustomer-view-dashboard']], function () {
+Route::group(['middleware' => ['permission:for-customer-view-dashboard']], function () {
 
 Route::get('customers/dashboard', [DashboardController::class, 'CustomerDashboard'])->middleware(['auth'])->name('customer.dashboard');
 

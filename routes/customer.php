@@ -32,14 +32,14 @@ Route::group(['middleware' => ['permission:delete-customer']], function () {
 
 //--------------------------------------------------------------------------------------------- My Products Report
 
-Route::group(['middleware' => ['permission:for-Acustomer-my-products-report']], function () {
-    Route::get('/customer/dashboard/my-products-report', [ReportController::class, 'MyProductRport'])->name('for-Acustomer-my-products-report');
+Route::group(['middleware' => ['permission:for-customer-my-products-report']], function () {
+    Route::get('/customer/dashboard/my-products-report', [ReportController::class, 'MyProductRport'])->name('for-customer-my-products-report');
 
 });
 
 //--------------------------------------------------------------------------------------------- My Products Release Request
 
-Route::group(['middleware' => ['permission:for-Acustomer-make-release-repuest']], function () {
+Route::group(['middleware' => ['permission:for-customer-make-release-repuest']], function () {
 
     Route::get('/customers/dashboard/release-order/add',[StockReleaseOrderController::class,'MakeReleaseOrder'])->name('customer.make-release-order');
     Route::post('/customers/dashboard/release-order/save',[StockReleaseOrderController::class,'ReleaseOrderStore'])->name('customer.store-release-order');
