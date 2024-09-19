@@ -3,11 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use App\Models\Customer;
+
 
 class RolesAndPermissionsSeeder extends Seeder
 {
@@ -49,15 +48,17 @@ class RolesAndPermissionsSeeder extends Seeder
             'for-customer-make-release-repuest',
 
             //admin or data entry  for addition-orders
+            "confirme-stock-order",
+
             "add-stock-order",
-            "all-stock-orders",
-            "show-stock-order",
-            "ChangeStatus-stock-order",
+            "all-stock-orders", //all orders
+            "show-stock-order", // details about the order
             "edit-stock-order",
             "delete-stock-order",
 
             // Roles for release-orders
             "release-order-confirme",
+
             'admin-orders-index',
             'admin-orders-change-status',
             'admin-orders-make',
@@ -107,33 +108,40 @@ class RolesAndPermissionsSeeder extends Seeder
         // Manually assign specific permissions to the 'admin' role
 
         $adminPermissions = [
+
             'view-admin-dashboard',
 
+            // Main CRUD permissions
             'create-main-category',
             'read-main-category',
             'update-main-category',
+            "delete-main-category",
 
             'create-sub-category',
             'read-sub-category',
             'update-sub-category',
-
+            "delete-sub-category",
 
             'create-customer',
             'read-customer',
             'update-customer',
+            "delete-customer",
 
             'create-warehouse',
             'read-warehouse',
             'update-warehouse',
+            "delete-warehouse",
 
-            'create-stock',
-            'read-stock',
-            'delete-stock',
+            //for making addition order + confirme addition order
+            "confirme-stock-order",
 
             "add-stock-order",
             "all-stock-orders",
-            "edit-stock-order",
+            "show-stock-order",
             "delete-stock-order",
+            'read-stock', //index all products
+
+            //for making release order + confirme release order
 
             "release-order-confirme",
 
@@ -145,7 +153,7 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
         $adminRole->syncPermissions($adminPermissions);
 
-        
+
         //----------------------------------------------------------------------------------------------------------------
 
         // Manually assign specific permissions to the 'data entry' role
@@ -153,6 +161,26 @@ class RolesAndPermissionsSeeder extends Seeder
 
 
         $dataEntryPermissions = [
+
+            'view-admin-dashboard', //dashbaord
+
+            //for making addition order
+            "read-customer",
+
+            "add-stock-order",
+            "all-stock-orders",
+            "delete-stock-order",
+            "show-stock-order",
+            "edit-stock-order",
+            'read-stock', //index all products
+
+            //for making release order
+
+            'admin-orders-index',
+            'admin-orders-change-status',
+            'admin-orders-make',
+            "admin-orders-update",
+
         ];
         $dataEntryRole->syncPermissions($dataEntryPermissions);
 
@@ -165,6 +193,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
 
         $customerPermissions = [
+
             "for-customer-view-dashboard",
             'for-customer-my-products-report',
             'for-customer-make-release-repuest',

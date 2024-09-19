@@ -18,7 +18,7 @@ class UserCRUDController extends Controller
      */
     public function index()
     {
-         $query = User::role('admin');
+        $query = User::whereDoesntHave('roles', function ($q) {$q->where('name', 'customer'); });
 
         $sortField = request("sort_field", 'created_at');
         $sortDirection = request("sort_direction", "desc");
@@ -38,6 +38,7 @@ class UserCRUDController extends Controller
             "users" => UserCRUDResource::collection($users),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
+
         ]);
     }
 
@@ -46,7 +47,7 @@ class UserCRUDController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereIn('name', ['admin', 'systemadmin'])->get();
+        $roles = Role::whereNotIn('name', ['customer'])->get();
         return inertia("Admin/User/UserCURD/Create", [
             'roles' => $roles,
         ]);

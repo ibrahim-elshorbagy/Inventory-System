@@ -119,7 +119,7 @@ export default function Index({ auth, products,order }) {
                                             className="block w-full mt-1"
                                             value={data.status}
                                             onChange={handleStatusChange}
-                                            disabled={!auth.user.permissions.includes("ChangeStatus-stock-order") || status === "approved"}
+                                            disabled={!auth.user.permissions.includes("confirme-stock-order") || status === "approved"}
 
                                         >
                                             <option value="pending">{t("Pending")}</option>
@@ -127,7 +127,7 @@ export default function Index({ auth, products,order }) {
                                             <option value="rejected">{t("Rejected")}</option>
                                         </SelectInput>
                                     </div>
-                        {auth.user.permissions.includes("ChangeStatus-stock-order") && status !== "approved" && (
+                        {auth.user.permissions.includes("confirme-stock-order") && status !== "approved" && (
                                 < div className="col-span-2">
                                     <div>
                                     <InputLabel htmlFor={`description`} value={t("Description")} />

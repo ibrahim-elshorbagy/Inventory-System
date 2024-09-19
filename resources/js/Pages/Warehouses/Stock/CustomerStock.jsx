@@ -79,7 +79,7 @@ export default function Index({ auth, user, products, queryParams = null }) {
             >
               {t("Print Report")}
             </Link>
-            {auth.user.permissions.includes("create-stock") && (
+            {auth.user.permissions.includes("add-stock-order") && (
               <Link
                 href={route("stock.add.page", user.id)}
                 className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"

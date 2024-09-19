@@ -45,14 +45,14 @@ Route::group(['middleware' => ['permission:show-stock-order']], function () {   
     Route::get('/stock/addition-order/show/customer/{order}/details', [StockController::class, 'ShowOrderDetails'])->name('stock.show.order');
 
 });
-Route::group(['middleware' => ['permission:ChangeStatus-stock-order']], function () {        // Edit the order's products for admin / data entry
+Route::group(['middleware' => ['permission:edit-stock-order']], function () {        // Edit the order's products for admin / data entry
 
     Route::get('/stock/addition-order/edit/customer/{order}', [StockController::class, 'EditOrderPage'])->name('stock.edit.page');
     Route::put('/stock/addition-order/update/customer/{order}', [StockController::class, 'updateOrder'])->name('stock.update.order');
 
 });
 
-Route::group(['middleware' => ['permission:edit-stock-order']], function () {                // Change the status of the order for admin
+Route::group(['middleware' => ['permission:confirme-stock-order']], function () {                // Change the status of the order for admin
 
     Route::post('/stock/customer/order/changeStatus/{order}', [StockController::class, 'ChangeStatus'])->name('stock.change.status');
 

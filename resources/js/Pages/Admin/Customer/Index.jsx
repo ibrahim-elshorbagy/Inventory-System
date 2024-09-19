@@ -51,7 +51,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, users, queryParams = null, success }) {
+export default function Index({ auth, users, queryParams = null, success ,danger}) {
 
 
   const { t } = useTranslation();
@@ -101,7 +101,36 @@ export default function Index({ auth, users, queryParams = null, success }) {
 
       return () => clearTimeout(timer);
     }
-  }, [success]);
+ }, [success]);
+
+
+ useEffect(() => {
+    if (success) {
+      setVisibleSuccess(success);
+
+      const timer = setTimeout(() => {
+        setVisibleSuccess(null);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+ }, [success]);
+
+    const [visibleDanger, setVisibleDanger] = useState(danger);
+
+    useEffect(() => {
+
+        if (danger) {
+
+        setVisibleDanger(danger);
+
+        const timer = setTimeout(() => {
+        setVisibleDanger(null);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+    }, [danger]);
 
     const deleteUser = (user) => {
        const confirmationMessage = t("Are you sure you want to delete the user?");
@@ -141,7 +170,12 @@ export default function Index({ auth, users, queryParams = null, success }) {
             <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
               {visibleSuccess}
             </div>
-          )}
+                  )}
+                          {visibleDanger && (
+        <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+            {visibleDanger}
+        </div>
+                  )}
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-6 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
@@ -274,7 +308,7 @@ export default function Index({ auth, users, queryParams = null, success }) {
                                     )}
 
 
-                                    {(auth.user.permissions.includes("add-stock-order") || auth.user.permissions.includes("delete-stock")) && (
+                                    {(auth.user.permissions.includes("add-stock-order") || auth.user.permissions.includes("all-stock-orders")|| auth.user.permissions.includes("all-stock-orders")) && (
                                         <>
                                             <DropdownMenuSeparator />
                                             <DropdownMenuLabel>{t("Stock")}</DropdownMenuLabel>

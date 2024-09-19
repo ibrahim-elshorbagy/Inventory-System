@@ -12,7 +12,6 @@ class RolesPermissionsController extends Controller
     public function index()
     {
         $roles = Role::select()
-            ->whereIn('name', ['customer', 'admin'])
             ->get();
 
         return inertia('Admin/RolesPermissions/Index', [
@@ -23,10 +22,7 @@ class RolesPermissionsController extends Controller
    public function edit(Role $role)
     {
         // Group permissions based on their entity prefix
-        $groupedPermissions = Permission::all()->groupBy(function ($permission) {
-            return explode('-', $permission->name)[1] ?? 'others';
-        });
-
+        $groupedPermissions = Permission::all();
         // Fetch the role's current permissions
         $rolePermissions = $role->permissions->pluck('name')->toArray();
 

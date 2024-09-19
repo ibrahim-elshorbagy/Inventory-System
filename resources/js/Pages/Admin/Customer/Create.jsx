@@ -10,14 +10,7 @@ import i18n from "@/i18nConfig";
 
     const resources = {
     en: {
-        translation: {
-            "Create user": "Create user",
-            "Users": "Users",
-            "User Name": "User Name",
-            "User Email": "User Email",
-            "Password": "Password",
-            "Cancel": "Cancel",
-            "Submit": "Submit"        },
+        translation: {},
     },
     ar: {
         translation: {

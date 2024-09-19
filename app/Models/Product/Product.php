@@ -2,6 +2,7 @@
 
 namespace App\Models\Product;
 
+use App\Models\Customer;
 use App\Models\User;
 use App\Models\Warehouse\Warehouse;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -35,4 +36,9 @@ class Product extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'user_id', 'user_id');
+    }
+
 }

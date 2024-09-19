@@ -88,7 +88,7 @@ export default function Index({ auth, user = null, orders, queryParams = null, s
                         {t("Additions Orders")}  {user ? " - " + user.name : ""}
                     </h2>
                     <div className="flex gap-3">
-                        {auth.user.permissions.includes("create-stock") && user && (
+                        {auth.user.permissions.includes("add-stock-order") && user && (
                             <Link
                                 href={route("stock.add.page", user.id)}
                                 className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
@@ -159,7 +159,7 @@ export default function Index({ auth, user = null, orders, queryParams = null, s
                                                                 {t("Details")}
                                                             </Link>
                                                         )}
-                                                        {auth.user.permissions.includes("show-stock-order") && order.status === 'pending' && (
+                                                        {auth.user.permissions.includes("edit-stock-order") && order.status === 'pending' && (
                                                             <Link
                                                                 href={route("stock.edit.page", { order: order.id })}
                                                                 className="font-medium text-blue-500 hover:underline"

@@ -46,6 +46,8 @@ Full opertions For Customers (add,delete ,update)
             "users" => CustomerResource::collection($users),
             'queryParams' => request()->query() ?: null,
             'success' => session('success'),
+            'danger'=>session('danger')
+
         ]);
     }
 
@@ -167,6 +169,16 @@ Full opertions For Customers (add,delete ,update)
     public function destroy(User $customer)
     {
         $name = $customer->name;
+        if ($customer->customer->products->count() > 0) {
+        $locale = session('app_locale', 'en');
+
+        $message = $locale === 'ar'
+            ? "لا يمكن العميل \"{$name}\" لان لديه منتجات "
+            : "Cannot delete Customer \"{$name}\" because he has products";
+
+        return to_route('customer.index')
+            ->with('danger', $message);
+        }
         $customer->delete();
 
         $locale = session('app_locale', 'en');
