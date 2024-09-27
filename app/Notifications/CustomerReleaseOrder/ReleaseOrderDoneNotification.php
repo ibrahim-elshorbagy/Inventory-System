@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Notifications\CustomerReleaseOrder;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CustomerReleaseOrderNotification extends Notification
+class ReleaseOrderDoneNotification extends Notification
 {
+    use Queueable;
     use Queueable;
 
     public $order;
@@ -32,23 +33,16 @@ class CustomerReleaseOrderNotification extends Notification
     {
         $message = '';
 
-        if ($this->eventType === 'added') {
+        if ($this->eventType === 'status') {
             $message = [
-                'en' => 'New order Release added by Customer' . $this->user->name,
-                'ar' => 'تم إضافة طلب ارجاع من العميل ' . $this->user->name,
-            ];
-        } elseif ($this->eventType === 'updated') {
-            $message = [
-                'en' => 'Release Order updated by Customer' . $this->user->name,
-                'ar' => 'تم تحديث طلب ارجاع من العميل ' . $this->user->name,
+                'ar' => ' تم تسليم طلب الارجاع  ' ,
+                'en' => ' The release order Delivered ' ,
             ];
         }
-
         return [
             'message' => $message,
-            'url'=> route('stock.show.order', $this->order->id),
+            'url'=> route('customer.show-release-order', $this->order->id),
 
         ];
-
     }
 }

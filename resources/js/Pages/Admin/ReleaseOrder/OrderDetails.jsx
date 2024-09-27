@@ -66,7 +66,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth, order, error,success }) {
+export default function Index({ auth, order, error,success,danger }) {
     const { t } = useTranslation();
 
 
@@ -96,6 +96,22 @@ export default function Index({ auth, order, error,success }) {
 
     const [confirmed,setConfirmed]= useState(order.confirmed);
     const [delivered, setDelivered] = useState(order.status);
+
+    const [visibleDanger, setVisibleDanger] = useState(danger);
+
+    useEffect(() => {
+
+        if (danger) {
+
+        setVisibleDanger(danger);
+
+        const timer = setTimeout(() => {
+        setVisibleDanger(null);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+    }, [danger]);
 
     return (
         <AuthenticatedLayout
@@ -197,6 +213,12 @@ export default function Index({ auth, order, error,success }) {
 
 
                                 </form>
+
+                                 {visibleDanger && (
+                                <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+                                    {visibleDanger}
+                                </div>
+                                            )}
                                 {/* Orders Table */}
                                 <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                                     <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

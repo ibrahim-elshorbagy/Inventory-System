@@ -40,6 +40,7 @@ import TableHeading from "@/Components/TableHeading";
             "Delivery Address": "عنوان التسليم",
             "Customer Name": "اسم العميل",
             "Admin Confirmation": "تأكيد الادارة",
+            "Delivered": "تم التسليم",
 
         },
     },

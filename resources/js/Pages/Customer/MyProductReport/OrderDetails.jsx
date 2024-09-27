@@ -148,12 +148,12 @@ export default function Index({ auth, order, error,success }) {
                                             'bg-gray-500 text-white'
                                         }`}>
                                             {t("Admin Confirmation")}:
-                                            {order.status === 'pending' ? t('Pending') :
-                                            order.status === 'rejected' ? t('Rejected') :
-                                            order.status === 'approved' ? t('Approved') :
+                                            {order.confirmed === 'pending' ? t('Pending') :
+                                            order.confirmed === 'rejected' ? t('Rejected') :
+                                            order.confirmed === 'approved' ? t('Approved') :
                                             t('Unknown')}
                                             </p>
-                                        </div>
+                                    </div>
                                 </section>
 
                                 {/* Orders Table */}

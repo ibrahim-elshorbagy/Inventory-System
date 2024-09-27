@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications\AdditionOrder;
+namespace App\Notifications\CustomerReleaseOrder;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MyAdditionOrderChangeStatusNotification extends Notification
+class ReleaseOrderAdminConfirmForDataEntryNotification extends Notification
 {
     use Queueable;
 
@@ -28,24 +28,26 @@ class MyAdditionOrderChangeStatusNotification extends Notification
         return ['database'];
     }
 
-
     public function toArray($notifiable)
     {
         $message = '';
 
-        if ($this->eventType === 'approved') {
+        if ($this->eventType === 'confirmed') {
             $message = [
-                'ar' => ' تم تخزين منتجات من الاداره',
-                'en' => 'Products has been Added by Admin ',
+                'ar' => ' تم قبول طلب الارجاع للعميل   ' . $this->user->name,
+                'en' => ' The release order Approved For ' . $this->user->name,
+            ];
+        }elseif($this->eventType === 'rejected') {
 
+            $message = [
+                'ar' => ' تم رفض طلب الارجاع للعميل  ' . $this->user->name,
+                'en' => ' The release order Rejected For' . $this->user->name,
             ];
         }
-
         return [
             'message' => $message,
-            'url'=> route('for-customer-my-products-report'),
+            'url'=> route('admin.show.order', $this->order->id),
 
         ];
-
     }
 }

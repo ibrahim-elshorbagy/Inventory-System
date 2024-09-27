@@ -221,7 +221,6 @@ class StockController extends Controller
     public function updateOrder(ReceiveProductRequest $request, $orderId)
     {
         $data = $request->validated();
-
         DB::beginTransaction();
         try{
 
@@ -298,6 +297,7 @@ class StockController extends Controller
 
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم تحديث المنتجات بنجاح" : "Products were updated successfully";
+        DB::commit();
 
         return to_route('stock.all.orders')->with('success', $message);
 

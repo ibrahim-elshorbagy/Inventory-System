@@ -35,10 +35,13 @@ import TableHeading from "@/Components/TableHeading";
                 "Status": "الحالة",
                 "Pending": "قيد الانتظار",
                 "Approved": "موافقة",
+                "Delivered": "تم التسليم",
                 "Rejected": "مرفوضة",
                 "Are you sure you want to Cancel The Request?": "هل تريد الغاء الطلب؟",
             "Delivery Address": "عنوان التسليم",
-                "Details": "تفاصيل",
+            "Details": "تفاصيل",
+            "Admin Confirmation": "تأكيد الادارة",
+
         },
     },
 };
@@ -179,6 +182,7 @@ export default function Index({ auth, requests, queryParams = null, success,dang
                                           </TableHeading>
 
                         <th className="text-center">{t("Status")}</th>
+                        <th className="text-center">{t("Admin Confirmation")}</th>
 
                         <th className="px-3 py-3">{t("Actions")}</th>
 
@@ -218,23 +222,32 @@ export default function Index({ auth, requests, queryParams = null, success,dang
                                         </span>
 
                                     </th>
-                                    <td>
+                                    <th className="px-3 py-2 text-center text-nowrap">
+                                        <span
+                                            className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
+                                                request.confirmed === 'pending' ? 'bg-yellow-500 text-black' :
+                                                request.confirmed === 'rejected' ? 'bg-red-500 text-white' :
+                                                request.confirmed === 'approved' ? 'bg-green-500 text-white' :
+                                                'bg-gray-500 text-white'
+                                            }`}
+                                        >
+                                            {request.confirmed === 'pending' ? t('Pending') :
+                                            request.confirmed === 'rejected' ? t('Rejected') :
+                                            request.confirmed === 'approved' ? t('Approved') :
+                                            t('Unknown')}
+                                        </span>
+
+                                    </th>
+                                    <td className="flex items-center gap-3 m-3">
                                         {auth.user.permissions.includes("for-customer-make-release-repuest") && !(request.confirmed === 'approved') && (
 
-                                        <div className="flex gap-3">
+                                        < >
                                                 <Link
                                                     href={route("customer.edit-release-order", request.id)}
                                                     className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                                                 >
                                                 {t("Edit")}
                                                 </Link>
-                                                <Link
-                                                    href={route("customer.show-release-order", request.id)}
-                                                    className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
-                                                >
-                                                {t("Details")}
-                                                </Link>
-
 
                                                 <button
                                                         onClick={(e) => deleterequest(request.id)}
@@ -243,8 +256,15 @@ export default function Index({ auth, requests, queryParams = null, success,dang
                                                         {t("Delete")}
                                                 </button>
 
-                                        </div>
+                                        </>
+
                                         )}
+                                                <Link
+                                                href={route("customer.show-release-order", request.id)}
+                                                className="font-medium text-emerald-600 dark:text-emerald-500 hover:underline"
+                                            >
+                                            {t("Details")}
+                                                </Link>
 
                                     </td>
                                 </tr>

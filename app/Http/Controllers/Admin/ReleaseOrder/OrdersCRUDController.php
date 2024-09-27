@@ -14,7 +14,10 @@ use App\Models\Warehouse\StockReleaseRequest;
 use App\Http\Requests\Customer\ReleaseRequest\StoreStockReleaseRequestValidation;
 use App\Http\Requests\Customer\ReleaseRequest\UpdateStockReleaseRequestValidation;
 use App\Http\Resources\Customer\CustomerProductsResource;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+use App\Models\User;
+use App\Notifications\CustomerReleaseOrder\ReleaseOrderByAdminNotification;
 
 class OrdersCRUDController extends Controller
 {
@@ -58,6 +61,8 @@ class OrdersCRUDController extends Controller
             'customer_id' => ['required', 'exists:users,id']
         ]);
         $user = Auth::user();
+         DB::beginTransaction();
+        try {
         // Create the StockReleaseOrder
         $order = StockReleaseOrder::create([
             'customer_id' => $request->customer_id,
@@ -78,11 +83,28 @@ class OrdersCRUDController extends Controller
             }
         }
 
+        // Send notification to Customer
+        $user = User::find($request->customer_id);
+        $order = $order;
+        Notification::send($user, new ReleaseOrderByAdminNotification($order, $user, 'added'));
+
+
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم اضافة الطلب بنجاح" : "Request was sent successfully";
 
-        return redirect()->route('admin.index.orders')->with('success', $message);
+        DB::commit();
 
+        return redirect()->route('admin.index.orders')->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            $errorMessage = $locale === 'ar'
+                ? "حدث خطأ "
+                : "An error occurred ";
+
+            return to_route('admin.index.orders')
+            ->with('danger', $errorMessage);
+        }
     }
 
     /**
@@ -151,6 +173,9 @@ class OrdersCRUDController extends Controller
         $request->validate([
             'customer_id' => ['required', 'exists:users,id']
         ]);
+
+        DB::beginTransaction();
+        try {
         $customerId = $request->customer_id;
 
         // Find the existing StockReleaseOrder
@@ -184,12 +209,28 @@ class OrdersCRUDController extends Controller
                 ]);
             }
         }
+        DB::commit();
+        // Send notification to Customer
+
+        $user = User::find($request->customer_id);
+        $order = $order;
+        Notification::send($user, new ReleaseOrderByAdminNotification($order, $user, 'updated'));
+
 
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم تحديث الطلب بنجاح" : "Request was updated successfully";
 
         return redirect()->route('admin.index.orders')->with('success', $message);
+        } catch (\Exception $e) {
+            DB::rollBack();
 
+            $errorMessage = $locale === 'ar'
+                ? "حدث خطأ "
+                : "An error occurred ";
+
+            return to_route('admin.index.orders')
+            ->with('danger', $errorMessage);
+        }
     }
 
     /**

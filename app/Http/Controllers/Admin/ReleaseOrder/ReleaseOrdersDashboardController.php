@@ -59,6 +59,8 @@ class ReleaseOrdersDashboardController extends Controller
 
         return inertia("Admin/ReleaseOrder/OrderDetails", [
             "order" => OrdereDetialsResource::make($order),
+            'danger' => session('danger'),
+
         ]);
     }
 

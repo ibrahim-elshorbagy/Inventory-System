@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications\AdditionOrder;
+namespace App\Notifications\CustomerReleaseOrder;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MyAdditionOrderChangeStatusNotification extends Notification
+class CustomerReleaseOrderNotification extends Notification
 {
     use Queueable;
 
@@ -28,22 +28,25 @@ class MyAdditionOrderChangeStatusNotification extends Notification
         return ['database'];
     }
 
-
     public function toArray($notifiable)
     {
         $message = '';
 
-        if ($this->eventType === 'approved') {
+        if ($this->eventType === 'added') {
             $message = [
-                'ar' => ' تم تخزين منتجات من الاداره',
-                'en' => 'Products has been Added by Admin ',
-
+                'en' => ' New order Release added by Customer ' . $this->user->name,
+                'ar' => ' تم إضافة طلب ارجاع من العميل ' . $this->user->name,
+            ];
+        } elseif ($this->eventType === 'updated') {
+            $message = [
+                'en' => ' Release Order updated by Customer ' . $this->user->name,
+                'ar' => ' تم تحديث طلب ارجاع من العميل ' . $this->user->name,
             ];
         }
 
         return [
             'message' => $message,
-            'url'=> route('for-customer-my-products-report'),
+            'url'=> route('stock.show.order', $this->order->id),
 
         ];
 

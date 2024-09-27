@@ -18,7 +18,7 @@ Route::group(['middleware' => ['permission:admin-orders-index']], function () {
 
 });
 
-//--------------------------------------------------------------------------------------------- Change Status Data Entry +  Confirmation for Admin only
+//--------------------------------------------------------------------------------------------- Change Status Data Entry +  Confirmation for Admin only for Realase order
 
 Route::group(['middleware' => ['permission:admin-orders-change-status']], function () {
 

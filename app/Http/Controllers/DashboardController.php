@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product\ReceiveOrder;
 use App\Models\User;
 use App\Models\Warehouse\Stock;
 use App\Models\Warehouse\StockReleaseOrder;
@@ -28,8 +29,8 @@ class DashboardController extends Controller
         $user = Auth::user();
         $data=$request->validate(['url'=>['required'], 'id'=>['required']]);
 
-        // $notification= $user->notifications()->where('id', $id)->first();
-        // $notification->markAsRead();
+        $notification= $user->notifications()->where('id', $data['id'])->first();
+        $notification->markAsRead();
 
         return redirect($data['url']);
     }
@@ -45,10 +46,14 @@ class DashboardController extends Controller
         $customersCount = User::role('customer')->count();
 
         // Counting Stock Release Orders with status 'pending' or 'approved'
-        $ordersCount = StockReleaseOrder::whereIn('status', ['pending', 'approved'])->count();
+        $releaseOrdersCount = StockReleaseOrder::whereIn('status', ['pending', 'approved'])->count();
+        $AdditionOrdersCount  =ReceiveOrder::where('status','pending')->count();
+        $ordersCount = $releaseOrdersCount + $AdditionOrdersCount;
 
         // Counting Delivered Stock Release Orders
-        $deliveredOrdersCount = StockReleaseOrder::where('status', 'delivered')->count();
+        $approvedAdditionOrdersCount  =ReceiveOrder::where('status','approved')->count();
+        $deliveredreleasedOrdersCount = StockReleaseOrder::where('status', 'delivered')->count();
+        $deliveredOrdersCount = $deliveredreleasedOrdersCount + $approvedAdditionOrdersCount;
 
         // Passing data to the frontend
         return inertia('Admin/Dashboard', [

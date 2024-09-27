@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Notifications\AdditionOrder;
+namespace App\Notifications\CustomerReleaseOrder;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class MyAdditionOrderChangeStatusNotification extends Notification
+class ReleaseOrderByAdminNotification extends Notification
 {
     use Queueable;
 
@@ -33,17 +33,21 @@ class MyAdditionOrderChangeStatusNotification extends Notification
     {
         $message = '';
 
-        if ($this->eventType === 'approved') {
+        if ($this->eventType === 'added') {
             $message = [
-                'ar' => ' تم تخزين منتجات من الاداره',
-                'en' => 'Products has been Added by Admin ',
-
+                'en' => ' Release Order Made by Admin',
+                'ar' => ' تم إضافة طلب ارجاع منتجات عن طريق الاداره ',
+            ];
+        } elseif ($this->eventType === 'updated') {
+            $message = [
+                'en' => ' Release Order Updated by Admin ',
+                'ar' => ' تم تحديث طلب ارجاع منتجات عن طريق الاداره ',
             ];
         }
 
         return [
             'message' => $message,
-            'url'=> route('for-customer-my-products-report'),
+            'url'=> route('customer.show-release-order', $this->order->id),
 
         ];
 

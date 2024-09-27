@@ -16,8 +16,9 @@ use App\Models\Warehouse\StockReleaseRequest;
 use App\Http\Resources\Admin\ReleaseOrder\OrdereDetialsResource;
 
 use App\Models\User;
-use App\Notifications\CustomerReleaseOrderNotification;
+use App\Notifications\CustomerReleaseOrder\CustomerReleaseOrderNotification;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\DB;
 
 class StockReleaseOrderController extends Controller
 {
@@ -59,6 +60,10 @@ class StockReleaseOrderController extends Controller
     //To store release request
     public function ReleaseOrderStore(StoreStockReleaseRequestValidation $request)
     {
+
+            DB::beginTransaction();
+            try{
+
         $validated = $request->validated();
         $user = Auth::user();
 
@@ -89,7 +94,16 @@ class StockReleaseOrderController extends Controller
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم اضافة الطلب بنجاح" : "Request was sent successfully";
 
+        DB::commit();
         return redirect()->route('customer.show.my-requests')->with('success', $message);
+      }
+            catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('danger' , $e->getMessage());
+        }
+
+
     }
 
 
@@ -151,6 +165,10 @@ class StockReleaseOrderController extends Controller
 
     public function UpdateReleaseOrder(UpdateStockReleaseRequestValidation $request, $id)
     {
+
+            DB::beginTransaction();
+            try{
+
         $validated = $request->validated();
 
         $user = Auth::user();
@@ -189,8 +207,17 @@ class StockReleaseOrderController extends Controller
 
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم تحديث الطلب بنجاح" : "Request was updated successfully";
+        DB::commit();
 
         return redirect()->route('customer.show.my-requests')->with('success', $message);
+        }
+                catch (\Exception $e) {
+                DB::rollBack();
+
+                return back()->with('danger' , $e->getMessage());
+            }
+
+
     }
 
 
@@ -220,7 +247,7 @@ class StockReleaseOrderController extends Controller
     public function ShowMyorder($id)
     {
 
-        $order =StockReleaseOrder::find($id)->where('customer_id', Auth::user()->id)->firstOrFail();
+    $order = StockReleaseOrder::where('id', $id)->where('customer_id', Auth::user()->id)->firstOrFail();
         $order->load([
             'requests.stock.customer.user',
             'requests.stock.warehouse',

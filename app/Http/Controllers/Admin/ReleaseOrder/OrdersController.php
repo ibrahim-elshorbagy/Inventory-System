@@ -3,12 +3,18 @@
 namespace App\Http\Controllers\Admin\ReleaseOrder;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Warehouse\Stock;
 use App\Models\Warehouse\StockReleaseOrder;
 use App\Models\Warehouse\StockTransaction;
+use App\Notifications\CustomerReleaseOrder\ReleaseOrderAdminConfirmForDataEntryNotification;
+use App\Notifications\CustomerReleaseOrder\ReleaseOrderAdminConfirmStatusNotification;
+use App\Notifications\CustomerReleaseOrder\ReleaseOrderChangeStatusNotification;
+use App\Notifications\CustomerReleaseOrder\ReleaseOrderDoneNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class OrdersController extends Controller
 {
@@ -43,43 +49,92 @@ class OrdersController extends Controller
         //Admin change confirmed to Approved
         if(Auth::user()->hasPermissionTo('release-order-confirme') ){
 
-            $order->update(['notes' => $request->input('notes')]);
 
-            $order->confirmed = $request->input('confirmed');
-            $order->save();
+            //For Approve msg
+            if($order->confirmed != 'approved' && $request->input('confirmed') == 'approved'){
+
+                    // Send notification to Customer
+                    $user = User::find($order->customer_id);
+                    $order = $order;
+                    Notification::send($user, new ReleaseOrderAdminConfirmStatusNotification($order, $user, 'confirmed'));
+
+                    //send notification to data entry
+                    $alldataentries  = User::role(['dataEntry'])->get();
+                    Notification::send($alldataentries, new ReleaseOrderAdminConfirmForDataEntryNotification($order, $user,'confirmed'));
+            }
+            //For Rejecet msg
+            elseif($order->confirmed != 'rejected' && $request->input('confirmed') == 'rejected'){
+
+                    // Send notification to Customer
+                    $user = User::find($order->customer_id);
+                    $order = $order;
+                    Notification::send($user, new ReleaseOrderAdminConfirmStatusNotification($order, $user, 'rejected'));
+
+                    //send notification to data entry
+                    $alldataentries  = User::role(['dataEntry'])->get();
+                    Notification::send($alldataentries, new ReleaseOrderAdminConfirmForDataEntryNotification($order, $user,'rejected'));
+
+            }
+
+
+                $order->update(['notes' => $request->input('notes')]);
 
                 if($request->confirmed == 'rejected'){
 
-                $order->update(['status' => 'rejected']);
+                $order->update([
+                    'confirmed' => 'rejected'
+                    ,'status' => 'rejected']);
                     $message = $locale === 'ar'? "تم تحديث حالة الطلب بنجاح": "Order status updated successfully";
                     return to_route('admin.index.orders')->with('success', $message);
 
+                }else{
+                $order->update(['confirmed' => $request->confirmed]);
+
                 }
+
+            $order->save();
+
+
+
         }
 
 
         //Normal status change
-        if( $order->status !== 'delivered' ){
-            $order->status = $request->input('status');
-            $order->save();
+        if( $order->status !== 'delivered' && $order->status !== $request->input('status')  ){
+
+                // Send notification to customer when change status
+                $order->update(['status' => $request->input('status')]);
+                $user = User::find($order->customer_id);
+                Notification::send($user, new ReleaseOrderChangeStatusNotification($order, $user, 'status'));
 
         }
+
 
         //Approve the order
         if( $order->status === "delivered" && $request->input('confirmed') == "delivered"  ){
 
-                $this->confirmed($order);
+            DB::beginTransaction();
+
+                try{
+
+                    $this->confirmed($order);
+
+                    $user = User::find($order->customer_id);
+                    $order = $order;
+                    Notification::send($user, new ReleaseOrderDoneNotification($order, $user, $confirm));
+
+                    DB::commit();
+
+                }
+                    catch (\Exception $e) {
+                    DB::rollBack();
+
+                    return back()->with('danger' , $e->getMessage());
+                }
+
+
 
         }
-
-        // //change to rejected or pending
-        // if(Auth::user()->hasPermissionTo('release-order-confirme') && $order->status !== "delivered" && $request->input('confirmed') !== "approved"  ){
-
-        //     $order->confirmed = $request->input('confirmed');
-        //     $order->save();
-
-
-        // }
 
 
         $message = $locale === 'ar'
@@ -92,6 +147,7 @@ class OrdersController extends Controller
 
 
     }
+
     public function confirmed(StockReleaseOrder $order)
     {
         $locale = session('app_locale', 'en');
