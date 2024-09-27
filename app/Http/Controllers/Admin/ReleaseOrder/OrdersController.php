@@ -36,15 +36,16 @@ class OrdersController extends Controller
             'notes'=>['nullable','string'],
         ]);
 
-        $newStatus = $request->input('status');
 
         $locale = session('app_locale', 'en');
-
 
         //can't change if it is confirmed and delivered
         if($order->confirmed === 'approved' && $order->status === 'delivered'  ){
             return to_route('admin.index.orders');
         }
+
+
+
 
         //Admin change confirmed to Approved
         if(Auth::user()->hasPermissionTo('release-order-confirme') ){
@@ -98,9 +99,8 @@ class OrdersController extends Controller
 
         }
 
-
         //Normal status change
-        if( $order->status !== 'delivered' && $order->status !== $request->input('status')  ){
+        if( $order->status !== 'delivered' && $request->input('status') == "delivered" && $order->status !== $request->input('status')   ){
 
                 // Send notification to customer when change status
                 $order->update(['status' => $request->input('status')]);
@@ -111,7 +111,9 @@ class OrdersController extends Controller
 
 
         //Approve the order
-        if( $order->status === "delivered" && $request->input('confirmed') == "delivered"  ){
+        if( $order->status === "delivered" && $request->input('confirmed') == "approved"  ){
+
+                $order->update(['status' => 'delivered']);
 
             DB::beginTransaction();
 
@@ -121,7 +123,7 @@ class OrdersController extends Controller
 
                     $user = User::find($order->customer_id);
                     $order = $order;
-                    Notification::send($user, new ReleaseOrderDoneNotification($order, $user, $confirm));
+                    Notification::send($user, new ReleaseOrderDoneNotification($order, $user, 'status'));
 
                     DB::commit();
 
@@ -136,14 +138,11 @@ class OrdersController extends Controller
 
         }
 
-
         $message = $locale === 'ar'
             ? "تم تحديث حالة الطلب بنجاح"
             : "Order status updated successfully";
         return to_route('admin.index.orders')
         ->with('success', $message);
-
-
 
 
     }

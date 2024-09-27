@@ -256,7 +256,7 @@ const deleteorder = (order) => {
                                         </span>
                                     </th>
                                     <td>
-                                <div className="flex gap-3">
+                                        <div className="flex gap-3">
                                     {auth.user.permissions.includes("admin-orders-index") && (
 
                                             <div className="flex gap-3">

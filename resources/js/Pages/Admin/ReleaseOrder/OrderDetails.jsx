@@ -188,7 +188,7 @@ export default function Index({ auth, order, error,success,danger }) {
 
 
                                     </div>
-                                    {auth.user.permissions.includes("admin-orders-index") &&
+                                    {auth.user.permissions.includes("admin-orders-index") && delivered !== "delivered" &&
                                     <div className="grid grid-cols-4 p-1">
                                             <TextAreaInput
 

@@ -88,8 +88,8 @@ class StockReleaseOrderController extends Controller
         }
 
         // Send notification to admins
-        $admins = User::role(['admin', 'SystemAdmin'])->get();
-        Notification::send($admins, new CustomerReleaseOrderNotification($order, $user, 'added'));
+        $all = User::role(['admin', 'SystemAdmin','dataEntry'])->get();
+        Notification::send($all, new CustomerReleaseOrderNotification($order, $user, 'added'));
 
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم اضافة الطلب بنجاح" : "Request was sent successfully";

@@ -49,8 +49,8 @@ const resources = {
       "Search": "بحث",
       "Make Release Request": "طلب اعادة منتجات ",
       "Description": "بيان",
-      "Max Quantity": "الكميه الكاملة",
-      "Quantity to Release": "الكميه المطلوبه",
+      "Remaining": "متوفر",
+      "Release": "مطلوب ",
         "Select Product": "اختر المنتج",
           "No product found": "لا يوجد منتجات",
           "Delivery Address": "عنوان التسليم",
@@ -195,8 +195,8 @@ const onSubmit = (e) => {
                       <div className="w-full col-span-2">
                         <InputLabel value={product.product_name} />
                       </div>
-                      <div className="flex col-span-1 gap-2">
-                        <InputLabel value={t("Max Quantity")} />
+                      <div className="flex items-center col-span-2 gap-2">
+                        <InputLabel value={t("Remaining")} />
                         <TextInput
                           type="number"
                           value={product.max_quantity}
@@ -205,17 +205,17 @@ const onSubmit = (e) => {
                         />
                       </div>
 
-                    <div className="flex items-center justify-center col-span-5 gap-10">
-                      <InputLabel value={t("Quantity to Release")} />
+                    <div className="flex items-center justify-center col-span-4 gap-10">
+                      <InputLabel value={t("Release")} />
                       <TextInput
                         type="number"
                         value={product.quantity}
-                        className="block w-1/4 mt-1 dark:bg-gray-700 dark:text-gray-200"
+                        className="block w-1/2 mt-1 dark:bg-gray-700 dark:text-gray-200"
                         onChange={(e) =>
                           handleProductChange(index, "quantity", e.target.value)
                         }
                               />
-                        <img className="object-cover w-32 rounded-md" src={product.product_image} alt={product.product_name}  />
+                        <img className="object-cover rounded-md w-28" src={product.product_image} alt={product.product_name}  />
                       <Button
                         type="button"
                         variant="outline"

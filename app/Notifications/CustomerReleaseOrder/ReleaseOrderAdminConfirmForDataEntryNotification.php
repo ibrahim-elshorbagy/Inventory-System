@@ -41,7 +41,7 @@ class ReleaseOrderAdminConfirmForDataEntryNotification extends Notification
 
             $message = [
                 'ar' => ' تم رفض طلب الارجاع للعميل  ' . $this->user->name,
-                'en' => ' The release order Rejected For' . $this->user->name,
+                'en' => ' The release order Rejected For ' . $this->user->name,
             ];
         }
         return [
