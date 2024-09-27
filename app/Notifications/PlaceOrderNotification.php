@@ -40,7 +40,6 @@ class PlaceOrderNotification extends Notification
      */
     public function toArray($notifiable)
     {
-        $locale = session('app_locale', 'en');
         $message = '';
 
         if ($this->eventType === 'added') {

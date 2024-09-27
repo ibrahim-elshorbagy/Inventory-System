@@ -94,7 +94,7 @@ class UserCRUDController extends Controller
      */
     public function edit(User $user)
     {
-         $roles = Role::whereIn('name', ['admin', 'systemadmin'])->get();
+         $roles = Role::whereNotIn('name', ['customer'])->get();
 
         return inertia('Admin/User/UserCURD/Edit', [
             'user' => new UserCrudResource($user),

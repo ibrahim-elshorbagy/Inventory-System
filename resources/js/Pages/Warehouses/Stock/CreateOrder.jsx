@@ -114,7 +114,7 @@ export default function Create({ auth, customer, warehouses, categories = [] }) 
         >
             <Head title={t("Stocks")} />
             <div className="py-12">
-                <div className="mx-auto sm:px-6 lg:px-8">
+                <div className="mx-auto">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <form onSubmit={onSubmit} className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
 

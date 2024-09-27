@@ -26,6 +26,8 @@ class WarehouseReportResource extends JsonResource
             'product_id' =>  $this->whenLoaded('product',function(){return $this->product->id;}),
             'product_name' =>  $this->whenLoaded('product',function(){return $this->product->name;}),
             'product_image' =>  $this->whenLoaded('product',function(){return $this->product->image_url;}),
+            'product_description' =>  $this->whenLoaded('product',function(){return $this->product->description;}),
+            'product_notes' =>  $this->whenLoaded('product',function(){return $this->product->notes;}),
 
             'category_id' =>  $this->whenLoaded('product',function(){return $this->product->category->id;}),
             'category_name' =>  $this->whenLoaded('product',function(){return $this->product->category->name;}),

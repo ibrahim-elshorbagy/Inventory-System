@@ -22,11 +22,11 @@ const resources = {
     },
     ar: {
         translation: {
-            Dashboard: "لوحة القيادة",
-            Profile: "الملف الشخصي",
+            "Dashboard": "لوحة القيادة",
+            "Profile": "الملف الشخصي",
             "Log Out": "تسجيل خروج",
-            added: "تم إضافة طلب بواسطه",
-            updated: "تم تحديث طلب بواسطة",
+            "added": "تم إضافة طلب بواسطه",
+            "updated": "تم تحديث طلب بواسطة",
             "No new notifications": "لا يوجد أشعارات جديدة",
         },
     },

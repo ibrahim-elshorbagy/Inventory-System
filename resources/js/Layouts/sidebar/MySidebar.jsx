@@ -38,7 +38,7 @@ const resources = {
             "Dashboard": "لوحة التحكم",
             "All Users": "جميع المستخدمين",
             "E-Commerce": "التجارة الإلكترونية",
-            "Products": "المنتجات",
+            "Products": "الاصناف",
             'Main Categories': 'الاصناف الرئيسية ',
             'Sub Categories': 'الاصناف الفرعية',
             "Inventory Management": 'ادارة المخازن',

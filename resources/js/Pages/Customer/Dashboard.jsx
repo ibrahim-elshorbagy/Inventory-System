@@ -23,7 +23,7 @@ const resources = {
     ar: {
         translation: {
             Dashboard: "لوحة التحكم",
-            "Products": "المنتجات",
+            "Products": "المخزون",
             "Total number of products in stock": "عدد المنتجات في المخزن",
             "Orders": "الطلبات",
             "Pending and approved orders": "الطلبات المعلقة والموافقة عليها",

@@ -68,7 +68,7 @@ class DashboardController extends Controller
     {
         $userId = auth()->id();
 
-        $productsCount = Stock::where('user_id', $userId)->count();
+        $productsCount = Stock::where('user_id', $userId)->sum('quantity');
 
         $ordersCount = StockReleaseOrder::where('customer_id', $userId)->whereIn('status', ['pending', 'approved'])->count();
 

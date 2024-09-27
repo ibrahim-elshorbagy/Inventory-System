@@ -24,7 +24,9 @@ const resources = {
       "Category": "الصنف",
       "Subcategory": "الصنف الفرعي",
       "Product Image": "صورة المنتج",
-      "Customer Name": "اسم العميل",
+          "Customer Name": "اسم العميل",
+          'Description': "الوصف",
+      "Notes": "ملاحظات",
     },
   },
 };
@@ -100,6 +102,8 @@ export default function Show({ auth, products, queryParams = null, success, ware
                       <td>{t("Quantity")}</td>
                       <td>{t("Category")}</td>
                       <td>{t("Subcategory")}</td>
+                      <td>{t("Description")}</td>
+                      <td>{t("Notes")}</td>
                       <TableHeading
                         name="created_at"
                         sort_field={queryParams.sort_field}
@@ -152,6 +156,8 @@ export default function Show({ auth, products, queryParams = null, success, ware
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -167,6 +173,8 @@ export default function Show({ auth, products, queryParams = null, success, ware
                           <td className="px-3 py-2 text-nowrap">{product.quantity}</td>
                           <td className="px-3 py-2 text-nowrap">{product.category_name}</td>
                           <td className="px-3 py-2 text-nowrap">{product.subcategory_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{product.product_description}</td>
+                          <td className="px-3 py-2 text-nowrap">{product.product_notes}</td>
 
                           <td className="px-3 py-2 text-nowrap">{product.created_at}</td>
                             <td className="px-3 py-2 text-nowrap">{product.updated_at}</td>

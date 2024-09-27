@@ -34,31 +34,45 @@ class OrdersController extends Controller
         $locale = session('app_locale', 'en');
 
 
-        //can't change if it is confirmed
-        if($order->confirmed === 'approved' ){
+        //can't change if it is confirmed and delivered
+        if($order->confirmed === 'approved' && $order->status === 'delivered'  ){
             return to_route('admin.index.orders');
         }
 
-        // Update the order status
-        $order->status = $newStatus;
-        $order->save();
+        //Admin change confirmed to Approved
+        if(Auth::user()->hasPermissionTo('release-order-confirme') ){
+            $order->confirmed = $request->input('confirmed');
+            $order->save();
+                if($request->confirmed == 'rejected'){
+                $order->update(['status' => 'rejected',]);
+                    $message = $locale === 'ar'? "تم تحديث حالة الطلب بنجاح": "Order status updated successfully";
+                        return to_route('admin.index.orders')->with('success', $message);
+                }
+        }
 
 
-        //change to approved
-        if(Auth::user()->hasPermissionTo('release-order-confirme') && $order->status === "delivered" && $request->input('confirmed') == "approved"  ){
+        //Normal status change
+        if( $order->status !== 'delivered' ){
+            $order->status = $request->input('status');
+            $order->save();
+
+        }
+
+        //Approve the order
+        if( $order->status === "delivered" && $request->input('confirmed') == "delivered"  ){
 
                 $this->confirmed($order);
 
         }
 
-        //change to rejected or pending
-        if(Auth::user()->hasPermissionTo('release-order-confirme') && $order->status !== "delivered" && $request->input('confirmed') !== "approved"  ){
+        // //change to rejected or pending
+        // if(Auth::user()->hasPermissionTo('release-order-confirme') && $order->status !== "delivered" && $request->input('confirmed') !== "approved"  ){
 
-            $order->confirmed = $request->input('confirmed');
-            $order->save();
+        //     $order->confirmed = $request->input('confirmed');
+        //     $order->save();
 
 
-        }
+        // }
 
 
         $message = $locale === 'ar'

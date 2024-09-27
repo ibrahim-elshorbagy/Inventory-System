@@ -81,7 +81,7 @@ export default function Index({ auth, order, error,success }) {
         console.log(data.confirmed === "approved")
         if (data.status === "delivered" && data.confirmed === "approved") {
             const confirmationMessage = t("You Can't Undo This Action. Are You Sure?");
-            
+
             if (!window.confirm(confirmationMessage)) {
             return;
 
@@ -93,6 +93,7 @@ export default function Index({ auth, order, error,success }) {
     };
 
     const [confirmed,setConfirmed]= useState(order.confirmed);
+    const [delivered, setDelivered] = useState(order.status);
 
     return (
         <AuthenticatedLayout
@@ -133,14 +134,13 @@ export default function Index({ auth, order, error,success }) {
 
                                         <div className="col-span-1 mt-4">
                                             <InputLabel htmlFor="status" value={t("Status")} />
-
                                             <SelectInput
                                                 name="status"
                                                 id="status"
                                                 className="block w-full mt-1"
                                                 value={data.status}
                                                 onChange={(e) => setData("status", e.target.value)}
-                                                disabled={confirmed == "approved"}
+                                                disabled={(confirmed !== "approved") || (confirmed === "approved" && delivered === "delivered")}
 
                                             >
                                                 <option value="pending">{t("Pending")}</option>
@@ -157,7 +157,7 @@ export default function Index({ auth, order, error,success }) {
                                                 className="block w-full mt-1"
                                                 value={data.confirmed}
                                                 onChange={(e) => setData("confirmed", e.target.value)}
-                                                disabled={!auth.user.permissions.includes("release-order-confirme") || confirmed == "approved"}
+                                                disabled={!auth.user.permissions.includes("release-order-confirme") || (confirmed === "approved" && delivered === "delivered")}
 
                                             >
                                                 <option value="pending">{t("Pending")}</option>
@@ -167,7 +167,9 @@ export default function Index({ auth, order, error,success }) {
                                         </div>
 
                                     </div>
-                                    {(confirmed !== "approved") && (
+
+
+                                    {!(confirmed === "approved" && delivered === "delivered") && (
                                     <div className="mt-4">
                                         <button type="submit" className="px-4 py-2 text-white rounded bg-burntOrange">
                                         {t("Update Status")}

@@ -28,7 +28,7 @@ class ReportController extends Controller
             ->with([
                 'warehouse:id,name',
 
-                'product:id,name,image_url,category_id,subcategory_id',
+                'product:id,name,image_url,category_id,subcategory_id,description,notes',
                 'product.category:id,name',
                 'product.subCategory:id,name',
             ]);

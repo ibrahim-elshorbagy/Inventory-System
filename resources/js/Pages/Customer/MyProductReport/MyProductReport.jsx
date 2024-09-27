@@ -32,7 +32,9 @@ const resources = {
       "Subcategory": "الصنف الفرعي",
       "Product Image": "صورة المنتج",
       "My Products Report": "تقرير المنتجات",
-      "Order Products Release": "طلب ارجاع منتجات",
+          "Order Products Release": "طلب ارجاع منتجات",
+      "Description":"الوصف",
+      "Notes":"ملاحظات",
     },
   },
 };
@@ -114,6 +116,8 @@ export default function Index({ auth, products, queryParams = null, success }) {
                       <th className="px-3 py-3">{t("Quantity")}</th>
                       <th className="px-3 py-3">{t("Category")}</th>
                       <th className="px-3 py-3">{t("Subcategory")}</th>
+                      <th className="px-3 py-3">{t("Description")}</th>
+                      <th className="px-3 py-3">{t("Notes")}</th>
                       <th className="px-3 py-3">{t("Create Date")}</th>
                       <th className="px-3 py-3">{t("Update Date")}</th>
                       <th className="px-3 py-3 text-center">{t("Product Image")}</th>
@@ -140,6 +144,8 @@ export default function Index({ auth, products, queryParams = null, success }) {
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -155,6 +161,8 @@ export default function Index({ auth, products, queryParams = null, success }) {
                           <td className="px-3 py-2 text-nowrap">{product.quantity}</td>
                           <td className="px-3 py-2 text-nowrap">{product.category_name}</td>
                           <td className="px-3 py-2 text-nowrap">{product.subcategory_name}</td>
+                          <td className="px-3 py-2 text-nowrap">{product.product_description}</td>
+                          <td className="px-3 py-2 text-nowrap">{product.product_notes}</td>
                           <td className="px-3 py-2 text-nowrap">{product.created_at}</td>
                             <td className="px-3 py-2 text-nowrap">{product.updated_at}</td>
                               <td className="flex justify-center px-3 py-2" colSpan="3">

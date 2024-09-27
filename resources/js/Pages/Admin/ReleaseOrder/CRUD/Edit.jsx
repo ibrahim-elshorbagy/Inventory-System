@@ -201,12 +201,10 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
                   key={index}
                   className="grid items-center justify-center grid-cols-8 gap-4 m-4 mb-4 text-center sm:gap-6 sm:mb-6"
                   >
-                  <div className="grid items-center w-full grid-cols-1 col-span-4">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-full">
+                      <div className="w-full col-span-2">
                         <InputLabel value={product.product_name} />
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex col-span-1 gap-2">
                         <InputLabel value={t("Max Quantity")} />
                         <TextInput
                           type="number"
@@ -214,32 +212,28 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
                           className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
                           readOnly
                         />
-                      </div>
                     </div>
-                  </div>
 
-                  <div className="grid items-center w-full grid-cols-1 col-span-4">
-                    <div className="flex items-center justify-center gap-2">
+                  <div className="flex items-center justify-center col-span-5 gap-10">
                       <InputLabel value={t("Quantity to Release")} />
                       <TextInput
                         type="number"
                         value={product.quantity}
-                        className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
+                        className="block w-1/4 mt-1 dark:bg-gray-700 dark:text-gray-200"
                         onChange={(e) =>
                           handleProductChange(index, "quantity", e.target.value)
                         }
                               />
                     <img className="object-cover w-32 rounded-md" src={product.product_image} alt={product.product_name} />
-                              
                       <Button
                         type="button"
                         variant="outline"
                         className="ml-2 text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-800"
                         onClick={(e) => handleDeleteProduct(index, e)}
                       >
-                        <Trash className="w-4 h-4" />
+                                  <Trash className="w-4 h-4" />
+
                       </Button>
-                    </div>
                     <InputError
                       message={errors[`product_quantities.${index}.quantity`]}
                       className="mt-2"

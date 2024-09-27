@@ -192,12 +192,10 @@ const onSubmit = (e) => {
                   key={index}
                   className="grid items-center justify-center grid-cols-8 gap-4 m-4 mb-4 text-center sm:gap-6 sm:mb-6"
                 >
-                  <div className="grid items-center w-full grid-cols-1 col-span-4 ">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-full">
+                      <div className="w-full col-span-2">
                         <InputLabel value={product.product_name} />
                       </div>
-                      <div className="flex gap-2">
+                      <div className="flex col-span-1 gap-2">
                         <InputLabel value={t("Max Quantity")} />
                         <TextInput
                           type="number"
@@ -206,11 +204,8 @@ const onSubmit = (e) => {
                           readOnly
                         />
                       </div>
-                    </div>
-                  </div>
 
-                  <div className="grid items-center w-full grid-cols-1 col-span-4">
-                    <div className="flex items-center justify-center gap-10">
+                    <div className="flex items-center justify-center col-span-5 gap-10">
                       <InputLabel value={t("Quantity to Release")} />
                       <TextInput
                         type="number"
@@ -234,7 +229,6 @@ const onSubmit = (e) => {
                       message={errors[`product_quantities.${index}.quantity`]}
                       className="mt-2"
                     />
-                  </div>
                 </div>
               ))}
 
