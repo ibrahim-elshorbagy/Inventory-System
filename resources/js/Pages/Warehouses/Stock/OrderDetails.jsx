@@ -6,9 +6,8 @@ import i18n from "@/i18nConfig";
 import React from "react";
 import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
-import { useState } from 'react';
 import TextAreaInput from "@/Components/TextAreaInput";
-
+import { useState, useEffect } from "react";
 
 
 //Details for order
@@ -53,7 +52,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth, products,order }) {
+export default function Index({ auth, products,order,danger }) {
     const { t } = useTranslation();
 
     const { data, setData, post } = useForm({
@@ -65,6 +64,22 @@ export default function Index({ auth, products,order }) {
     const handleStatusChange = (e) => {
         setData("status", e.target.value);
     };
+
+    const [visibleDanger, setVisibleDanger] = useState(danger);
+
+    useEffect(() => {
+
+        if (danger) {
+
+        setVisibleDanger(danger);
+
+        const timer = setTimeout(() => {
+        setVisibleDanger(null);
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }
+    }, [danger]);
 
     const onSubmit = (e) => {
         const confirmationMessage = t("You Can't Undo This Action. Are You Sure?");
@@ -152,7 +167,11 @@ export default function Index({ auth, products,order }) {
                     </form>
                     </div>
 
-
+                          {visibleDanger && (
+        <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
+            {visibleDanger}
+        </div>
+                  )}
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">

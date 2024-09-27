@@ -17,6 +17,14 @@ use App\Http\Resources\Product\ProductOrdersResource;
 use App\Models\Product\ReceiveOrder;
 use Illuminate\Support\Facades\Storage;
 
+use App\Models\User;
+use App\Notifications\AdditionOrder\AdditionOrderChangeStatusNotification;
+use App\Notifications\AdditionOrder\AdditionOrderNotification;
+use App\Notifications\AdditionOrder\MyAdditionOrderChangeStatusNotification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
+
 //Create Additions order controller
 class StockController extends Controller
 {
@@ -51,6 +59,12 @@ class StockController extends Controller
     public function addProduct(ReceiveProductRequest $request)
     {
             $data = $request->validated();
+
+
+            DB::beginTransaction();
+            try{
+
+
 
             // Create the receive order
             $receiveOrder = ReceiveOrder::create([
@@ -97,11 +111,26 @@ class StockController extends Controller
                 ]);
             }
 
+            // Send notification to admins
+            $admins = User::role(['admin', 'SystemAdmin'])->get();
+            $user = User::find($data['user_id']);
+            $order = $receiveOrder;
+            Notification::send($admins, new AdditionOrderNotification($order, $user, 'added'));
+
+
+
             $locale = session('app_locale', 'en');
             $message = $locale === 'ar' ? "تم اضافة المنتجات بنجاح" : "Products were added successfully";
 
-            return to_route('stock.customer.orders', $data['user_id'])->with('success', $message);
+            DB::commit();
 
+            return to_route('stock.customer.orders', $data['user_id'])->with('success', $message);
+        }
+            catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('danger' , $e->getMessage());
+        }
     }
 
 
@@ -139,6 +168,7 @@ class StockController extends Controller
         return inertia('Warehouses/Stock/CustomerOrders', [
             'orders' => ProductOrdersResource::collection($orders),
             'user' => $customerInfo,
+            'success'=> session('success')
         ]);
     }
 
@@ -191,6 +221,9 @@ class StockController extends Controller
     public function updateOrder(ReceiveProductRequest $request, $orderId)
     {
         $data = $request->validated();
+
+        DB::beginTransaction();
+        try{
 
         // Retrieve the existing order
         $existingOrder = ReceiveOrder::findOrFail($orderId);
@@ -256,10 +289,24 @@ class StockController extends Controller
             }
         }
 
+        // Send notification to admins
+        $admins = User::role(['admin', 'SystemAdmin'])->get();
+        $user = User::find($existingOrder->user_id);
+        $order = $existingOrder;
+        Notification::send($admins, new AdditionOrderNotification($order, $user, 'updated'));
+
+
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم تحديث المنتجات بنجاح" : "Products were updated successfully";
 
         return to_route('stock.all.orders')->with('success', $message);
+
+        }
+            catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('danger' , $e->getMessage());
+        }
     }
 
 
@@ -297,6 +344,8 @@ class StockController extends Controller
             'status' => ['required', 'in:pending,approved,rejected'],
             "description" => ['nullable', 'string'],
         ]);
+        DB::beginTransaction();
+        try{
 
         if ($order->status === 'approved') {
         return redirect()->back()->with('error', 'You can\'t change the status of this order');
@@ -324,11 +373,47 @@ class StockController extends Controller
             }
         }
 
+            if($order->status === 'approved') {
+            // Send notification to alldataentries to tell them status change
+
+            $alldataentries  = User::role(['dataEntry'])->get();
+            $user = User::find($order->user_id);
+            $order = $order;
+            Notification::send($alldataentries, new AdditionOrderChangeStatusNotification($order, $user, 'approved'));
+
+            //send it to customer
+            Notification::send($user, new MyAdditionOrderChangeStatusNotification($order, $user, 'approved'));
+
+            }
+            if($order->status === 'rejected') {
+
+            // Send notification to cutsomer to tell him status change
+            $alldataentries  = User::role(['dataEntry'])->get();
+
+            $user = User::find($order->user_id);
+
+            $order = $order;
+
+            Notification::send($alldataentries, new AdditionOrderChangeStatusNotification($order, $user, 'rejected'));
+
+            }
+
+
+
+            DB::commit();
+
+
 
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم تحديث حالة الطلب بنجاح" : "Order status was updated successfully";
 
         return to_route('stock.all.orders', $order->user_id)->with('success', $message);
+         }
+            catch (\Exception $e) {
+            DB::rollBack();
+
+            return back()->with('danger' , $e->getMessage());
+        }
 
     }
 

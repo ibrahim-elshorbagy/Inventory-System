@@ -16,7 +16,7 @@ use App\Models\Warehouse\StockReleaseRequest;
 use App\Http\Resources\Admin\ReleaseOrder\OrdereDetialsResource;
 
 use App\Models\User;
-use App\Notifications\PlaceOrderNotification;
+use App\Notifications\CustomerReleaseOrderNotification;
 use Illuminate\Support\Facades\Notification;
 
 class StockReleaseOrderController extends Controller
@@ -84,7 +84,7 @@ class StockReleaseOrderController extends Controller
 
         // Send notification to admins
         $admins = User::role(['admin', 'SystemAdmin'])->get();
-        Notification::send($admins, new PlaceOrderNotification($order, $user, 'added'));
+        Notification::send($admins, new CustomerReleaseOrderNotification($order, $user, 'added'));
 
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم اضافة الطلب بنجاح" : "Request was sent successfully";
@@ -184,7 +184,7 @@ class StockReleaseOrderController extends Controller
 
         // Send notification to admins
         $admins = User::role(['admin', 'SystemAdmin'])->get();
-        Notification::send($admins, new PlaceOrderNotification($order, $user, 'updated'));
+        Notification::send($admins, new CustomerReleaseOrderNotification($order, $user, 'updated'));
 
 
         $locale = session('app_locale', 'en');

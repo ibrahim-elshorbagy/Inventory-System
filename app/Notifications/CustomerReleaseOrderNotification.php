@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PlaceOrderNotification extends Notification
+class CustomerReleaseOrderNotification extends Notification
 {
     use Queueable;
 
@@ -23,36 +23,32 @@ class PlaceOrderNotification extends Notification
 
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
     public function via(object $notifiable): array
     {
         return ['database'];
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
     public function toArray($notifiable)
     {
         $message = '';
 
         if ($this->eventType === 'added') {
-            $message ="added";
+            $message = [
+                'en' => 'New order Release added by Customer' . $this->user->name,
+                'ar' => 'تم إضافة طلب ارجاع من العميل ' . $this->user->name,
+            ];
         } elseif ($this->eventType === 'updated') {
-            $message = "updated";
+            $message = [
+                'en' => 'Release Order updated by Customer' . $this->user->name,
+                'ar' => 'تم تحديث طلب ارجاع من العميل ' . $this->user->name,
+            ];
         }
 
         return [
             'message' => $message,
-            'order_id' => $this->order->id,
-            'customer_name' => $this->user->name,
-            'event_type' => $this->eventType,
+            'url'=> route('stock.show.order', $this->order->id),
+
         ];
+
     }
 }

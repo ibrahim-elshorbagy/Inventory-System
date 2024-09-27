@@ -13,20 +13,12 @@ import { FaBell } from "react-icons/fa"; // Notification bell icon
 import { router } from '@inertiajs/react';
 
 const resources = {
-    en: {
-        translation: {
-            added: "New order added by",
-            updated: "Order updated by",
-
-        },
-    },
+    en: {},
     ar: {
         translation: {
             "Dashboard": "لوحة القيادة",
             "Profile": "الملف الشخصي",
             "Log Out": "تسجيل خروج",
-            "added": "تم إضافة طلب بواسطه",
-            "updated": "تم تحديث طلب بواسطة",
             "No new notifications": "لا يوجد أشعارات جديدة",
         },
     },
@@ -39,17 +31,20 @@ export default function Authenticated({ user, header, children }) {
 
     const [notifications, setNotifications] = useState(user.notifications || []);
 
-    const handleNotificationClick = (id, e, order) => {
+
+    const handleNotificationClick = (id, e, url) => {
         e.preventDefault();
 
-        router.post(route('notifications.markAsRead', [id, order]), {}, {
+        router.post(route('notifications.markAsRead', { id: id }), { url: url }, {
             preserveScroll: true,
             onSuccess: () => {
-                setNotifications((prevNotifications) =>
-                    prevNotifications.filter((notification) => notification.id !== id)
-                );
+                // setNotifications((prevNotifications) =>
+                //     prevNotifications.filter((notification) => notification.id !== id)
+                // );
             }
         });
+
+
     };
 
     const { t } = useTranslation();
@@ -129,37 +124,40 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             {/* Notification Bell for Desktop */}
-                            {(user.roles == "admin" || user.roles == "SystemAdmin") && (
-                                <div className="relative ml-3">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <button className="relative inline-flex items-center p-2 text-sm font-medium text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-full dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
-                                                <FaBell className="w-5 h-5" />
-                                                {notifications.length > 0 && (
-                                                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                                                        {notifications.length}
-                                                    </span>
-                                                )}
-                                            </button>
-                                        </Dropdown.Trigger>
-                                        <Dropdown.Content>
-                                            {notifications.length > 0 ? (
-                                                notifications.map((notification) => (
-                                                    <Dropdown.Link
-                                                        key={notification.id}
-                                                        onClick={(e) => handleNotificationClick(notification.id, e, notification.data.order_id)} // Pass both notification.id and the event
-                                                        as="button"
-                                                    >
-                                                        {t(notification.data.message)} {notification.data.customer_name}
-                                                    </Dropdown.Link>
-                                                ))
-                                            ) : (
-                                                <div className="p-2 text-gray-500">{t("No new notifications")}</div>
+                            <div className="relative ml-3">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button className="relative inline-flex items-center p-2 text-sm font-medium text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-full dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
+                                            <FaBell className="w-5 h-5" />
+                                            {notifications.length > 0 && (
+                                                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                                                    {notifications.length}
+                                                </span>
                                             )}
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
-                            )}
+                                        </button>
+                                    </Dropdown.Trigger>
+
+
+                                    <Dropdown.Content>
+                                        {notifications.length > 0 ? (
+                                            notifications.map((notification) => (
+                                                <Dropdown.Link
+                                                    key={notification.id}
+                                                    onClick={(e) => handleNotificationClick(notification.id, e, notification.data.url)} // Pass both notification.id and the event
+                                                    as="button"
+                                                >
+                                                    {direction === "rtl" ? notification.data.message.ar : notification.data.message.en}
+
+                                                </Dropdown.Link>
+                                            ))
+                                        ) : (
+                                            <div className="p-2 text-gray-500">{t("No new notifications")}</div>
+                                        )}
+                                    </Dropdown.Content>
+
+
+                                </Dropdown>
+                            </div>
 
                             {/* Profile and Log Out Links */}
                             <div className="relative ml-3">

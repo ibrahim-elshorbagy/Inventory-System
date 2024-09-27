@@ -43,7 +43,7 @@ Route::get('customers/dashboard', [DashboardController::class, 'CustomerDashboar
 Route::post('/change-language', [DashboardController::class, 'changeLanguage'])->name('language.change');
 
 
-Route::post('/notifications/{id}/markAsRead/{order}', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
+Route::post('/notifications/markAsRead/', [DashboardController::class, 'markAsRead'])->name('notifications.markAsRead');
 
 
 //--------------------------------------------------------------------------------------------- Top permissions

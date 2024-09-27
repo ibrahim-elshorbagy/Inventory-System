@@ -23,15 +23,15 @@ class DashboardController extends Controller
         return back();
     }
 
-    public function markAsRead($id,$order)
+    public function markAsRead(Request $request)
     {
         $user = Auth::user();
+        $data=$request->validate(['url'=>['required'], 'id'=>['required']]);
 
-        $notification= $user->notifications()->where('id', $id)->first();
+        // $notification= $user->notifications()->where('id', $id)->first();
+        // $notification->markAsRead();
 
-        $notification->markAsRead();
-
-        return to_route('admin.show.order',$order);
+        return redirect($data['url']);
     }
 
 
