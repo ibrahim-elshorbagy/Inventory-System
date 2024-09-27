@@ -17,7 +17,9 @@ use App\Http\Resources\Customer\CustomerProductsResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use App\Models\User;
+use App\Notifications\CustomerReleaseOrder\CustomerReleaseOrderNotification;
 use App\Notifications\CustomerReleaseOrder\ReleaseOrderByAdminNotification;
+use App\Notifications\CustomerReleaseOrder\ReleaseOrderByDateEntryToAdminNotification;
 
 class OrdersCRUDController extends Controller
 {
@@ -88,6 +90,9 @@ class OrdersCRUDController extends Controller
         $order = $order;
         Notification::send($user, new ReleaseOrderByAdminNotification($order, $user, 'added'));
 
+        // Send notification to admins
+        $admins = User::role(['admin', 'SystemAdmin'])->get();
+        Notification::send($admins, new ReleaseOrderByDateEntryToAdminNotification($order, $user, 'added'));
 
         $locale = session('app_locale', 'en');
         $message = $locale === 'ar' ? "تم اضافة الطلب بنجاح" : "Request was sent successfully";
@@ -107,13 +112,6 @@ class OrdersCRUDController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(StockReleaseOrder $stockReleaseOrder)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -215,6 +213,10 @@ class OrdersCRUDController extends Controller
         $user = User::find($request->customer_id);
         $order = $order;
         Notification::send($user, new ReleaseOrderByAdminNotification($order, $user, 'updated'));
+
+        // Send notification to admins
+        $admins = User::role(['admin', 'SystemAdmin'])->get();
+        Notification::send($admins, new ReleaseOrderByDateEntryToAdminNotification($order, $user, 'updated'));
 
 
         $locale = session('app_locale', 'en');

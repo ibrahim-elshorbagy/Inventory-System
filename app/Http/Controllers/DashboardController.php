@@ -29,8 +29,8 @@ class DashboardController extends Controller
         $user = Auth::user();
         $data=$request->validate(['url'=>['required'], 'id'=>['required']]);
 
-        $notification= $user->notifications()->where('id', $data['id'])->first();
-        $notification->markAsRead();
+        // $notification= $user->notifications()->where('id', $data['id'])->first();
+        // $notification->markAsRead();
 
         return redirect($data['url']);
     }

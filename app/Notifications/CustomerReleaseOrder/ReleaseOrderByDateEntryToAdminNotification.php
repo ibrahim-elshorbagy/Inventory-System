@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class CustomerReleaseOrderNotification extends Notification
+class ReleaseOrderByDateEntryToAdminNotification extends Notification
 {
     use Queueable;
 
@@ -35,12 +35,12 @@ class CustomerReleaseOrderNotification extends Notification
         if ($this->eventType === 'added') {
             $message = [
                 'en' => ' New order Release added by Customer ' . $this->user->name,
-                'ar' => ' تم إضافة طلب ارجاع من العميل ' . $this->user->name,
+                'ar' => ' تم إضافة طلب ارجاع من الاداره الي العميل ' . $this->user->name,
             ];
         } elseif ($this->eventType === 'updated') {
             $message = [
                 'en' => ' Release Order updated by Customer ' . $this->user->name,
-                'ar' => ' تم تحديث طلب ارجاع من العميل ' . $this->user->name,
+                'ar' => ' تم تحديث طلب ارجاع من الاداره الي العميل ' . $this->user->name,
             ];
         }
 

@@ -47,7 +47,7 @@ class AdditionOrderNotification extends Notification
 
         return [
             'message' => $message,
-            'url'=> route('admin.show.order', $this->order->id),
+            'url'=> route('stock.show.order', $this->order->id),
 
         ];
 

@@ -38,9 +38,9 @@ export default function Authenticated({ user, header, children }) {
         router.post(route('notifications.markAsRead', { id: id }), { url: url }, {
             preserveScroll: true,
             onSuccess: () => {
-                setNotifications((prevNotifications) =>
-                    prevNotifications.filter((notification) => notification.id !== id)
-                );
+                // setNotifications((prevNotifications) =>
+                //     prevNotifications.filter((notification) => notification.id !== id)
+                // );
             }
         });
 
