@@ -33,7 +33,9 @@ const resources = {
         "Image": "الصورة",
         "Warehouse Report For A Customer": "تقرير المخزن للعميل",
         "Print Report": "طباعة التقرير",
-        "New Add Order": "طلب أضافة جديد",
+          "New Add Order": "طلب أضافة جديد",
+          "Description": "الوصف",
+        'Notes': 'ملاحظات',
     },
   },
 };
@@ -109,6 +111,8 @@ export default function Index({ auth, user, products, queryParams = null }) {
                       <th className="px-3 py-3">{t("Quantity")}</th>
                       <th className="px-3 py-3">{t("Category")}</th>
                       <th className="px-3 py-3">{t("Subcategory")}</th>
+                      <th className="px-3 py-3">{t("Description")}</th>
+                      <th className="px-3 py-3">{t("Notes")}</th>
                       <th className="px-3 py-3">{t("Warehouse")}</th>
                       <th className="px-3 py-3">{t("Create Date")}</th>
                       <th className="px-3 py-3">{t("Update Date")}</th>
@@ -155,6 +159,8 @@ export default function Index({ auth, user, products, queryParams = null }) {
                           <td className="px-3 py-2">{product.quantity}</td>
                           <td className="px-3 py-2">{product.category_name}</td>
                           <td className="px-3 py-2">{product.subcategory_name}</td>
+                          <td className="px-3 py-2">{product.product_notes}</td>
+                          <td className="px-3 py-2">{product.product_description}</td>
                           <td className="px-3 py-2">{product.warehouse_name}</td>
                           <td className="px-3 py-2">{product.created_at}</td>
                           <td className="px-3 py-2">{product.updated_at}</td>
