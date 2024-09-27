@@ -27,6 +27,7 @@ class OrdersController extends Controller
         $request->validate([
             'status' => ['required', 'in:pending,approved,rejected,delivered'],
             'confirmed'=>['in:pending,approved,rejected'],
+            'notes'=>['nullable','string'],
         ]);
 
         $newStatus = $request->input('status');
@@ -41,12 +42,18 @@ class OrdersController extends Controller
 
         //Admin change confirmed to Approved
         if(Auth::user()->hasPermissionTo('release-order-confirme') ){
+
+            $order->update(['notes' => $request->input('notes')]);
+
             $order->confirmed = $request->input('confirmed');
             $order->save();
+
                 if($request->confirmed == 'rejected'){
-                $order->update(['status' => 'rejected',]);
+
+                $order->update(['status' => 'rejected']);
                     $message = $locale === 'ar'? "تم تحديث حالة الطلب بنجاح": "Order status updated successfully";
-                        return to_route('admin.index.orders')->with('success', $message);
+                    return to_route('admin.index.orders')->with('success', $message);
+
                 }
         }
 

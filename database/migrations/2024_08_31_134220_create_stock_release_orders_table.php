@@ -19,6 +19,8 @@ return new class extends Migration
 
             $table->text('description')->nullable();
             $table->text('delivery_address')->nullable();
+            
+            $table->text('notes')->nullable();
 
             $table->enum('status', ['pending', 'approved', 'rejected','delivered'])->default('pending');
             $table->enum('confirmed', ['pending', 'approved', 'rejected'])->default('pending');

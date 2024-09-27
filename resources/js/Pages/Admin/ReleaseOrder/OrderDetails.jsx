@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 import TableHeading from "@/Components/TableHeading";
 import InputLabel from "@/Components/InputLabel";
 import SelectInput from "@/Components/SelectInput";
+import TextAreaInput from "@/Components/TextAreaInput";
 
 const resources = {
     en: {
@@ -55,7 +56,7 @@ const resources = {
             "Image": "الصورة",
             "Admin Confirmation": "تأكيد الادارة",
             "You Can't Undo This Action. Are You Sure?":"لا يمكن التراجع عن هذا الإجراء. هل أنت متاكد؟",
-
+            "Notes": "ملاحظات",
 
 
         },
@@ -73,6 +74,7 @@ export default function Index({ auth, order, error,success }) {
 
         status: order.status,
         confirmed: order.confirmed,
+        notes:order.notes
     });
 
 
@@ -126,6 +128,7 @@ export default function Index({ auth, order, error,success }) {
                                     <p>{t("Customer Address")}: {order.customer_address}</p>
                                     <p>{t("Order Description")}: {order.description}</p>
                                     <p>{t("Delivery Address")}: {order.delivery_address}</p>
+                                    <p>{t("Notes")}: {data.notes}</p>
                                 </section>
 
                                 {/* Status Change Form */}
@@ -166,8 +169,23 @@ export default function Index({ auth, order, error,success }) {
                                             </SelectInput>
                                         </div>
 
-                                    </div>
 
+
+                                    </div>
+                                    {auth.user.permissions.includes("admin-orders-index") &&
+                                    <div className="grid grid-cols-4 p-1">
+                                            <TextAreaInput
+
+                                                id={`notes`}
+                                                type="text"
+                                                name={`notes`}
+                                                value={data.notes}
+                                                onChange={(e) => setData("notes", e.target.value)}
+                                                placeholder={t("Notes")}
+                                                className="block w-full h-32 mt-1"
+                                            />
+                                        </div>
+                                    }
 
                                     {!(confirmed === "approved" && delivered === "delivered") && (
                                     <div className="mt-4">

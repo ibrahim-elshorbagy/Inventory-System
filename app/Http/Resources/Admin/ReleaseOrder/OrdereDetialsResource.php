@@ -29,6 +29,7 @@ class OrdereDetialsResource extends JsonResource
             'created_at' => (new Carbon($this->created_at))->format('Y-m-d'),
             'updated_at' => (new Carbon($this->updated_at))->format('Y-m-d'),
             'confirmed'=>$this->confirmed,
+            'notes'=>  $this->notes,
             // Include requests data (products)
             'requests' => RequestProductsResource::collection($this->whenLoaded('requests')),
 
