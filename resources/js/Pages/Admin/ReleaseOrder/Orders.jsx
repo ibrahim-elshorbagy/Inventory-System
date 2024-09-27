@@ -75,6 +75,7 @@ export default function Index({ auth, orders, queryParams = null, success ,dange
     } else {
       delete queryParams[name];
     }
+      delete queryParams.page;
     router.get(route("admin.index.orders"), queryParams);
   };
 

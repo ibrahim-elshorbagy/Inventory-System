@@ -51,6 +51,7 @@ export default function Index({ auth, warehouses, queryParams = null, success,da
     } else {
       delete queryParams[name];
     }
+      delete queryParams.page;
     router.get(route("warehouse.index"), queryParams);
   };
 

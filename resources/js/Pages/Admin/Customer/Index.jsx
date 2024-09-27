@@ -64,6 +64,7 @@ export default function Index({ auth, users, queryParams = null, success ,danger
     } else {
       delete queryParams[name];
     }
+    delete queryParams.page;
     router.get(route("customer.index"), queryParams);
   };
 

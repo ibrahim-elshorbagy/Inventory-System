@@ -24,7 +24,6 @@ class StockReleaseRequestResource extends JsonResource
             'product_name' => $this->whenLoaded('stock', fn() => $this->stock->product->name),
             'product_image' => $this->whenLoaded('stock', fn() => $this->stock->product->image_url),
             'max_quantity' => $this->whenLoaded('stock', fn() => $this->stock->quantity),
-            ''
 
         ];
     }

@@ -50,6 +50,7 @@ export default function Index({ auth, subCategories, queryParams = null, success
     } else {
       delete queryParams[name];
     }
+      delete queryParams.page;
     router.get(route("subCategory.index"), queryParams);
   };
 

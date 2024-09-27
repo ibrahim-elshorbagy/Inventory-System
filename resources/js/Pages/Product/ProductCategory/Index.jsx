@@ -49,6 +49,7 @@ export default function Index({ auth, categories, queryParams = null, success,da
     } else {
       delete queryParams[name];
     }
+      delete queryParams.page;
     router.get(route("category.index"), queryParams);
   };
 
