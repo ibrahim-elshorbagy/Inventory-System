@@ -222,92 +222,85 @@ class StockController extends Controller
     {
         $data = $request->validated();
         DB::beginTransaction();
-        try{
+        try {
+            // Retrieve the existing order
+            $existingOrder = ReceiveOrder::findOrFail($orderId);
 
-        // Retrieve the existing order
-        $existingOrder = ReceiveOrder::findOrFail($orderId);
+            // Get existing product IDs
+            $existingProductIds = $existingOrder->products->pluck('id')->toArray();
 
-        // Get existing product IDs
-        $existingProductIds = $existingOrder->products->pluck('id')->toArray();
+            // Track product IDs that are updated or created
+            $updatedProductIds = [];
 
-        // Track product IDs that are updated or created
-        $updatedProductIds = [];
-
-        // Iterate over the product quantities
-        foreach ($data['product_quantities'] as $productData) {
-            // Handle the image upload
-            if (isset($productData['image_url']) && !is_string($productData['image_url'])) {
-                // Generate the path: userid/orderid/
-                $path = 'uploads/' . $data['user_id'] . '/' . $existingOrder->id;
-
-                // Get the original file name and store the image
-                $imageName = $productData['image_url']->getClientOriginalName();
-                $imagePath = $productData['image_url']->storeAs($path, $imageName, 'public');
-
-                // Use Storage::url() to generate the full image URL
-                $imageUrl = Storage::url($imagePath);
-            }
-            else {
-                // No new image provided, keep the existing image URL or set to null
-                $imageUrl = $productData['image_url'] ?? 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png';
-            }
-
-            // Update or create the product
-            $product = Product::updateOrCreate(
-                ['id' => $productData['id'] ?? null],
-                [
-                    'receive_order_id' => $existingOrder->id,
-                    'name' => $productData['name'],
-                    'quantity' => $productData['quantity'],
-                    'description' => $productData['description'],
-                    'notes' => $productData['notes'],
-                    'image_url' => $imageUrl,
-                    'category_id' => $productData['category_id'],
-                    'subcategory_id' => $productData['subcategory_id'],
-                    'user_id' => $data['user_id'],
-                    'warehouse_id' => $productData['warehouse_id'],
-                ]
-            );
-
-            $updatedProductIds[] = $product->id;
-        }
-
-        // Delete products that were not updated or created
-        $productsToDelete = array_diff($existingProductIds, $updatedProductIds);
-        foreach ($productsToDelete as $productId) {
-            $product = Product::find($productId);
-            if ($product) {
-                // Delete image from storage if it exists
-                if ($product->image_url) {
-                    $imagePath = str_replace('/storage/', '', $product->image_url);
-                    if (Storage::disk('public')->exists($imagePath)) {
-                        Storage::disk('public')->delete($imagePath);
-                    }
+            // Iterate over the product quantities
+            foreach ($data['product_quantities'] as $productData) {
+                // Handle the image upload if a new image is provided
+                if (isset($productData['image_url']) && !is_string($productData['image_url'])) {
+                    $path = 'uploads/' . $data['user_id'] . '/' . $existingOrder->id;
+                    $imageName = $productData['image_url']->getClientOriginalName();
+                    $imagePath = $productData['image_url']->storeAs($path, $imageName, 'public');
+                    $imageUrl = Storage::url($imagePath);
+                } else {
+                    // No new image provided, keep the existing image URL
+                    $imageUrl = $productData['image_url'] ?? 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png';
                 }
-                $product->delete();
+
+                // Update or create the product
+                $product = Product::updateOrCreate(
+                    ['id' => $productData['id'] ?? null],
+                    [
+                        'receive_order_id' => $existingOrder->id,
+                        'name' => $productData['name'],
+                        'quantity' => $productData['quantity'],
+                        'description' => $productData['description'],
+                        'notes' => $productData['notes'],
+                        'image_url' => $imageUrl,
+                        'category_id' => $productData['category_id'],
+                        'subcategory_id' => $productData['subcategory_id'],
+                        'user_id' => $data['user_id'],
+                        'warehouse_id' => $productData['warehouse_id'],
+                    ]
+                );
+
+                $updatedProductIds[] = $product->id;
             }
-        }
 
-        // Send notification to admins
-        $admins = User::role(['admin', 'SystemAdmin'])->get();
-        $user = User::find($existingOrder->user_id);
-        $order = $existingOrder;
-        Notification::send($admins, new AdditionOrderNotification($order, $user, 'updated'));
+            // Identify products to delete
+            $productsToDelete = array_diff($existingProductIds, $updatedProductIds);
 
+            // Delete only the products marked for deletion
+            foreach ($productsToDelete as $productId) {
+                $product = Product::find($productId);
+                if ($product) {
+                    // Delete image from storage only for products marked for deletion
+                    if ($product->image_url) {
+                        $imagePath = str_replace('/storage/', '', $product->image_url);
+                        if (Storage::disk('public')->exists($imagePath)) {
+                            Storage::disk('public')->delete($imagePath);
+                        }
+                    }
+                    // Remove product from database
+                    $product->delete();
+                }
+            }
 
-        $locale = session('app_locale', 'en');
-        $message = $locale === 'ar' ? "تم تحديث المنتجات بنجاح" : "Products were updated successfully";
-        DB::commit();
+            // Send notification to admins
+            $admins = User::role(['admin', 'SystemAdmin'])->get();
+            $user = User::find($existingOrder->user_id);
+            $order = $existingOrder;
+            Notification::send($admins, new AdditionOrderNotification($order, $user, 'updated'));
 
-        return to_route('stock.all.orders')->with('success', $message);
+            $locale = session('app_locale', 'en');
+            $message = $locale === 'ar' ? "تم تحديث المنتجات بنجاح" : "Products were updated successfully";
+            DB::commit();
 
-        }
-            catch (\Exception $e) {
+            return to_route('stock.all.orders')->with('success', $message);
+        } catch (\Exception $e) {
             DB::rollBack();
-
-            return back()->with('danger' , $e->getMessage());
+            return back()->with('danger', $e->getMessage());
         }
     }
+
 
 
     /**
@@ -484,7 +477,7 @@ class StockController extends Controller
             ->with([
                 'warehouse:id,name',
 
-                'product:id,name,image_url,category_id,subcategory_id',
+                'product:id,name,image_url,category_id,subcategory_id,description,notes',
                 'product.category:id,name',
                 'product.subCategory:id,name',
             ])

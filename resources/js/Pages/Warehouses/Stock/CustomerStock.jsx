@@ -141,6 +141,8 @@ export default function Index({ auth, user, products, queryParams = null }) {
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
                       <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
+                      <th className="px-3 py-3"></th>
                     </tr>
                   </thead>
 
