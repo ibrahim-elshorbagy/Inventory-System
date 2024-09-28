@@ -158,7 +158,6 @@ export default function Authenticated({ user, header, children }) {
 
                                 </Dropdown>
                             </div>
-
                             {/* Profile and Log Out Links */}
                             <div className="relative ml-3">
                                 <Dropdown>

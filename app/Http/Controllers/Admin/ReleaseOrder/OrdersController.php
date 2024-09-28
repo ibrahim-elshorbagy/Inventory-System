@@ -125,6 +125,10 @@ class OrdersController extends Controller
                     $order = $order;
                     Notification::send($user, new ReleaseOrderDoneNotification($order, $user, 'status'));
 
+                    $order = $order;
+                    $admins = User::role(['admin', 'SystemAdmin'])->get();
+                    Notification::send($admins, new ReleaseOrderAdminConfirmForDataEntryNotification($order, $user, 'status-admin'));
+
                     DB::commit();
 
                 }

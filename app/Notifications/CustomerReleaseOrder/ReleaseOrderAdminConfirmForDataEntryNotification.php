@@ -43,6 +43,11 @@ class ReleaseOrderAdminConfirmForDataEntryNotification extends Notification
                 'ar' => ' تم رفض طلب الارجاع للعميل  ' . $this->user->name,
                 'en' => ' The release order Rejected For ' . $this->user->name,
             ];
+        }elseif($this->eventType === 'status-admin') {
+            $message = [
+                'ar' => '  تم تسليم طلب الارجاع االي العميل  ' . $this->user->name ,
+                'en' => ' The release order Delivered to Customer ' . $this->user->name ,
+            ];
         }
         return [
             'message' => $message,
