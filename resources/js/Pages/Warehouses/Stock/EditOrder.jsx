@@ -11,6 +11,7 @@ import { Trash } from "lucide-react";
 import TextAreaInput from "@/Components/TextAreaInput";
 import Input from "@/Components/ui/input";
 import i18n from "@/i18nConfig";
+import { FaImages } from "react-icons/fa";
 
 const resources = {
     en: {
@@ -127,7 +128,7 @@ export default function Edit({ auth, customer, warehouses, products, order, cate
             <div className="py-12">
                 <div className="mx-auto">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <form onSubmit={onSubmit} className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                        <form onSubmit={onSubmit} className="p-4 bg-white shadow dark:bg-gray-800 sm:rounded-lg">
                             <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                                 <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
@@ -240,21 +241,33 @@ export default function Edit({ auth, customer, warehouses, products, order, cate
                                                     ))}
                                                 </SelectInput>
                                             </td>
-                                                <td className="w-56 p-1">
+                                                <td className="p-1 w-36">
                                                     <div className="flex w-full gap-2">
-                                                        {/* File input for uploading a new image */}
-                                                        <Input
-                                                            type="file"
-                                                            id={`image_${index}`}
-                                                            className="block mt-1 w-36"
-                                                            onChange={(e) => handleImageUpload(index, e.target.files[0])}
-                                                        />
+                                                           <div className="flex items-center">
+                                                            {/* Hidden file input */}
+                                                            <Input
+                                                                type="file"
+                                                                id={`image_${index}`}
+                                                                className="hidden"
+                                                                onChange={(e) => handleImageUpload(index, e.target.files[0])}
+                                                            />
+
+                                                            {/* Custom button or icon to trigger file input */}
+                                                            <label
+                                                                htmlFor={`image_${index}`}
+                                                                className="inline-flex items-center p-2 text-gray-500 cursor-pointer hover:text-blue-500"
+                                                            >
+                                                                <FaImages  className="text-lg" />
+
+                                                            </label>
+                                                            </div>
+
                                                         {/* Show the current or newly uploaded image as a preview */}
                                                         {(selection.image_url || selection.image_show) && (
                                                             <img
                                                                 src={selection.image_show || selection.image_url}
                                                                 alt="Product Image"
-                                                                className="object-cover w-1/4 h-10 rounded"
+                                                                className="object-cover h-20 rounded w-fit"
                                                             />
                                                         )}
                                                     </div>

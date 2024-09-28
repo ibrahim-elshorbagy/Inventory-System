@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import TextAreaInput from "@/Components/TextAreaInput";
 import Input from "@/Components/ui/input";
+import { FaImages } from "react-icons/fa";
 
 
 //this page for start new adding order with products to customer page
@@ -116,7 +117,7 @@ export default function Create({ auth, customer, warehouses, categories = [] }) 
             <div className="py-12">
                 <div className="mx-auto">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <form onSubmit={onSubmit} className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                        <form onSubmit={onSubmit} className="p-4 bg-white shadow dark:bg-gray-800 sm:rounded-lg">
 
                             <hr className="my-6 dark:border-gray-600" />
 
@@ -233,20 +234,29 @@ export default function Create({ auth, customer, warehouses, categories = [] }) 
                                                     ))}
                                                 </SelectInput>
                                             </td>
-                                            <td className="w-56 p-1">
+                                            <td className="p-1 w-36">
                                                 <div className="flex w-full gap-2">
+                                                    <div className="flex items-center">
+                                                            <Input
+                                                            type="file"
+                                                            id={`image_${index}`}
+                                                            className="hidden"
+                                                            onChange={(e) => handleImageUpload(index, e.target.files[0])}
+                                                        />
+                                                        <label
+                                                            htmlFor={`image_${index}`}
+                                                            className="inline-flex items-center p-2 text-gray-500 cursor-pointer hover:text-blue-500"
+                                                        >
+                                                            <FaImages  className="text-lg" />
 
-                                                <Input
-                                                    type="file"
-                                                    id={`image_${index}`}
-                                                    className="block w-full mt-1"
-                                                    onChange={(e) => handleImageUpload(index, e.target.files[0])}
-                                                />
+                                                        </label>
+                                                    </div>
+
                                                  {(selection.image_url || selection.image_show) && (
                                                             <img
                                                                 src={selection.image_show || selection.image_url}
                                                                 alt="Product Image"
-                                                                className="object-cover w-1/4 h-10 rounded"
+                                                                className="object-cover h-20 rounded w-fit"
                                                             />
                                                     )}
                                                 </div>
