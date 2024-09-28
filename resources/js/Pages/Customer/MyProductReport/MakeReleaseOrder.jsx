@@ -42,7 +42,6 @@ const resources = {
       "Select Warehouse": "اختر المخزن",
       "Quantity": "الكميه",
       "Product": "المنتج",
-      "Select Product": "اختر المنتج",
       "Delete": "حذف",
       "Add Another Product": "اضافة منتج اخر",
       "Unit": "الوحدة",

@@ -51,7 +51,6 @@ const resources = {
       "Description": "بيان",
       "Remaining": "المتوفر",
       "Release": "مطلوب",
-        "Select Product": "اختر المنتج",
           "No product found": "لا يوجد منتجات",
           "Delivery Address": "عنوان التسليم",
       "No products selected": "لم يتم تحديد المنتجات",
