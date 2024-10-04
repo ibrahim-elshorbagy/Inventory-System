@@ -34,7 +34,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Show({ auth, products, queryParams = null, success, warehouse }) {
+export default function Show({ auth,site_settings, products, queryParams = null, success, warehouse }) {
   const { t } = useTranslation();
 
   queryParams = queryParams || {};
@@ -69,7 +69,9 @@ export default function Show({ auth, products, queryParams = null, success, ware
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+                        site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -78,7 +80,7 @@ export default function Show({ auth, products, queryParams = null, success, ware
         </div>
       }
     >
-      <Head title={t("Warehouse")} />
+      <Head title={site_settings.websiteName + " - " +t("Warehouse")} />
 
       <div className="">
         <div className="mx-auto ">

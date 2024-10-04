@@ -44,7 +44,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Edit({ auth, customer, warehouses, products, order, categories = [] }) {
+export default function Edit({ auth,site_settings, customer, warehouses, products, order, categories = [] }) {
     const { t } = useTranslation();
 
     // Ensure products.data is always an array
@@ -116,6 +116,8 @@ export default function Edit({ auth, customer, warehouses, products, order, cate
     return (
         <AuthenticatedLayout
             user={auth.user}
+                          site_settings={site_settings}
+
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -124,7 +126,7 @@ export default function Edit({ auth, customer, warehouses, products, order, cate
                 </div>
             }
         >
-            <Head title={t("Edit Order")} />
+            <Head title={site_settings.websiteName + " - " +t("Edit Order")} />
             <div className="">
                 <div className="mx-auto">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">

@@ -8,7 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next"; // Import the useTranslation hook
 import i18n from "@/i18nConfig";
 
-export default function Create({ auth, user, roles }) {
+export default function Create({ auth,site_settings, user, roles }) {
 
     const resources = {
     en: {
@@ -47,6 +47,8 @@ i18n.addResources("ar", "translation", resources.ar.translation);
   return (
     <AuthenticatedLayout
       user={auth.user}
+          site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -55,7 +57,7 @@ i18n.addResources("ar", "translation", resources.ar.translation);
         </div>
       }
     >
-      <Head title={t("Users")} />
+      <Head title={site_settings.websiteName + " - " +t("Users")} />
 
       <div className="">
         <div className="mx-auto max-w-7xl ">

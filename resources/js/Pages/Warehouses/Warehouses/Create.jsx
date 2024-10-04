@@ -32,7 +32,7 @@ import i18n from "@/i18nConfig";
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Create({ auth, user }) {
+export default function Create({ auth,site_settings, user }) {
   const { t } = useTranslation(); // Hook to get translations
 
   const { data, setData, post, errors, reset } = useForm({
@@ -48,16 +48,18 @@ export default function Create({ auth, user }) {
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+                        site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight  dark:text-gray-200">
+          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
             {t("Create Warehouse")}
           </h2>
         </div>
       }
     >
-      <Head title={t("Warehouses")} />
+      <Head title={site_settings.websiteName + " - " +t("Warehouses")} />
 
       <div className="">
         <div className="mx-auto max-w-7xl ">

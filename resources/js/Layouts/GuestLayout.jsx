@@ -28,7 +28,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Guest({ children }) {
+export default function Guest({ children ,site_settings}) {
     const { t } = useTranslation();
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
@@ -55,7 +55,11 @@ export default function Guest({ children }) {
                         <div className="flex">
                             <div className="flex items-center shrink-0">
                                 <Link href="/">
-                                    <ApplicationLogo className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200" />
+                                                <img
+                                                    src={site_settings.websiteLogo}
+                                                    alt="Logo"
+                                                    className="block w-auto text-gray-800 fill-current h-9 dark:text-gray-200"
+                                    />
                                 </Link>
                             </div>
                         </div>
@@ -152,7 +156,7 @@ export default function Guest({ children }) {
              <footer dir="ltr" className="py-6 text-white bg-gray-950">
                 <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">
                     <div className="flex flex-col items-center justify-center mb-4 text-sm md:text-base md:mb-0 md:block">
-                        Inventory System By &nbsp;<a href="https://ibrahim-elshorbagy.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Ibrahim Elshorbagy</a>
+                        Inventory System By &nbsp;<a href="https://mostaql.com/u/ibrahim_shorbgy" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Ibrahim Elshorbagy</a>
                     </div>
 
                     <div className="grid grid-cols-2 gap-5">

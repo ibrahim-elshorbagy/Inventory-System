@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SiteSetting\SiteSettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Admin\User\UserCRUDController;
 use App\Http\Controllers\ProfileController;
@@ -51,6 +52,13 @@ Route::group(['middleware' => ['permission:for-SystemAdmin-manage-users']], func
     Route::resource('admin/user', UserCRUDController::class);
 });
 
+    //Site Settings
+Route::group(['middleware' => ['permission:for-SystemAdmin-manage-site-settings']], function () {
+
+        Route::get('admin/settings', [SiteSettingController::class, 'index'])->name('admin.settings.index');
+        Route::post('admin//settings/update', [SiteSettingController::class, 'update'])->name('admin.settings.update');
+
+    });
 
 //--------------------------------------------------------------------------------------------- Profile
 Route::middleware('auth')->group(function () {

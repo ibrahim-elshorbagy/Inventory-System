@@ -65,7 +65,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth, order, error,success }) {
+export default function Index({ auth,site_settings, order, error,success }) {
     const { t } = useTranslation();
 
 
@@ -97,6 +97,8 @@ export default function Index({ auth, order, error,success }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
+                          site_settings={site_settings}
+
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -108,7 +110,7 @@ export default function Index({ auth, order, error,success }) {
                 </div>
             }
         >
-            <Head title={t("Orders Report")} />
+            <Head title={site_settings.websiteName + " - " +t("Orders Report")} />
 
 
             <div className="">

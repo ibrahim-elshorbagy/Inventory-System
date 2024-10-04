@@ -47,7 +47,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth, user = null, orders, queryParams = null, success,danger }) {
+export default function Index({ auth,site_settings, user = null, orders, queryParams = null, success,danger }) {
     const { t } = useTranslation();
 
     queryParams = queryParams || {};
@@ -97,6 +97,8 @@ export default function Index({ auth, user = null, orders, queryParams = null, s
     return (
         <AuthenticatedLayout
             user={auth.user}
+                          site_settings={site_settings}
+
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -115,7 +117,7 @@ export default function Index({ auth, user = null, orders, queryParams = null, s
                 </div>
             }
         >
-            <Head title={t("Additions Orders")} />
+            <Head title={site_settings.websiteName + " - " +t("Additions Orders")} />
 
             <div className="">
                 <div className="mx-auto ">

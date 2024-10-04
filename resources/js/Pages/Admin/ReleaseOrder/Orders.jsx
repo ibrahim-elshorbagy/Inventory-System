@@ -50,7 +50,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, orders, queryParams = null, success ,danger}) {
+export default function Index({ auth, orders,site_settings, queryParams = null, success ,danger}) {
   const { t } = useTranslation();
 
 
@@ -115,7 +115,9 @@ const deleteorder = (order) => {
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+              site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -133,7 +135,7 @@ const deleteorder = (order) => {
         </div>
       }
     >
-      <Head title={t("Orders Report")} />
+      <Head title={site_settings.websiteName + " - " +t("Orders Report")} />
 
       <div className="">
         <div className="mx-auto ">

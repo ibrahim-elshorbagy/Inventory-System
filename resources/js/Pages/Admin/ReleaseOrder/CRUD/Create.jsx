@@ -61,7 +61,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function MakeReleaseRequest({ auth, products = { data: [] } ,customer}) {
+export default function MakeReleaseRequest({ auth,site_settings, products = { data: [] } ,customer}) {
   const { t } = useTranslation();
 
 
@@ -128,7 +128,9 @@ const onSubmit = (e) => {
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+              site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -137,7 +139,7 @@ const onSubmit = (e) => {
         </div>
       }
     >
-          <Head title={t("Orders")} />
+          <Head title={site_settings.websiteName + " - " +t("Orders")} />
       <div className="">
         <div className="mx-auto ">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">

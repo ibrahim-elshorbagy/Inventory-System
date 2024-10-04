@@ -32,7 +32,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function VerifyEmail({ status }) {
+export default function VerifyEmail({ status ,site_settings}) {
     const { t } = useTranslation();
     const { post, processing } = useForm({});
 
@@ -42,8 +42,8 @@ export default function VerifyEmail({ status }) {
     };
 
     return (
-        <GuestLayout centerContent box_width="max-w-xl">
-            <Head title={t("Email Verification")} />
+        <GuestLayout site_settings={site_settings} centerContent box_width="max-w-xl">
+            <Head title={site_settings.websiteName + " - " +t("Email Verification")} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">

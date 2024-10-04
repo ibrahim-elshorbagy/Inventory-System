@@ -26,11 +26,12 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth, roles, success }) {
+export default function Index({ auth,site_settings, roles, success }) {
   const { t } = useTranslation();
 
   return (
       <AuthenticatedLayout
+    site_settings={site_settings}
 
         header={
         <div className="flex items-center justify-between">
@@ -40,7 +41,7 @@ export default function Index({ auth, roles, success }) {
         </div>
       }
           user={auth.user}>
-      <Head title={t("Roles")} />
+      <Head title={site_settings.websiteName + " - " +t("Roles")} />
 
       <div className="">
         <div className="mx-auto max-w-7xl ">

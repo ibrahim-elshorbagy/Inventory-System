@@ -5,7 +5,7 @@ import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationFor
 import { Head } from "@inertiajs/react";
 import UpdateProfileImage from "./Partials/UpdateProfileImage";
 
-const Edit = ({ auth, mustVerifyEmail, status,  }) => {
+const Edit = ({ auth,site_settings, mustVerifyEmail, status,  }) => {
     return (
         <>
             <Head title="Profile" />
@@ -39,6 +39,7 @@ const Edit = ({ auth, mustVerifyEmail, status,  }) => {
 Edit.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
+        site_settings={page.props.site_settings}
         header={
             <h2 className="text-xl font-semibold leading-tight text-white dark:text-gray-200">
                 Profile

@@ -62,7 +62,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function EditReleaseRequest({ auth, products = { data: [] }, order }) {
+export default function EditReleaseRequest({ auth,site_settings, products = { data: [] }, order }) {
   const { t } = useTranslation();
 
   // Form + submit
@@ -137,6 +137,8 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
   return (
     <AuthenticatedLayout
       user={auth.user}
+          site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -145,7 +147,7 @@ export default function EditReleaseRequest({ auth, products = { data: [] }, orde
         </div>
       }
     >
-          <Head title={t("Orders")} />
+          <Head title={site_settings.websiteName + " - " +t("Orders")} />
 
 
       <div className="">

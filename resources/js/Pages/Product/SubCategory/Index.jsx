@@ -37,7 +37,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, subCategories, queryParams = null, success,danger }) {
+export default function Index({ auth,site_settings, subCategories, queryParams = null, success,danger }) {
 
 
   const { t } = useTranslation();
@@ -121,7 +121,9 @@ export default function Index({ auth, subCategories, queryParams = null, success
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+                        site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -139,7 +141,7 @@ export default function Index({ auth, subCategories, queryParams = null, success
         </div>
       }
     >
-      <Head title={t("Sub Categories")} />
+      <Head title={site_settings.websiteName + " - " +t("Sub Categories")} />
 
       <div className="">
         <div className="mx-auto ">

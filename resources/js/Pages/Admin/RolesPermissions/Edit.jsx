@@ -27,7 +27,7 @@ const resources = {
     "read-warehouse-desc": "إذن لعرض سجل المستودعات",
     "update-warehouse-desc": "إذن لتحديث بيانات المستودع",
     "delete-warehouse-desc": "إذن لحذف المستودع",
-
+    "for-SystemAdmin-manage-site-settings": "إذن لتحديث بيانات الموقع",
     // Stock Order Permissions
     "confirme-stock-order-desc": "إذن لتأكيد طلب اضافه المنتجات",
 
@@ -76,7 +76,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function EditPermissions({ auth, role, rolePermissions }) {
+export default function EditPermissions({ auth, role,site_settings, rolePermissions }) {
   const { t } = useTranslation();
   const { data, setData, put } = useForm({ permissions: rolePermissions });
 
@@ -94,8 +94,9 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
   };
 
   return (
-    <AuthenticatedLayout user={auth.user}>
-      <Head title={t("Manage Permissions")} />
+    <AuthenticatedLayout     site_settings={site_settings}
+ user={auth.user}>
+      <Head title={site_settings.websiteName + " - " +t("Manage Permissions")} />
       <div className="">
         <div className="mx-auto max-w-7xl ">
           <div className="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
@@ -513,8 +514,19 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
                           />
                         </td>
                         <td className="px-6 py-4">{t("for-SystemAdmin-manage-users-desc")}</td>
-                      </tr>
+                    </tr>
 
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">SystemAdmin-manage-site-settings</td>
+                        <td className="px-6 py-4">
+                        <input
+                            type="checkbox"
+                            checked={data.permissions.includes("for-SystemAdmin-manage-site-settings")}
+                            onChange={() => handleCheckboxChange("for-SystemAdmin-manage-site-settings")}
+                        />
+                        </td>
+                        <td className="px-6 py-4">{t("for-SystemAdmin-manage-site-settings")}</td>
+                      </tr>
 
                       <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <td className="px-6 py-4">SystemAdmin-manage-roles-permissions</td>

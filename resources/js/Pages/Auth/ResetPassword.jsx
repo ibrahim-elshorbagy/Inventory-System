@@ -30,7 +30,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function ResetPassword({ token, email }) {
+export default function ResetPassword({ token, email ,site_settings}) {
     const { t } = useTranslation();
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
@@ -51,8 +51,8 @@ export default function ResetPassword({ token, email }) {
     };
 
     return (
-        <GuestLayout centerContent>
-            <Head title={t("Reset Password")} />
+        <GuestLayout site_settings={site_settings} centerContent>
+            <Head title={site_settings.websiteName + " - " +t("Reset Password")} />
             <div className="flex items-center justify-center flex-1 bg-indigoBlue dark:bg-gray-900">
                 <div className="w-full max-w-lg px-6 py-4 mt-6 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg">
                     <form onSubmit={submit}>

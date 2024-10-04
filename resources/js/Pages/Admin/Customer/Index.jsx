@@ -51,7 +51,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, users, queryParams = null, success ,danger}) {
+export default function Index({ auth, users,site_settings, queryParams = null, success ,danger}) {
 
 
   const { t } = useTranslation();
@@ -147,7 +147,9 @@ export default function Index({ auth, users, queryParams = null, success ,danger
   };
 
   return (
-    <AuthenticatedLayout
+      <AuthenticatedLayout
+              site_settings={site_settings}
+
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
@@ -163,7 +165,7 @@ export default function Index({ auth, users, queryParams = null, success ,danger
         </div>
       }
     >
-      <Head title={t("Users")} />
+      <Head title={site_settings.websiteName + " - " + t("Users")} />
 
       <div className="">
         <div className="mx-auto ">

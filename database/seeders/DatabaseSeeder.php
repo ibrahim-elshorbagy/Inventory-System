@@ -32,6 +32,16 @@ class DatabaseSeeder extends Seeder
 
         $user->assignRole('SystemAdmin');
 
+
+        DB::table('site_settings')->insert([
+            ['name' => 'site_name', 'value' => 'My Website'],
+            ['name' => 'company_logo', 'value' => 'https://cdn-icons-png.flaticon.com/512/2897/2897818.png'],
+            ['name' => 'support_email', 'value' => 'support@mywebsite.com'],
+            ['name' => 'support_phone', 'value' => '+1234567890'],
+        ]);
+
+
+
      $user = User::factory()->create([
             'name' => 'ibrahim mohamed',
             'email' => 'c@c.c',

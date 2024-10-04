@@ -41,7 +41,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'view-admin-dashboard',
             'for-SystemAdmin-manage-users',
             'for-SystemAdmin-manage-roles-permissions',
-
+            'for-SystemAdmin-manage-site-settings',
             //customer
             'for-customer-view-dashboard',
             'for-customer-my-products-report',

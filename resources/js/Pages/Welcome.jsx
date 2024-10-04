@@ -21,18 +21,18 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Welcome({ auth }) {
+export default function Welcome({ auth, site_settings}) {
     const { t } = useTranslation();
 
     return (
         <>
-            <GuestLayout>
-                <Head title={t("Welcome to") + " " + t("Your Application")} />
+            <GuestLayout site_settings={site_settings}>
+                <Head title={site_settings.websiteName + " - " + t("Welcome to") + " " + t("Your Application")} />
                 <div className="flex flex-col items-center justify-center min-h-screen text-white bg-gradient-to-r bg-indigoBlue">
                     <h1 className="text-5xl font-bold">
                         {t("Welcome")}
                     </h1>
-                    <div className="flex gap-2 mt-8 ">
+                    <div className="flex gap-2 my-3 mt-8">
                         {auth.user ? (
                             <Link
                                 href={route("dashboard")}

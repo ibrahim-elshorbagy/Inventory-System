@@ -14,8 +14,8 @@ import i18n from "@/i18nConfig";
     },
     ar: {
         translation: {
-            "Create user": "انشاء عميل",
-            "Users": "العملاء",
+            "Create Customer": "انشاء عميل",
+            "Customers": "العملاء",
             "User Name": "اسم العميل",
             "User Email": "البريد الإلكتروني",
             "Password": "كلمة المرور",
@@ -30,7 +30,7 @@ import i18n from "@/i18nConfig";
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Create({ auth, user, roles }) {
+export default function Create({ auth,site_settings, user, roles }) {
   const { t } = useTranslation();
 
   const { data, setData, post, errors, reset } = useForm({
@@ -46,17 +46,18 @@ export default function Create({ auth, user, roles }) {
   };
 
   return (
-    <AuthenticatedLayout
+      <AuthenticatedLayout
+    site_settings={site_settings}
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            {t("Create user")}
+            {t("Create Customer")}
           </h2>
         </div>
       }
     >
-      <Head title={t("Users")} />
+      <Head title={site_settings.websiteName + " - " +t("Customers")} />
 
       <div className="">
         <div className="mx-auto max-w-7xl ">

@@ -27,6 +27,7 @@ import { IoLogoDropbox,IoNewspaperOutline } from "react-icons/io5";
 import { RiNewspaperLine } from "react-icons/ri";
 import { BsBoxes } from "react-icons/bs";
 import { SiSpringsecurity } from "react-icons/si";
+import { IoSettingsSharp } from "react-icons/io5";
 
 const resources = {
     en: {
@@ -49,7 +50,8 @@ const resources = {
             "Requests Management": 'ادارة الطلبات',
             "Release Orders": 'طلبات الاسترجاع',
             "Permissions": 'الصلاحيات',
-            "Additions Orders":'طلبات الاضافة'
+            "Additions Orders": 'طلبات الاضافة',
+            "Site Info": "بيانات الموقع",
         },
     },
 };
@@ -58,7 +60,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-const MySidebar = ({ user, direction }) => {
+const MySidebar = ({ user, direction,site_settings }) => {
     const { t } = useTranslation();
     const [collapsed, setCollapsed] = useState(false);
 
@@ -84,6 +86,12 @@ const MySidebar = ({ user, direction }) => {
                     href: "admin.roles-permissions.index",
                     icon: <SiSpringsecurity />,
                     permissions: ["for-SystemAdmin-manage-roles-permissions"],
+                },
+                {
+                    text: t("Site Info"),
+                    href: "admin.settings.index",
+                    icon: <IoSettingsSharp />,
+                    permissions: ["for-SystemAdmin-manage-site-settings"],
                 },
             ],
             icon: <MdDashboard />,
@@ -216,7 +224,7 @@ const MySidebar = ({ user, direction }) => {
                             collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
                         }`}
                     >
-                        <span className="pt-1">websiteName</span>
+                        <span className="pt-1">{site_settings.websiteName}</span>
                     </h1>
                     <button
                         onClick={() => setCollapsed(!collapsed)}
@@ -261,7 +269,7 @@ const MySidebar = ({ user, direction }) => {
                                     icon={item.icon}
                                     label={item.title}
                                     className="py-2 my-2 dark:bg-gray-900 hover:bg-transparent hover:text-black dark:hover:text-indigoBlue dark:hover:bg-transparent bg-indigoBlue dark:text-white"
-                                    open
+
 
                                 >
                                     {item.links.map((link, idx) => (

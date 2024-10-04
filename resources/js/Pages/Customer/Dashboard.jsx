@@ -38,7 +38,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-const Dashboard = ({ auth, productsCount, ordersCount, deliveredOrdersCount }) => {
+const Dashboard = ({ auth,site_settings, productsCount, ordersCount, deliveredOrdersCount }) => {
     const { t } = useTranslation();
 
     return (
@@ -119,6 +119,7 @@ const DashboardHeader = () => {
 Dashboard.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
+        site_settings={page.props.site_settings}
         header={<DashboardHeader />}
     >
         {page}

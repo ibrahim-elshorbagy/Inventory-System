@@ -34,12 +34,14 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function PrintCustomerStock({ auth, user, products }) {
+export default function PrintCustomerStock({ auth,site_settings, user, products }) {
   const { t } = useTranslation();
 
   return (
     <AuthenticatedLayout
-      user={auth.user}
+          user={auth.user}
+                        site_settings={site_settings}
+
       header={
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
@@ -55,7 +57,7 @@ export default function PrintCustomerStock({ auth, user, products }) {
         </div>
       }
     >
-      <Head title={t("Warehouse Report For A Customer")} />
+      <Head title={site_settings.websiteName + " - " +t("Warehouse Report For A Customer")} />
 
       {/* Apply the 'print' class to the container */}
       <div className=" print">
