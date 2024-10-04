@@ -80,10 +80,10 @@ export default function Show({ auth, products, queryParams = null, success, ware
     >
       <Head title={t("Warehouse")} />
 
-      <div className="py-12">
-        <div className="mx-auto sm:px-6 lg:px-8">
+      <div className="">
+        <div className="mx-auto ">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-            <div className="p-6 text-gray-900 dark:text-gray-100">
+            <div className="p-2 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

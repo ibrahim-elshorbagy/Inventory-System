@@ -44,10 +44,10 @@ const Dashboard = ({ auth, productsCount, ordersCount, deliveredOrdersCount }) =
     return (
         <>
             <Head title="Dashboard" />
-            <div className="py-12">
-                <div className="px-1 mx-auto sm:px-6 lg:px-6">
+            <div className="">
+                <div className="">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <div className="gap-4 p-6 text-gray-900 dark:text-gray-100">
+                        <div className="gap-4 p-2 text-gray-900 dark:text-gray-100">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
 
                                 {/* Products Count */}

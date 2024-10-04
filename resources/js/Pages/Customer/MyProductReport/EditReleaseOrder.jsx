@@ -143,8 +143,8 @@ export default function EditReleaseOrder({ auth, products = { data: [] }, order 
     >
       <Head title={t("Orders")} />
 
-      <div className="py-12">
-              <div className="mx-auto sm:px-6 lg:px-8">
+      <div className="">
+              <div className="mx-auto ">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <form
               onSubmit={onSubmit}

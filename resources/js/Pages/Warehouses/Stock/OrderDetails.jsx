@@ -108,8 +108,8 @@ export default function Index({ auth, products,order,danger }) {
         >
             <Head title={t("Orders")} />
 
-            <div className="py-12">
-                <div className="mx-auto sm:px-6 lg:px-8">
+            <div className="">
+                <div className="mx-auto ">
 
                     <div className="p-6 mb-6 bg-white shadow-sm dark:text-white dark:bg-gray-800 sm:rounded-lg">
                     {/* Customer Info Section */}
@@ -173,7 +173,7 @@ export default function Index({ auth, products,order,danger }) {
         </div>
                   )}
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
+                        <div className="p-2 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
 
                                 {/* Orders Table */}
@@ -199,10 +199,13 @@ export default function Index({ auth, products,order,danger }) {
                                                 </td>
                                             </tr>
                                         ) : (
-                                            products.data.map((product) => (
+                                            products.data.map((product,index) => (
                                                 <tr
                                                     key={product.id}
-                                                    className="text-base bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                    className={`${
+                                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
+
                                                 >
                                                     <td className="px-3 py-2">{product.id}</td>
                                                     <td className="px-3 py-2">{product.name}</td>

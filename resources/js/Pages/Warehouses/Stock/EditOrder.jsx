@@ -125,7 +125,7 @@ export default function Edit({ auth, customer, warehouses, products, order, cate
             }
         >
             <Head title={t("Edit Order")} />
-            <div className="py-12">
+            <div className="">
                 <div className="mx-auto">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <form onSubmit={onSubmit} className="p-4 bg-white shadow dark:bg-gray-800 sm:rounded-lg">

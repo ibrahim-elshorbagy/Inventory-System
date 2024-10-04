@@ -11,6 +11,14 @@ import { useTranslation } from "react-i18next";
 import i18n from "@/i18nConfig";
 import { FaBell } from "react-icons/fa"; // Notification bell icon
 import { router } from '@inertiajs/react';
+import { FaWhatsapp } from 'react-icons/fa';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/Components/ui/accordion"
+import { FaBars } from "react-icons/fa6";
 
 const resources = {
     en: {},
@@ -68,6 +76,73 @@ export default function Authenticated({ user, header, children }) {
             },
         });
     };
+
+
+    const menuItems = [
+        // Admin Dashboard Section
+        {
+            type: "link",
+            text: t("Dashboard"),
+            href: "admin.dashboard",
+            permissions: ["view-admin-dashboard"],
+        },
+        // Admin Users and Permissions Section
+        {
+            type: "section",
+            title: t("Admin Dashboard"),
+            permissions: ["for-SystemAdmin-manage-users", "for-SystemAdmin-manage-roles-permissions"],
+            links: [
+                { text: t("All Users"), href: "user.index", permissions: ["for-SystemAdmin-manage-users"] },
+                { text: t("Permissions"), href: "admin.roles-permissions.index", permissions: ["for-SystemAdmin-manage-roles-permissions"] },
+            ],
+        },
+        // Customer Dashboard Section
+        {
+            type: "section",
+            title: t("Customer Dashboard"),
+            permissions: ["for-customer-view-dashboard"],
+            links: [
+                { text: t("Dashboard"), href: "customer.dashboard", permissions: ["for-customer-view-dashboard"] },
+                { text: t("My Products Report"), href: "for-customer-my-products-report", permissions: ["for-customer-my-products-report"] },
+                { text: t("My Orders"), href: "customer.show.my-requests", permissions: ["for-customer-my-products-report"] },
+            ],
+        },
+        // Products Section
+        {
+            type: "section",
+            title: t("Products"),
+            permissions: ["read-main-category", "read-sub-category"],
+            links: [
+                { text: t("Main Categories"), href: "category.index", permissions: ["read-main-category"] },
+                { text: t("Sub Categories"), href: "subCategory.index", permissions: ["read-sub-category"] },
+            ],
+        },
+        // Inventory Management Section
+        {
+            type: "section",
+            title: t("Inventory Management"),
+            permissions: ["read-customer", "read-warehouse"],
+            links: [
+                { text: t("Customers"), href: "customer.index", permissions: ["read-customer"] },
+                { text: t("Warehouses"), href: "warehouse.index", permissions: ["read-warehouse"] },
+            ],
+        },
+        // Requests Management Section
+        {
+            type: "section",
+            title: t("Requests Management"),
+            permissions: ["all-stock-orders", "admin-orders-index"],
+            links: [
+                { text: t("Additions Orders"), href: "stock.all.orders", permissions: ["all-stock-orders"] },
+                { text: t("Release Orders"), href: "admin.index.orders", permissions: ["admin-orders-index"] },
+            ],
+        },
+    ];
+
+    const hasSectionPermission = (sectionPermissions) => {
+            return sectionPermissions.some(permission => user.permissions.includes(permission));
+    };
+
 
     return (
         <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 ${direction === "rtl" ? "rtl" : "ltr"}`}>
@@ -203,42 +278,100 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         {/* Notification Bell for Mobile */}
-                        <div className="flex items-center -mr-2 sm:hidden">
-                            <button
-                                onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
-                                className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
-                            >
-                                <FaBell className="w-6 h-6" />
-                                {notifications.length > 0 && (
-                                    <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
-                                        {notifications.length}
-                                    </span>
-                                )}
-                            </button>
+                        <div className="relative flex items-center -mr-2 sm:hidden">
+                            {/* Notification Bell for Desktop */}
+                            <div className="relative ml-3">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button className="relative inline-flex items-center p-2 text-sm font-medium text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-full dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
+                                            <FaBell className="w-5 h-5" />
+                                            {notifications.length > 0 && (
+                                                <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                                                    {notifications.length}
+                                                </span>
+                                            )}
+                                        </button>
+                                    </Dropdown.Trigger>
+
+
+                                    <Dropdown.Content>
+                                        {notifications.length > 0 ? (
+                                            notifications.map((notification) => (
+                                                <Dropdown.Link
+                                                    key={notification.id}
+                                                    onClick={(e) => handleNotificationClick(notification.id, e, notification.data.url)} // Pass both notification.id and the event
+                                                    as="button"
+                                                >
+                                                    {direction === "rtl" ? notification.data.message.ar : notification.data.message.en}
+
+                                                </Dropdown.Link>
+                                            ))
+                                        ) : (
+                                            <div className="p-2 text-gray-500">{t("No new notifications")}</div>
+                                        )}
+                                    </Dropdown.Content>
+
+
+                                </Dropdown>
+                            </div>
+
+                            {/* Navigation Button */}
+                            <div className="flex items-center ml-5">
+                                <button
+                                    onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
+                                    className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
+                                >
+                                    <FaBars />
+                                </button>
+                            </div>
                         </div>
+
                     </div>
                 </div>
 
                 {/* Mobile Dropdown */}
                 <div className={(showingNavigationDropdown ? "block" : "hidden") + " sm:hidden"}>
-                    <div className="pt-2 pb-3 space-y-1">
-                        {user.permissions.includes("view-admin-dashboard") && (
-                            <ResponsiveNavLink
-                                href={route("admin.dashboard")}
-                                active={route().current("admin.dashboard")}
-                            >
-                                {t("Dashboard")}
-                            </ResponsiveNavLink>
-                        )}
-                        {user.permissions.includes("for-customer-view-dashboard") && (
-                            <ResponsiveNavLink
-                                href={route("customer.dashboard")}
-                                active={route().current("customer.dashboard")}
-                            >
-                                {t("Dashboard")}
-                            </ResponsiveNavLink>
-                        )}
-                    </div>
+
+
+                    <Accordion type="single" collapsible>
+                        {menuItems.map((item, index) => {
+                            // Render individual links based on permissions
+                            if (item.type === "link" && hasSectionPermission(item.permissions)) {
+                                return (
+                                    <ResponsiveNavLink key={index} href={route(item.href)} active={route().current(item.href)}>
+                                        {item.text}
+                                    </ResponsiveNavLink>
+                                );
+                            }
+
+                            // Render sections only if the user has any permission for the section or its links
+                            if (item.type === "section" && hasSectionPermission(item.permissions)) {
+                                return (
+                                    <AccordionItem className='px-3 text-gray-700 dark:text-gray-200' key={index} value={`item-${index}`}>
+                                        <AccordionTrigger>{item.title}</AccordionTrigger>
+                                        <AccordionContent>
+                                            {item.links.map((link, linkIndex) => (
+                                                hasSectionPermission(link.permissions) && (
+                                                    <ResponsiveNavLink key={linkIndex} href={route(link.href)} active={route().current(link.href)}>
+                                                        {link.text}
+                                                    </ResponsiveNavLink>
+                                                )
+                                            ))}
+                                        </AccordionContent>
+                                    </AccordionItem>
+                                );
+                            }
+
+                            return null;
+                        })}
+                    </Accordion>
+
+
+
+
+
+
+
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                         <div className="px-4">
@@ -280,21 +413,62 @@ export default function Authenticated({ user, header, children }) {
                         </div>
                     </div>
                 </div>
+
+
+
+
             </nav>
 
-            <div className="flex flex-1 pt-16 bg-white">
+            {/* <div className="flex flex-1 pt-16 bg-white">
+
+
                 <MySidebar user={user} direction={direction} />
-                <div className="flex flex-col flex-1 min-h-screen">
+                <div className="flex-1 overflow-x-hidden bg-white dark:bg-gray-800">
                     {header && (
-                        <header className="bg-indigoBlue dark:bg-gray-800">
+                        <header className="bg-indigoBlue dark:bg-gray-900">
                             <div className="px-4 py-6 mx-auto text-red-50 sm:px-6 lg:px-14">
                                 {header}
                             </div>
                         </header>
                     )}
-                    <main className="flex flex-col flex-1 bg-white dark:bg-gray-900">{children}</main>
+                    <main className="flex flex-col flex-1 bg-white dark:bg-gray-800">{children}</main>
+                </div>
+            </div> */}
+
+            <div className="flex-1 pt-16 sm:flex">
+                <div className="hidden sm:flex">
+                <MySidebar user={user}  direction={direction}/>
+                </div>
+
+                <div className="flex-1 overflow-x-hidden bg-white dark:bg-gray-800">
+                {header && (
+                    <header className="bg-indigoBlue dark:bg-gray-900">
+                    <div className="px-4 py-6 mx-auto text-red-50 sm:px-6 lg:px-14">
+                        {header}
+                    </div>
+                    </header>
+                )}
+                <main className="flex flex-col flex-1 bg-white dark:bg-gray-800">{children}</main>
                 </div>
             </div>
+
+            <footer dir="ltr" className="py-6 text-white bg-gray-950">
+                <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">
+                    <div className="flex flex-col items-center justify-center mb-4 text-sm md:text-base md:mb-0 md:block">
+                        Inventory System By &nbsp;<a href="https://ibrahim-elshorbagy.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Ibrahim Elshorbagy</a>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-5">
+                        <div>All rights reserved © 2024</div>
+                            <div className="flex flex-col sm:flex-row">
+                                <div>For support</div>
+                                <div><a href="https://wa.me/201096321477" target="_blank" rel="noopener noreferrer" className="flex items-center ml-2 text-green-400 hover:text-green-300">
+                                    <FaWhatsapp className="mr-1" />+201096321477 </a></div></div>
+                    </div>
+                </div>
+            </footer>
+
+
         </div>
     );
 }

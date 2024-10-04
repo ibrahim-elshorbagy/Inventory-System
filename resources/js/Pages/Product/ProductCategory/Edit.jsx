@@ -66,8 +66,8 @@ export default function Create({ auth, category,hasSubCategories  }) {
           <Head title={t("Categories")} />
 
 
-      <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div className="">
+        <div className="mx-auto max-w-7xl ">
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <form
               onSubmit={onSubmit}

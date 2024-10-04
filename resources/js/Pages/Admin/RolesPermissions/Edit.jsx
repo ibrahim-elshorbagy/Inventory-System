@@ -96,8 +96,8 @@ export default function EditPermissions({ auth, role, rolePermissions }) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title={t("Manage Permissions")} />
-      <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div className="">
+        <div className="mx-auto max-w-7xl ">
           <div className="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
             <h2 className="text-xl font-semibold dark:text-gray-200">
               {t("Manage Permissions for")}: {role.name}

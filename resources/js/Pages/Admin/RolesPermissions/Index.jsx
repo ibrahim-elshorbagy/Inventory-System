@@ -30,11 +30,20 @@ export default function Index({ auth, roles, success }) {
   const { t } = useTranslation();
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+      <AuthenticatedLayout
+
+        header={
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+            {t("Roles")}
+            </h2>
+        </div>
+      }
+          user={auth.user}>
       <Head title={t("Roles")} />
 
-      <div className="py-12">
-        <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div className="">
+        <div className="mx-auto max-w-7xl ">
           {success && (
             <div className="p-4 mb-4 text-white bg-green-500 rounded">
               {success}
@@ -42,9 +51,7 @@ export default function Index({ auth, roles, success }) {
           )}
 
           <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-            <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-              {t("Roles")}
-            </h2>
+
 
             <div className="mt-6 overflow-auto">
 

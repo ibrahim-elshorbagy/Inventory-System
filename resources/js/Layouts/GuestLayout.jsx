@@ -8,6 +8,7 @@ import i18n from "@/i18nConfig";
 import { FaFlagUsa } from "react-icons/fa";
 import { FaFlag } from "react-icons/fa";
 import SelectInput from "@/Components/SelectInput";
+import { FaWhatsapp } from 'react-icons/fa';
 
 const resources = {
     en: {
@@ -49,7 +50,7 @@ export default function Guest({ children }) {
             style={{ direction }}
         >
             <nav className="bg-white border-b border-gray-300 shadow-lg dark:bg-gray-800 dark:border-gray-700">
-                <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div className="px-4 mx-auto max-w-7xl ">
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="flex items-center shrink-0">
@@ -148,6 +149,21 @@ export default function Guest({ children }) {
             </nav>
 
             {children}
+             <footer dir="ltr" className="py-6 text-white bg-gray-950">
+                <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">
+                    <div className="flex flex-col items-center justify-center mb-4 text-sm md:text-base md:mb-0 md:block">
+                        Inventory System By &nbsp;<a href="https://ibrahim-elshorbagy.vercel.app/" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Ibrahim Elshorbagy</a>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-5">
+                        <div>All rights reserved © 2024</div>
+                            <div className="flex flex-col sm:flex-row">
+                                <div>For support</div>
+                                <div><a href="https://wa.me/201096321477" target="_blank" rel="noopener noreferrer" className="flex items-center ml-2 text-green-400 hover:text-green-300">
+                                    <FaWhatsapp className="mr-1" />+201096321477 </a></div></div>
+                    </div>
+                </div>
+            </footer>
         </div>
     );
 }

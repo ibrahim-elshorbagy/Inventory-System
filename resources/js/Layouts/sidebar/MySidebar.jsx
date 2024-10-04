@@ -62,8 +62,9 @@ const MySidebar = ({ user, direction }) => {
     const { t } = useTranslation();
     const [collapsed, setCollapsed] = useState(false);
 
-    const sections = [
+    const menuItems = [
         { // admin
+            type: "section",
             title: t("Admin Dashboard"),
             links: [
                 {
@@ -88,6 +89,7 @@ const MySidebar = ({ user, direction }) => {
             icon: <MdDashboard />,
         },
         { // customer
+            type: "section",
             title: t("Dashboard"),
             links: [
                 {
@@ -114,6 +116,7 @@ const MySidebar = ({ user, direction }) => {
         },
         // only for admins to manage products
         {
+            type: "section",
             title: t("Products"),
             links: [
                 {
@@ -132,6 +135,7 @@ const MySidebar = ({ user, direction }) => {
             icon: <AiOutlineProduct />,
         }, //manage warehouse
         {
+            type: "section",
             title: t("Inventory Management"),
             links: [
                 {
@@ -152,6 +156,7 @@ const MySidebar = ({ user, direction }) => {
             icon: <IoLogoDropbox  />,
         },
         {
+            type: "section",
             title: t("Requests Management"),
             links: [
                 {
@@ -170,43 +175,48 @@ const MySidebar = ({ user, direction }) => {
             icon: <VscRequestChanges  />,
         },
     ];
+    const filteredMenuItems = menuItems
+        .filter((item) => {
+            if (item.type === "link") {
+                return item.permissions.some((permission) => user.permissions.includes(permission));
+            } else if (item.type === "section") {
+                const filteredLinks = item.links.filter((link) =>
+                    link.permissions.some((permission) => user.permissions.includes(permission))
+                );
+                return filteredLinks.length > 0 && (!item.permissions || item.permissions.every((permission) => user.permissions.includes(permission)));
+            }
+            return false;
+        })
+        .map((item) => {
+            if (item.type === "section") {
+                return {
+                    ...item,
+                    links: item.links.filter((link) =>
+                        link.permissions.some((permission) => user.permissions.includes(permission))
+                    ),
+                };
+            }
+            return item;
+        });
 
-    const filteredSections = sections
-        .filter((section) =>
-            !section.permissions || section.permissions.every((permission) => user.permissions.includes(permission))
-        )
-        .map((section) => ({
-            ...section,
-            links: section.links.filter((link) =>
-                link.permissions.some((permission) =>
-                    user.permissions.includes(permission)
-                )
-            ),
-        }))
-        .filter((section) => section.links.length > 0);
     return (
-        <div>
+        <div className=" bg-indigoBlue dark:bg-gray-900 sm:flex">
             <Sidebar
                 rtl={direction === "rtl"}
                 collapsed={collapsed}
                 width="270px"
                 collapsedWidth="80px"
-                className="h-full transition-all duration-300 bg-indigoBlue dark:bg-gray-800"
+                className="transition-all duration-300 border-0 "
                 transitionDuration={300}
                 backgroundColor="white dark:bg-gray-800"
             >
-                <div className="flex items-center justify-between p-4 overflow-hidden">
+                <div className="flex items-center justify-between p-6 pt-4 pb-12 overflow-hidden">
                     <h1
                         className={`flex gap-2 text-xl font-bold text-white dark:text-white transition-all duration-300 ${
                             collapsed ? "opacity-0 w-0" : "opacity-100 w-auto"
                         }`}
                     >
-                         <img
-                            src="/images/logo.PNG"
-                            alt="Logo"
-                            className="w-8 h-8"
-                        />
-                        <span className="pt-1">WebsiteName</span>
+                        <span className="pt-1">websiteName</span>
                     </h1>
                     <button
                         onClick={() => setCollapsed(!collapsed)}
@@ -225,47 +235,57 @@ const MySidebar = ({ user, direction }) => {
                             className="text-white "
                         />
                     )}
+
                     </button>
                 </div>
                 <div className="px-6 pt-2">
-                    <hr className="border-gray-300 dark:border-gray-900" />
+                    <hr className="border-gray-300 dark:border-gray-500" />
                 </div>
-                <Menu
-                    iconShape="square"
-                    className="pt-2 text-white dark:text-white"
-                >
-                    {filteredSections.map((section, index) => (
-                        <SubMenu
-                            key={`${index}-${section.title}`}
-                            icon={section.icon}
-                            label={section.title}
-                            className="py-2 my-2 dark:hover:text-white hover:text-black"
-                        >
-                            {section.links.map((link, idx) => (
-                                <SideNavLink
-                                    key={`${idx}-${link.href}`}
-                                    href={route(link.href)}
-                                    active={route().current(link.href)}
-                                    className="flex items-center justify-between px-4 py-2"
+                <Menu iconShape="square" className="pt-2 text-white bg-transparent ">
+                    {filteredMenuItems.map((item, index) => {
+                        if (item.type === "link") {
+                            return (
+                                <MenuItem
+                                    key={`link-${index}`}
+                                    icon={item.icon}
+                                    component={<Link href={route(item.href)} />}
+                                    className="py-2 my-2 "
                                 >
-                                    <div className="flex items-center gap-2 mt-2 ml-5 mr-5 text-base text-gray-400 dark:text-gray-500 hover:text-burntOrange dark:hover:text-burntOrange">
-                                        {link.icon}{link.text}
-                                    </div>
-                                </SideNavLink>
-                            ))}
-                        </SubMenu>
-                    ))}
+                                    {item.text}
+                                </MenuItem>
+                            );
+                        } else if (item.type === "section") {
+                            return (
+                                <SubMenu
+                                    key={`section-${index}`}
+                                    icon={item.icon}
+                                    label={item.title}
+                                    className="py-2 my-2 dark:bg-gray-900 hover:bg-transparent hover:text-black dark:hover:text-indigoBlue dark:hover:bg-transparent bg-indigoBlue dark:text-white"
+                                    open
+
+                                >
+                                    {item.links.map((link, idx) => (
+                                        <SideNavLink
+                                            key={`${idx}-${link.href}`}
+                                            href={route(link.href)}
+                                            active={link.href === route().current()}
+                                            open
+                                        >
+                                                {link.icon}
+                                                {link.text}
+                                        </SideNavLink>
+                                    ))}
+                                </SubMenu>
+                            );
+                        }
+                    })}
                 </Menu>
                 <div className="px-6 pb-8">
                     <hr className="border-gray-300 dark:border-gray-900" />
                 </div>
                 <Link href={route("profile.edit")}>
                     <div className="flex items-center p-6 pt-2 mx-auto overflow-hidden ">
-                        <div
-                            className={`flex items-center ${
-                                collapsed ? "" : "gap-3"
-                            }`}
-                        >
+                        <div className={`flex items-center ${collapsed ? "" : "gap-3"}`}>
                             <img
                                 className="rounded-full w-9 h-9"
                                 src={user.profile_photo_url}
