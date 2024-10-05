@@ -9,6 +9,7 @@ import { FaFlagUsa } from "react-icons/fa";
 import { FaFlag } from "react-icons/fa";
 import SelectInput from "@/Components/SelectInput";
 import { FaWhatsapp } from 'react-icons/fa';
+import { FaBars } from "react-icons/fa6";
 
 const resources = {
     en: {
@@ -100,35 +101,7 @@ export default function Guest({ children ,site_settings}) {
                                 }
                                 className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
                             >
-                                <svg
-                                    className="w-6 h-6"
-                                    stroke="currentColor"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                >
-                                    <path
-                                        className={
-                                            !showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M4 6h16M4 12h16M4 18h16"
-                                    />
-                                    <path
-                                        className={
-                                            showingNavigationDropdown
-                                                ? "inline-flex"
-                                                : "hidden"
-                                        }
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
+                                <FaBars />
                             </button>
                         </div>
                     </div>
@@ -147,7 +120,22 @@ export default function Guest({ children ,site_settings}) {
                         >
                             {t("Login")}
                         </Link>
-                        <ThemeToggleButton />
+                        <div className="flex gap-5">
+                            <ThemeToggleButton />
+                            <SelectInput
+                                    onChange={changeLanguage}
+                                    value={i18n.language}
+                                    className="border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                                >
+                                    <option value="en">
+                                        English
+                                    </option>
+                                    <option value="ar">
+                                        العربية
+                                    </option>
+                            </SelectInput>
+
+                        </div>
                     </div>
                 </div>
             </nav>

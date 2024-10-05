@@ -100,7 +100,7 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
       <div className="">
         <div className="mx-auto max-w-7xl ">
           <div className="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-            <h2 className="text-xl font-semibold dark:text-gray-200">
+            <h2 className="text-sm font-semibold md:text-lg dark:text-gray-200">
               {t("Manage Permissions for")}: {role.name}
             </h2>
             <form onSubmit={handleSubmit} className="mt-6">

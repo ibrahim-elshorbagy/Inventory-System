@@ -72,21 +72,21 @@ export default function Index({ auth,site_settings, user, products, queryParams 
                         site_settings={site_settings}
 
       header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
-            {t("Warehouse Report For A Customer")} - {user.name} - ({user.phone})
+        <div className="flex flex-col items-center justify-between gap-2 text-sm md:text-lg lg:flex-row">
+          <h2 className="font-semibold leading-tight text-nowrap dark:text-gray-200">
+            {t("Warehouse Report For A Customer")} <br/> {user.name} - ({user.phone})
           </h2>
           <div className="flex gap-3">
             <Link
               href={route("customer.stock.print", user.id)}
-              className="px-3 py-1 text-white transition-all bg-green-500 rounded shadow hover:bg-green-600"
+              className="px-3 py-1 text-white transition-all bg-green-500 rounded shadow text-nowrap hover:bg-green-600"
             >
               {t("Print Report")}
             </Link>
             {auth.user.permissions.includes("add-stock-order") && (
               <Link
                 href={route("stock.add.page", user.id)}
-                className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                className="px-3 py-1 text-white transition-all rounded shadow text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
               >
                 {t("New Add Order")}
               </Link>
@@ -108,24 +108,24 @@ export default function Index({ auth,site_settings, user, products, queryParams 
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3">{t("ID")}</th>
-                      <th className="px-3 py-3">{t("Product Name")}</th>
-                      <th className="px-3 py-3">{t("Quantity")}</th>
-                      <th className="px-3 py-3">{t("Category")}</th>
-                      <th className="px-3 py-3">{t("Subcategory")}</th>
-                      <th className="px-3 py-3">{t("Description")}</th>
-                      <th className="px-3 py-3">{t("Notes")}</th>
-                      <th className="px-3 py-3">{t("Warehouse")}</th>
-                      <th className="px-3 py-3">{t("Create Date")}</th>
-                      <th className="px-3 py-3">{t("Update Date")}</th>
-                      <th className="px-3 py-3 text-center" colSpan="3">{t("Image")}</th>
+                      <th className="p-3">{t("ID")}</th>
+                      <th className="p-3">{t("Product Name")}</th>
+                      <th className="p-3">{t("Quantity")}</th>
+                      <th className="p-3">{t("Category")}</th>
+                      <th className="p-3">{t("Subcategory")}</th>
+                      <th className="p-3">{t("Description")}</th>
+                      <th className="p-3">{t("Notes")}</th>
+                      <th className="p-3">{t("Warehouse")}</th>
+                      <th className="p-3">{t("Create Date")}</th>
+                      <th className="p-3">{t("Update Date")}</th>
+                      <th className="p-3 text-center" colSpan="3">{t("Image")}</th>
                     </tr>
                 </thead>
 
-                                                    <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -136,15 +136,15 @@ export default function Index({ auth,site_settings, user, products, queryParams 
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
 
@@ -162,17 +162,17 @@ export default function Index({ auth,site_settings, user, products, queryParams 
                                 index % 2 === 0 ? "bg-white" : "bg-gray-100"
                                 } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
 >
-                          <td className="px-3 py-2">{product.id}</td>
-                          <td className="px-3 py-2">{product.product_name}</td>
-                          <td className="px-3 py-2">{product.quantity}</td>
-                          <td className="px-3 py-2">{product.category_name}</td>
-                          <td className="px-3 py-2">{product.subcategory_name}</td>
-                          <td className="px-3 py-2">{product.product_notes}</td>
-                          <td className="px-3 py-2">{product.product_description}</td>
-                          <td className="px-3 py-2">{product.warehouse_name}</td>
-                          <td className="px-3 py-2">{product.created_at}</td>
-                          <td className="px-3 py-2">{product.updated_at}</td>
-                              <td className="flex justify-center px-3 py-2" colSpan="3">
+                          <td className="p-3 text-nowrap">{product.id}</td>
+                          <td className="p-3 text-nowrap">{product.product_name}</td>
+                          <td className="p-3 text-nowrap">{product.quantity}</td>
+                          <td className="p-3 text-nowrap">{product.category_name}</td>
+                          <td className="p-3 text-nowrap">{product.subcategory_name}</td>
+                          <td className="p-3 text-nowrap">{product.product_notes}</td>
+                          <td className="p-3 text-nowrap">{product.product_description}</td>
+                          <td className="p-3 text-nowrap">{product.warehouse_name}</td>
+                          <td className="p-3 text-nowrap">{product.created_at}</td>
+                          <td className="p-3 text-nowrap">{product.updated_at}</td>
+                              <td className="flex justify-center p-3" colSpan="3">
                             {product.product_image ? (
                               <img className="object-cover w-32 rounded-md" src={product.product_image} alt={product.product_name}  />
                             ) : (

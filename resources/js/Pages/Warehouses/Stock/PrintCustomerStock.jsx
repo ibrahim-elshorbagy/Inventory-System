@@ -43,14 +43,14 @@ export default function PrintCustomerStock({ auth,site_settings, user, products 
                         site_settings={site_settings}
 
       header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+        <div className="flex flex-col items-center justify-between gap-2 text-sm lg:flex-row md:text-lg">
+          <h2 className="font-semibold leading-tight text-nowrap dark:text-gray-200">
             {t("Warehouse Report For A Customer")} - {user.name} - ({user.phone})
           </h2>
           {/* Print Button */}
           <button
             onClick={() => window.print()}
-            className="px-1 py-1 text-white transition-all bg-green-500 rounded shadow hover:bg-green-600"
+            className="px-1 py-1 text-white transition-all bg-green-500 rounded shadow leading-tig hover:bg-green-600"
           >
             {t("Print")}
           </button>

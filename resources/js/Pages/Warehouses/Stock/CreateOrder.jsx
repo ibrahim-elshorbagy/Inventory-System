@@ -109,32 +109,31 @@ export default function Create({ auth,site_settings, customer, warehouses, categ
 
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
                         {t("Add Items Order To")} {customer.user.name}
                     </h2>
                 </div>
             }
         >
             <Head title={site_settings.websiteName + " - " +t("Stocks")} />
-            <div className="">
+            <div className="overflow-auto">
                 <div className="mx-auto">
-                    <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <form onSubmit={onSubmit} className="p-4 bg-white shadow dark:bg-gray-800 sm:rounded-lg">
+                    <div className="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+                        <form onSubmit={onSubmit} className="p-4 bg-white dark:bg-gray-800 sm:rounded-lg">
 
-                            <hr className="my-6 dark:border-gray-600" />
 
-                            <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+                            <table className="w-full text-xs text-left text-gray-500 md:text-base rtl:text-right dark:text-gray-400">
                                 <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
-                                        <th>{t("Item Name")}</th>
-                                        <th>{t("Description")}</th>
-                                        <th>{t("Notes")}</th>
-                                        <th>{t("Category")}</th>
-                                        <th>{t("Subcategory")}</th>
-                                        <th className="w-24">{t("Quantity")}</th>
-                                        <th>{t("Warehouse")}</th>
-                                        <th>{t("Upload Image")}</th>
-                                        <th>{t("Delete")}</th>
+                                        <th className="p-3 text-nowrap min-w-48">{t("Item Name")}</th>
+                                        <th className="p-3 text-nowrap min-w-48">{t("Description")}</th>
+                                        <th className="p-3 text-nowrap min-w-48">{t("Notes")}</th>
+                                        <th className="p-3 text-nowrap min-w-24">{t("Category")}</th>
+                                        <th className="p-3 text-nowrap min-w-24">{t("Subcategory")}</th>
+                                        <th className="min-w-24">{t("Quantity")}</th>
+                                        <th className="p-3 text-nowrap min-w-24">{t("Warehouse")}</th>
+                                        <th className="p-3 text-nowrap min-w-32">{t("Upload Image")}</th>
+                                        <th className="p-3 text-nowrap min-w-24">{t("Delete")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>

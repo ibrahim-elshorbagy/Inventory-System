@@ -124,13 +124,13 @@ export default function Index({ auth,site_settings, requests, queryParams = null
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight text-white">
+          <h2 className="text-sm font-semibold leading-tight text-white md:text-lg ">
             {t("My Requests Report")}
               </h2>
               <div className="flex gap-3">
           <Link
             href={route("customer.make-release-order")}
-            className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+            className="px-3 py-1 text-sm text-white transition-all rounded shadow md:text-lg bg-burntOrange hover:bg-burntOrangeHover"
           >
             {t("Order Requests Release")}
               </Link>
@@ -160,11 +160,11 @@ export default function Index({ auth,site_settings, requests, queryParams = null
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap ">
-                      <td className="px-3 py-3">
+                      <td className="p-3">
                         {t("ID")}
                       </td>
-                                          <th className="px-3 py-3">{(t("description"))}</th>
-                        <th className="px-3 py-3">{t("Delivery Address")}</th>
+                                          <th className="p-3">{(t("description"))}</th>
+                        <th className="p-3">{t("Delivery Address")}</th>
 
                       <TableHeading
                         name="created_at"
@@ -186,7 +186,7 @@ export default function Index({ auth,site_settings, requests, queryParams = null
                         <th className="text-center">{t("Status")}</th>
                         <th className="text-center">{t("Admin Confirmation")}</th>
 
-                        <th className="px-3 py-3">{t("Actions")}</th>
+                        <th className="p-3">{t("Actions")}</th>
 
                         </tr>
 
@@ -203,13 +203,13 @@ export default function Index({ auth,site_settings, requests, queryParams = null
 
                                     key={request.id}
                                 >
-                                    <td className="px-3 py-2">{request.id}</td>
-                                    <td className="px-3 py-2 text-nowrap">{request.description}</td>
-                                    <td className="px-3 py-2 text-nowrap">{request.delivery_address}</td>
+                                    <td className="p-3">{request.id}</td>
+                                    <td className="p-3 text-nowrap">{request.description}</td>
+                                    <td className="p-3 text-nowrap">{request.delivery_address}</td>
 
-                                    <td className="px-3 py-2 text-nowrap">{request.created_at}</td>
-                                    <td className="px-3 py-2 text-nowrap">{request.updated_at}</td>
-                                    <th className="px-3 py-2 text-center text-nowrap">
+                                    <td className="p-3 text-nowrap">{request.created_at}</td>
+                                    <td className="p-3 text-nowrap">{request.updated_at}</td>
+                                    <th className="p-3 text-center text-nowrap">
                                         <span
                                             className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
                                                 request.status === 'pending' ? 'bg-yellow-500 text-black' :
@@ -227,7 +227,7 @@ export default function Index({ auth,site_settings, requests, queryParams = null
                                         </span>
 
                                     </th>
-                                    <th className="px-3 py-2 text-center text-nowrap">
+                                    <th className="p-3 text-center text-nowrap">
                                         <span
                                             className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
                                                 request.confirmed === 'pending' ? 'bg-yellow-500 text-black' :
@@ -276,7 +276,7 @@ export default function Index({ auth,site_settings, requests, queryParams = null
                             ))
                         ) : (
                            <tr>
-                                <td colSpan="5" className="px-3 py-2 text-center">
+                                <td colSpan="5" className="p-3 text-center">
                                     {t("No requests available")}
                                 </td>
                             </tr>

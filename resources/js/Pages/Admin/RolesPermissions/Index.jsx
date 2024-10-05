@@ -35,7 +35,7 @@ export default function Index({ auth,site_settings, roles, success }) {
 
         header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Roles")}
             </h2>
         </div>
@@ -70,7 +70,7 @@ export default function Index({ auth,site_settings, roles, success }) {
                                 className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                                 key={index}
                             >
-                                <td className="px-3 py-2 text-nowrap">{role.name}</td>
+                                <td className="p-3 text-nowrap">{role.name}</td>
                                 <td className="px-6 py-2 text-nowrap">
                                     <Link
                                         href={route("admin.roles-permissions.edit", role.id)}

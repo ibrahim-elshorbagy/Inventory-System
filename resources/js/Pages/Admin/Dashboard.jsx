@@ -131,7 +131,7 @@ const Dashboard = ({ auth,site_settings, adminsAndSystemAdminsCount, customersCo
 const DashboardHeader = () => {
     const { t } = useTranslation();
     return (
-        <h2 className="text-xl font-semibold leading-tight text-white dark:text-gray-200">
+        <h2 className="text-sm font-semibold leading-tight text-white md:text-lg dark:text-gray-200">
             {t("Dashboard")}
         </h2>
     );

@@ -14,7 +14,7 @@ import i18n from "@/i18nConfig";
     },
     ar: {
         translation: {
-            "Create Sub Category": "انشاء صنف فرعية",
+            "Create Sub Category": "انشاء الصنف الفرعي",
             "Categories": "الاصناف",
             "Sub Category Name": " اسم الصنف الفرعي",
             "Main Category": "الصنف الرئيسي",
@@ -53,7 +53,7 @@ export default function Create({ auth,site_settings, user,mainCategories }) {
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm md:text-lg font-semibold leading-tight dark:text-gray-200">
             {t("Create Sub Category")}
           </h2>
         </div>

@@ -59,7 +59,7 @@ export default function Create({ auth,site_settings, warehouse }) {
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Edit Warehouse")} "{data.name}"
           </h2>
         </div>

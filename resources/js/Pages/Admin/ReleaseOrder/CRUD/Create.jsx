@@ -51,9 +51,11 @@ const resources = {
       "Description": "بيان",
       "Remaining": "المتوفر",
       "Release": "مطلوب",
-          "No product found": "لا يوجد منتجات",
-          "Delivery Address": "عنوان التسليم",
+      "No product found": "لا يوجد منتجات",
+      "Delivery Address": "عنوان التسليم",
       "No products selected": "لم يتم تحديد المنتجات",
+      "Product Name": "اسم المنتج",
+      "Image": "صورة",
     },
   },
 };
@@ -133,7 +135,7 @@ const onSubmit = (e) => {
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Make Release Request For")}  {customer.user.name}
           </h2>
         </div>
@@ -142,10 +144,10 @@ const onSubmit = (e) => {
           <Head title={site_settings.websiteName + " - " +t("Orders")} />
       <div className="">
         <div className="mx-auto ">
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <form
               onSubmit={onSubmit}
-              className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg"
+              className="p-4 bg-white sm:p-8 dark:bg-gray-800 sm:rounded-lg"
             >
               <div className="grid items-center w-full grid-cols-2 col-span-4 gap-5">
                 <div>
@@ -180,59 +182,77 @@ const onSubmit = (e) => {
                   availableProducts={availableProducts}
                   onProductSelect={handleProductSelect}
                 />
-              </div>
+                          </div>
 
-              {productSelections.length === 0 && (
-                <div className="text-center text-gray-500 dark:text-gray-400">
-                  {t("No products selected")}
+                <div className="overflow-auto">
+
+                    <table className="w-full text-xs text-left text-gray-500 md:text-base rtl:text-right dark:text-gray-400">
+                    <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                        <th className="p-3 text-nowrap min-w-48">{t("Product Name")}</th>
+                        <th className="p-3 text-nowrap min-w-48">{t("Remaining")}</th>
+                        <th className="p-3 text-nowrap min-w-48">{t("Release")}</th>
+                        <th className="p-3 text-nowrap min-w-32">{t("Image")}</th>
+                        <th className="p-3 text-nowrap min-w-24">{t("Delete")}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {productSelections.length === 0 ? (
+                        <tr>
+                            <td colSpan="5" className="text-base text-center text-gray-500 dark:text-gray-400">
+                            {t("No products selected")}
+                            </td>
+                        </tr>
+                        ) : (
+                        productSelections.map((product, index) => (
+                            <tr key={index} className="border-b dark:border-gray-700">
+                            <td className="p-1">
+                                <InputLabel value={product.product_name} />
+                            </td>
+                            <td className="p-1">
+                                <TextInput
+                                type="number"
+                                value={product.max_quantity}
+                                className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
+                                readOnly
+                                />
+                            </td>
+                            <td className="p-1">
+                                <TextInput
+                                type="number"
+                                value={product.quantity}
+                                className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
+                                onChange={(e) => handleProductChange(index, "quantity", e.target.value)}
+                                />
+                                <InputError
+                                message={errors[`product_quantities.${index}.quantity`]}
+                                className="mt-2"
+                                />
+                            </td>
+                            <td className="p-1">
+                                <img
+                                className="object-cover rounded-md w-28 h-28"
+                                src={product.product_image}
+                                alt={product.product_name}
+                                />
+                            </td>
+                            <td className="p-1">
+                                <Button
+                                type="button"
+                                variant="outline"
+                                className="text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-800"
+                                onClick={(e) => handleDeleteProduct(index, e)}
+                                >
+                                <Trash className="w-4 h-4" />
+                                </Button>
+                            </td>
+                            </tr>
+                        ))
+                        )}
+                    </tbody>
+                    </table>
+
                 </div>
-              )}
-
-              {productSelections.map((product, index) => (
-                <div
-                  key={index}
-                  className="grid items-center justify-center grid-cols-8 gap-4 m-4 mb-4 text-center sm:gap-6 sm:mb-6"
-                >
-                      <div className="w-full col-span-2">
-                        <InputLabel value={product.product_name} />
-                      </div>
-                      <div className="flex items-center col-span-2 gap-2">
-                        <InputLabel value={t("Remaining")} />
-                        <TextInput
-                          type="number"
-                          value={product.max_quantity}
-                          className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
-                          readOnly
-                        />
-                      </div>
-
-                    <div className="flex items-center justify-center col-span-4 gap-10">
-                      <InputLabel value={t("Release")} />
-                      <TextInput
-                        type="number"
-                        value={product.quantity}
-                        className="block w-1/2 mt-1 dark:bg-gray-700 dark:text-gray-200"
-                        onChange={(e) =>
-                          handleProductChange(index, "quantity", e.target.value)
-                        }
-                              />
-                        <img className="object-cover rounded-md w-28" src={product.product_image} alt={product.product_name}  />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        className="ml-2 text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-800"
-                        onClick={(e) => handleDeleteProduct(index, e)}
-                      >
-                        <Trash className="w-4 h-4" />
-                      </Button>
-                    </div>
-                    <InputError
-                      message={errors[`product_quantities.${index}.quantity`]}
-                      className="mt-2"
-                    />
-                </div>
-              ))}
-
               <div className="flex gap-2 mt-4 text-right">
                 <Link
                   href={route("customer.index")}

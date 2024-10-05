@@ -24,7 +24,6 @@ const resources = {
     en: {},
     ar: {
         translation: {
-            "Dashboard": "لوحة القيادة",
             "Profile": "الملف الشخصي",
             "Log Out": "تسجيل خروج",
             "No New Notifications": "لا يوجد أشعارات جديدة",
@@ -166,8 +165,8 @@ export default function Authenticated({ user, header, children ,site_settings}) 
     return (
         <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 ${direction === "rtl" ? "rtl" : "ltr"}`}>
             <nav className="fixed top-0 left-0 z-10 w-full bg-white border-b border-gray-100 dark:bg-gray-800 dark:border-gray-700">
-                <div className="mx-auto max-w-7xl">
-                    <div className="flex justify-between h-16 px-6">
+                <div className="px-4 mx-auto max-w-7xl ">
+                    <div className="flex justify-between h-16 ">
                         <div className="flex gap-2">
                             <div className="flex items-center shrink-0">
                                 {user.permissions.includes("view-admin-dashboard") && (
@@ -269,7 +268,7 @@ export default function Authenticated({ user, header, children ,site_settings}) 
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
+                                                className="inline-flex items-center p-3 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none"
                                             >
                                                 {user.name}
                                                 <svg
@@ -307,9 +306,9 @@ export default function Authenticated({ user, header, children ,site_settings}) 
                         </div>
 
                         {/* Notification Bell for Mobile */}
-                        <div className="relative flex items-center -mr-2 sm:hidden">
+                        <div className="relative flex items-center justify-between sm:hidden">
                             {/* Notification Bell for Desktop */}
-                            <div className="relative ml-3">
+                            <div className="relative ">
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <button className="relative inline-flex items-center p-2 text-sm font-medium text-gray-500 transition duration-150 ease-in-out bg-white border border-transparent rounded-full dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none">
@@ -345,7 +344,7 @@ export default function Authenticated({ user, header, children ,site_settings}) 
                             </div>
 
                             {/* Navigation Button */}
-                            <div className="flex items-center ml-5">
+                            <div className="flex items-center">
                                 <button
                                     onClick={() => setShowingNavigationDropdown(!showingNavigationDropdown)}
                                     className="inline-flex items-center justify-center p-2 text-gray-400 transition duration-150 ease-in-out rounded-md dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400"
@@ -448,21 +447,7 @@ export default function Authenticated({ user, header, children ,site_settings}) 
 
             </nav>
 
-            {/* <div className="flex flex-1 pt-16 bg-white">
 
-
-                <MySidebar user={user} direction={direction} />
-                <div className="flex-1 overflow-x-hidden bg-white dark:bg-gray-800">
-                    {header && (
-                        <header className="bg-indigoBlue dark:bg-gray-900">
-                            <div className="px-4 py-6 mx-auto text-red-50 sm:px-6 lg:px-14">
-                                {header}
-                            </div>
-                        </header>
-                    )}
-                    <main className="flex flex-col flex-1 bg-white dark:bg-gray-800">{children}</main>
-                </div>
-            </div> */}
 
             <div className="flex-1 pt-16 sm:flex">
                 <div className="hidden sm:flex">
@@ -472,7 +457,7 @@ export default function Authenticated({ user, header, children ,site_settings}) 
                 <div className="flex-1 overflow-x-hidden bg-white dark:bg-gray-800">
                 {header && (
                     <header className="bg-indigoBlue dark:bg-gray-900">
-                    <div className="px-4 py-6 mx-auto text-red-50 sm:px-6 lg:px-14">
+                    <div className="px-4 py-4 mx-auto text-red-50 sm:px-6 lg:px-14">
                         {header}
                     </div>
                     </header>

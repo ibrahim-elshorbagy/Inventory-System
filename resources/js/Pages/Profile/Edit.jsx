@@ -41,7 +41,7 @@ Edit.layout = (page) => (
         user={page.props.auth.user}
         site_settings={page.props.site_settings}
         header={
-            <h2 className="text-xl font-semibold leading-tight text-white dark:text-gray-200">
+            <h2 className="text-sm font-semibold leading-tight text-white md:text-lg dark:text-gray-200">
                 Profile
             </h2>
         }

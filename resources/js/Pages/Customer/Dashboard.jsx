@@ -110,7 +110,7 @@ const Dashboard = ({ auth,site_settings, productsCount, ordersCount, deliveredOr
 const DashboardHeader = () => {
     const { t } = useTranslation();
     return (
-        <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+        <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Dashboard")}
         </h2>
     );

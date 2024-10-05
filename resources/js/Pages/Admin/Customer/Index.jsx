@@ -153,12 +153,12 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
       user={auth.user}
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Users")}
           </h2>
           <Link
             href={route("customer.create")}
-            className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+            className="px-3 py-1 text-sm text-white transition-all rounded shadow bg-burntOrange md:text-lg hover:bg-burntOrangeHover"
           >
             {t("Add new")}
           </Link>
@@ -182,7 +182,7 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <div className="p-2 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
-                <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+                <table className="w-full text-xs text-left text-gray-500 md:text-base rtl:text-right dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                       <TableHeading
@@ -212,8 +212,8 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
                         {t("Email")}
                       </TableHeading>
 
-                      <th className="px-3 py-3">{t("Phone")}</th>
-                      <th className="px-3 py-3">{t("Address")}</th>
+                      <th className="p-3">{t("Phone")}</th>
+                      <th className="p-3">{t("Address")}</th>
 
                       <TableHeading
                         name="created_at"
@@ -224,13 +224,13 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
                         {t("Create Date")}
                       </TableHeading>
 
-                      <th className="px-3 py-3">{t("Actions")}</th>
+                      <th className="p-3">{t("Actions")}</th>
                     </tr>
                   </thead>
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -241,7 +241,7 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.email}
@@ -252,10 +252,10 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
                           onKeyPress={(e) => onKeyPress("email", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -267,12 +267,12 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
 
                         key={user.id}
                       >
-                        <td className="px-3 py-2">{user.id}</td>
-                        <th className="px-3 py-2 text-nowrap">{user.name}</th>
-                        <td className="px-3 py-2">{user.email}</td>
-                        <td className="px-3 py-2">{user.phone}</td>
-                        <td className="px-3 py-2">{user.address}</td>
-                        <td className="px-3 py-2 text-nowrap">
+                        <td className="p-3">{user.id}</td>
+                        <th className="p-3 text-nowrap">{user.name}</th>
+                        <td className="p-3">{user.email}</td>
+                        <td className="p-3">{user.phone}</td>
+                        <td className="p-3 text-nowrap">{user.address}</td>
+                        <td className="p-3 text-nowrap">
                           {user.created_at}
                             </td>
                             <td>
@@ -378,7 +378,7 @@ export default function Index({ auth, users,site_settings, queryParams = null, s
                       </tr>
                     ))) : (
                             <tr>
-                                <td colSpan="5" className="px-3 py-2 text-center">
+                                <td colSpan="5" className="p-3 text-center">
                                     {t("No Users Found")}
                                 </td>
                             </tr>

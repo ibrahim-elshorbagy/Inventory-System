@@ -120,7 +120,7 @@ const deleteorder = (order) => {
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Orders Report")}
               </h2>
               <div className="flex gap-3">
@@ -155,13 +155,13 @@ const deleteorder = (order) => {
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap ">
-                      <td className="px-3 py-3">
+                      <td className="p-3">
                         {t("ID")}
                                           </td>
-                      <th className="px-3 py-3">{(t("Customer Name"))}</th>
+                      <th className="p-3">{(t("Customer Name"))}</th>
 
-                      <th className="px-3 py-3">{(t("description"))}</th>
-                      <th className="px-3 py-3">{(t("Delivery Address"))}</th>
+                      <th className="p-3">{(t("description"))}</th>
+                      <th className="p-3">{(t("Delivery Address"))}</th>
 
                       <TableHeading
                         name="created_at"
@@ -182,7 +182,7 @@ const deleteorder = (order) => {
                         <th className="text-center">{t("Status")}</th>
                         <th className="text-center">{t("Admin Confirmation")}</th>
 
-                        <th className="px-3 py-3">{t("Actions")}</th>
+                        <th className="p-3">{t("Actions")}</th>
 
                         </tr>
 
@@ -190,8 +190,8 @@ const deleteorder = (order) => {
                                   </thead>
                     <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.customer_name}
@@ -202,13 +202,13 @@ const deleteorder = (order) => {
                           onKeyPress={(e) => onKeyPress("customer_name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                     <tbody>
@@ -218,13 +218,13 @@ const deleteorder = (order) => {
                                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                                     key={order.id}
                                 >
-                                    <td className="px-3 py-2">{order.id}</td>
-                                    <td className="px-3 py-2">{order.customer_name}</td>
-                                    <td className="px-3 py-2 text-nowrap">{order.description}</td>
-                                    <td className="px-3 py-2 text-nowrap">{order.delivery_address}</td>
-                                    <td className="px-3 py-2 text-nowrap">{order.created_at}</td>
-                                    <td className="px-3 py-2 text-nowrap">{order.updated_at}</td>
-                                    <th className="px-3 py-2 text-center text-nowrap">
+                                    <td className="p-3">{order.id}</td>
+                                    <td className="p-3">{order.customer_name}</td>
+                                    <td className="p-3 text-nowrap">{order.description}</td>
+                                    <td className="p-3 text-nowrap">{order.delivery_address}</td>
+                                    <td className="p-3 text-nowrap">{order.created_at}</td>
+                                    <td className="p-3 text-nowrap">{order.updated_at}</td>
+                                    <th className="p-3 text-center text-nowrap">
                                         <span
                                             className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
                                                 order.status === 'pending' ? 'bg-yellow-500 text-black' :
@@ -241,7 +241,7 @@ const deleteorder = (order) => {
                                             t('Unknown')}
                                         </span>
                                     </th>
-                                    <th className="px-3 py-2 text-center text-nowrap">
+                                    <th className="p-3 text-center text-nowrap">
                                         <span
                                             className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
                                                 order.confirmed === 'pending' ? 'bg-yellow-500 text-black' :
@@ -300,7 +300,7 @@ const deleteorder = (order) => {
                             ))
                         ) : (
                            <tr>
-                                <td colSpan="5" className="px-3 py-2 text-center">
+                                <td colSpan="5" className="p-3 text-center">
                                     {t("No orders available")}
                                 </td>
                             </tr>

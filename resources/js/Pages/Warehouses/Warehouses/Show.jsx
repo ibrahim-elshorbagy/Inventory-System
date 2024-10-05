@@ -74,7 +74,7 @@ export default function Show({ auth,site_settings, products, queryParams = null,
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Warehouse")} - {warehouse.name}
           </h2>
         </div>
@@ -95,22 +95,24 @@ export default function Show({ auth,site_settings, products, queryParams = null,
                         sort_field={queryParams.sort_field}
                         sort_direction={queryParams.sort_direction}
                         sortChanged={sortChanged}
+                        className="p-3"
                       >
                         {t("ID")}
                       </TableHeading>
 
-                      <td>{t("Customer Name")}</td>
-                      <td>{t("Products Name")}</td>
-                      <td>{t("Quantity")}</td>
-                      <td>{t("Category")}</td>
-                      <td>{t("Subcategory")}</td>
-                      <td>{t("Description")}</td>
-                      <td>{t("Notes")}</td>
+                      <td className="p-3">{t("Customer Name")}</td>
+                      <td className="p-3">{t("Products Name")}</td>
+                      <td className="p-3">{t("Quantity")}</td>
+                      <td className="p-3">{t("Category")}</td>
+                      <td className="p-3">{t("Subcategory")}</td>
+                      <td className="p-3">{t("Description")}</td>
+                      <td className="p-3">{t("Notes")}</td>
                       <TableHeading
                         name="created_at"
                         sort_field={queryParams.sort_field}
                         sort_direction={queryParams.sort_direction}
                         sortChanged={sortChanged}
+                        className="p-3"
                       >
                         {t("Added Date")}
                       </TableHeading>
@@ -119,18 +121,19 @@ export default function Show({ auth,site_settings, products, queryParams = null,
                         sort_field={queryParams.sort_field}
                         sort_direction={queryParams.sort_direction}
                         sortChanged={sortChanged}
+                        className="p-3"
                       >
                         {t("Update Date")}
                                           </TableHeading>
-                      <td className="px-3 py-2 text-center">{t("Product Image")}</td>
+                      <td className="text-center p3">{t("Product Image")}</td>
 
                     </tr>
                   </thead>
 
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.customer_name}
@@ -141,7 +144,7 @@ export default function Show({ auth,site_settings, products, queryParams = null,
                           onKeyPress={(e) => onKeyPress("customer_name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3">
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.product_name}
@@ -152,14 +155,14 @@ export default function Show({ auth,site_settings, products, queryParams = null,
                           onKeyPress={(e) => onKeyPress("product_name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -169,18 +172,18 @@ export default function Show({ auth,site_settings, products, queryParams = null,
                           className="text-base bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                           key={product.id}
                         >
-                          <td className="px-3 py-2">{product.product_id}</td>
-                          <td className="px-3 py-2 text-nowrap">{product.user_name}</td>
-                          <td className="px-3 py-2 text-nowrap">{product.product_name}</td>
-                          <td className="px-3 py-2 text-nowrap">{product.quantity}</td>
-                          <td className="px-3 py-2 text-nowrap">{product.category_name}</td>
-                          <td className="px-3 py-2 text-nowrap">{product.subcategory_name}</td>
-                          <td className="px-3 py-2 text-nowrap">{product.product_description}</td>
-                          <td className="px-3 py-2 text-nowrap">{product.product_notes}</td>
+                          <td className="p-3">{product.product_id}</td>
+                          <td className="p-3 text-nowrap">{product.user_name}</td>
+                          <td className="p-3 text-nowrap">{product.product_name}</td>
+                          <td className="p-3 text-nowrap">{product.quantity}</td>
+                          <td className="p-3 text-nowrap">{product.category_name}</td>
+                          <td className="p-3 text-nowrap">{product.subcategory_name}</td>
+                          <td className="p-3 text-nowrap">{product.product_description}</td>
+                          <td className="p-3 text-nowrap">{product.product_notes}</td>
 
-                          <td className="px-3 py-2 text-nowrap">{product.created_at}</td>
-                            <td className="px-3 py-2 text-nowrap">{product.updated_at}</td>
-                            <td className="flex justify-center px-3 py-2" colSpan="3">
+                          <td className="p-3 text-nowrap">{product.created_at}</td>
+                            <td className="p-3 text-nowrap">{product.updated_at}</td>
+                            <td className="flex justify-center p-3" colSpan="3">
                             <img
                               src={product.product_image}
                               alt={product.product_name}
@@ -191,7 +194,7 @@ export default function Show({ auth,site_settings, products, queryParams = null,
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="9" className="px-3 py-2 text-center">
+                        <td colSpan="9" className="p-3 text-center">
                           {t("No products in the warehouse")}
                         </td>
                       </tr>

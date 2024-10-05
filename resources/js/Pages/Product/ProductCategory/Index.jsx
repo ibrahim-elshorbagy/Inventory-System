@@ -21,11 +21,11 @@ import { useState, useEffect } from "react";
                 "Create Date": "تاريخ الإنشاء",
                 'Update Date': 'تاريخ التحديث',
                 "Actions": "الإجراءات",
-                "Category Name": "اسم الفئة",
+                "Category Name": "اسم الصنف",
                 "Edit": "تعديل",
                 "Delete": "حذف",
-                "Are you sure you want to delete the Category?": "هل أنت متأكد أنك تريد حذف الفئه؟",
-                "No categories available": "لا يوجد فئات متاحة",
+                "Are you sure you want to delete the Category?": "هل أنت متأكد أنك تريد حذف الصنف",
+                "No categories available": "لا يوجد الاصناف متاحة",
                 'Active': 'نشط',
                 "Inactive":'غير نشط',
         },
@@ -125,14 +125,14 @@ export default function Index({ auth,site_settings, categories, queryParams = nu
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Categories")}
               </h2>
               {auth.user.permissions.includes("create-main-category") && (
 
                   <Link
                       href={route("category.create")}
-                      className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                      className="px-3 py-1 text-sm text-white transition-all rounded shadow md:text-lg bg-burntOrange hover:bg-burntOrangeHover"
                   >
                       {t("Add new")}
                   </Link>
@@ -194,14 +194,14 @@ export default function Index({ auth,site_settings, categories, queryParams = nu
                         {t("Update Date")}
                       </TableHeading>
 
-                      <th className="px-3 py-3">{t("Actions")}</th>
+                      <th className="p-3">{t("Actions")}</th>
                     </tr>
                                   </thead>
 
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3">
+                      <th className="p-3"></th>
+                      <th className="p-3">
                         <TextInput
                           className="w-full"
                           defaultValue={queryParams.name}
@@ -209,10 +209,10 @@ export default function Index({ auth,site_settings, categories, queryParams = nu
                           onKeyPress={(e) => onKeyPress("name", e)}
                         />
                       </th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
-                      <th className="px-3 py-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
+                      <th className="p-3"></th>
                     </tr>
                   </thead>
                     <tbody>
@@ -224,9 +224,9 @@ export default function Index({ auth,site_settings, categories, queryParams = nu
 
                             key={category.id}
                         >
-                            <td className="px-3 py-2">{category.id}</td>
-                            <th className="px-3 py-2 text-nowrap">{category.name}</th>
-                           <th className="px-3 py-2 text-center text-nowrap">
+                            <td className="p-3">{category.id}</td>
+                            <th className="p-3 text-nowrap">{category.name}</th>
+                           <th className="p-3 text-center text-nowrap">
                             <span
                                 className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
                                 category.is_active ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
@@ -236,13 +236,13 @@ export default function Index({ auth,site_settings, categories, queryParams = nu
                             </span>
                             </th>
 
-                            <td className="px-3 py-2 text-nowrap">
+                            <td className="p-3 text-nowrap">
                             {category.created_at}
                                 </td>
-                                <td className="px-3 py-2 text-nowrap">
+                                <td className="p-3 text-nowrap">
                             {category.updated_at}
                             </td>
-                            <td className="px-3 py-2 text-nowrap">
+                            <td className="p-3 text-nowrap">
                             {/* Check if the user has permission to update the category */}
                             {auth.user.permissions.includes("update-main-category") && (
                                 <Link
@@ -267,7 +267,7 @@ export default function Index({ auth,site_settings, categories, queryParams = nu
                         </tr>
                         ))) : (
                            <tr>
-                                <td colSpan="5" className="px-3 py-2 text-center">
+                                <td colSpan="5" className="p-3 text-center">
                                     {t("No categories available")}
                                 </td>
                             </tr>

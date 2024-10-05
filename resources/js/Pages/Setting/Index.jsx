@@ -96,12 +96,12 @@ i18n.addResources("ar", "translation", resources.ar.translation);
             site_settings={site_settings}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
                         {t("Site Info")}
                     </h2>
                     <button
                         onClick={toggleEditModal}
-                        className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                        className="px-3 py-1 text-sm text-white transition-all rounded shadow md:text-lg bg-burntOrange hover:bg-burntOrangeHover"
                     >
                         {t("Update Site Info")}
                     </button>

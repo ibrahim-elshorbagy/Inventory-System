@@ -101,14 +101,14 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
 
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
                         {t("Additions Orders")}  {user ? " - " + user.name : ""}
                     </h2>
                     <div className="flex gap-3">
                         {auth.user.permissions.includes("add-stock-order") && user && (
                             <Link
                                 href={route("stock.add.page", user.id)}
-                                className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                                className="px-3 py-1 text-sm text-white transition-all rounded shadow md:text-lg text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
                             >
                                 {t("New Add Order")}
                             </Link>
@@ -137,13 +137,13 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
                                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                                     <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr className="text-nowrap">
-                                            <td className="px-3 py-3">
+                                            <td className="p-3">
                                                 {t("ID")}
                                             </td>
-                                            <th className="px-3 py-3">{t("Status")}</th>
-                                            <th className="px-3 py-3">{t("Create Date")}</th>
-                                            <th className="px-3 py-3">{t("Update Date")}</th>
-                                            <th className="px-3 py-3">{t("Actions")}</th>
+                                            <th className="p-3">{t("Status")}</th>
+                                            <th className="p-3">{t("Create Date")}</th>
+                                            <th className="p-3">{t("Update Date")}</th>
+                                            <th className="p-3">{t("Actions")}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -156,8 +156,8 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
 
                                                     key={order.id}
                                                 >
-                                                    <td className="px-3 py-2">{order.id}</td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="p-3">{order.id}</td>
+                                                    <td className="p-3 text-nowrap">
                                                         <span
                                                             className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
                                                                 order.status === 'pending' ? 'bg-yellow-500 text-black' :
@@ -172,9 +172,9 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
                                                             t('Unknown')}
                                                         </span>
                                                     </td>
-                                                    <td className="px-3 py-2 text-nowrap">{order.created_at}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{order.updated_at}</td>
-                                                    <td className="px-3 py-2 text-nowrap">
+                                                    <td className="p-3 text-nowrap">{order.created_at}</td>
+                                                    <td className="p-3 text-nowrap">{order.updated_at}</td>
+                                                    <td className="p-3 text-nowrap">
                                                         <div className="flex gap-3">
                                                         {auth.user.permissions.includes("show-stock-order") &&  (
                                                             <Link
@@ -206,7 +206,7 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
                                             ))
                                         ) : (
                                             <tr>
-                                                <td colSpan="5" className="px-3 py-2 text-center">
+                                                <td colSpan="5" className="p-3 text-center">
                                                     {t("No Orders available")}
                                                 </td>
                                             </tr>

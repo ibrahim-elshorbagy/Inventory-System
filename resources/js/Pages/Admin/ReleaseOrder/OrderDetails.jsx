@@ -120,7 +120,7 @@ export default function Index({ auth, order,site_settings, error,success,danger 
 
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
                         {t("Orders Report")}
                     </h2>
                     <div className="flex gap-3">
@@ -136,7 +136,7 @@ export default function Index({ auth, order,site_settings, error,success,danger 
                 <div className="mx-auto ">
 
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <div className="p-2 text-gray-900 dark:text-gray-100">
+                        <div className="p-6 text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
                                 {/* Customer and Order Description Section */}
                                 <section className="mb-6">
@@ -151,7 +151,8 @@ export default function Index({ auth, order,site_settings, error,success,danger 
 
                                 {/* Status Change Form */}
                                 <form onSubmit={onSubmit} >
-                                    <div className="grid grid-cols-8 gap-6">
+                                    {/* <div className="grid grid-cols-8 gap-6"> */}
+                                    <div className="grid grid-cols-2 gap-6 my-2 md:grid-cols-4">
 
                                         <div className="col-span-1 mt-4">
                                             <InputLabel htmlFor="status" value={t("Status")} />
@@ -187,11 +188,8 @@ export default function Index({ auth, order,site_settings, error,success,danger 
                                             </SelectInput>
                                         </div>
 
-
-
-                                    </div>
                                     {auth.user.permissions.includes("admin-orders-index") && delivered !== "delivered" &&
-                                    <div className="grid grid-cols-4 p-1">
+                                    <div className="max-w-md col-span-2 md:col-span-4 lg:max-w-xl">
                                             <TextAreaInput
 
                                                 id={`notes`}
@@ -204,6 +202,9 @@ export default function Index({ auth, order,site_settings, error,success,danger 
                                             />
                                         </div>
                                     }
+
+                                    </div>
+
 
                                     {!(confirmed === "approved" && delivered === "delivered") && (
                                     <div className="mt-4">
@@ -220,19 +221,21 @@ export default function Index({ auth, order,site_settings, error,success,danger 
                                 <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
                                     {visibleDanger}
                                 </div>
-                                            )}
+                                )}
+                <div className="overflow-auto">
+
                                 {/* Orders Table */}
                                 <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                                     <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                         <tr className="text-nowrap">
-                                            <th className="px-3 py-3">{t("ID")}</th>
-                                            <th className="px-3 py-3">{t("Product Name")}</th>
-                                            <th className="px-3 py-3">{t("Orderd Quantity")}</th>
-                                            <th className="px-3 py-3">{t("Max Quantity")}</th>
-                                            <th className="px-3 py-3">{t("Category")}</th>
-                                            <th className="px-3 py-3">{t("Subcategory")}</th>
-                                            <th className="px-3 py-3">{t("Warehouse")}</th>
-                                            <th className="px-3 py-3 text-center" colSpan="3">{t("Image")}</th>
+                                            <th className="p-3">{t("ID")}</th>
+                                            <th className="p-3">{t("Product Name")}</th>
+                                            <th className="p-3">{t("Orderd Quantity")}</th>
+                                            <th className="p-3">{t("Max Quantity")}</th>
+                                            <th className="p-3">{t("Category")}</th>
+                                            <th className="p-3">{t("Subcategory")}</th>
+                                            <th className="p-3">{t("Warehouse")}</th>
+                                            <th className="p-3 text-center" colSpan="3">{t("Image")}</th>
 
                                         </tr>
                                     </thead>
@@ -243,14 +246,14 @@ export default function Index({ auth, order,site_settings, error,success,danger 
                                                     className="text-base bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                                                     key={index}
                                                 >
-                                                    <td className="px-3 py-2">{request.id}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.product_name}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.quantity}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.max_quantity}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.product_category}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.product_subcategory}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.warehouse_name}</td>
-                                                    <td className="flex justify-center px-3 py-2" colSpan="3">
+                                                    <td className="p-3">{request.id}</td>
+                                                    <td className="p-3 text-nowrap">{request.product_name}</td>
+                                                    <td className="p-3 text-nowrap">{request.quantity}</td>
+                                                    <td className="p-3 text-nowrap">{request.max_quantity}</td>
+                                                    <td className="p-3 text-nowrap">{request.product_category}</td>
+                                                    <td className="p-3 text-nowrap">{request.product_subcategory}</td>
+                                                    <td className="p-3 text-nowrap">{request.warehouse_name}</td>
+                                                    <td className="flex justify-center p-3" colSpan="3">
                                                         <img
                                                             src={request.product_image}
                                                             alt={request.product_name}
@@ -264,6 +267,7 @@ export default function Index({ auth, order,site_settings, error,success,danger 
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>

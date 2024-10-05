@@ -97,11 +97,10 @@ export default function Index({ auth,site_settings, order, error,success }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-                          site_settings={site_settings}
-
+            site_settings={site_settings}
             header={
                 <div className="flex items-center justify-between">
-                    <h2 className="text-xl font-semibold leading-tight dark:text-gray-200">
+                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
                         {t("Orders Report")}
                     </h2>
                     <div className="flex gap-3">
@@ -118,7 +117,7 @@ export default function Index({ auth,site_settings, order, error,success }) {
 
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <div className="p-2 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                            <div className="">
                                 {/* Customer and Order Description Section */}
                                 <section className="mb-6">
                                     <h3 className="text-lg font-semibold">{t("Customer Info")}</h3>
@@ -127,8 +126,8 @@ export default function Index({ auth,site_settings, order, error,success }) {
                                     <p>{t("Customer Address")}: {order.customer_address}</p>
                                     <p>{t("Order Description")}: {order.description}</p>
                                     <p>{t("Delivery Address")}: {order.delivery_address}</p>
-                                    <div className="flex gap-3 mt-4">
-                                        <p className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
+                                    <div className="flex gap-3 mt-4 text-xs md:text-sm">
+                                        <p className={`inline-block px-2 py-1 rounded-full  font-semibold ${
                                             order.status === 'pending' ? 'bg-yellow-500 text-black' :
                                             order.status === 'rejected' ? 'bg-red-500 text-white' :
                                             order.status === 'approved' ? 'bg-green-500 text-white' :
@@ -143,7 +142,7 @@ export default function Index({ auth,site_settings, order, error,success }) {
                                             t('Unknown')}
                                         </p>
 
-                                        <p className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
+                                        <p className={`inline-block px-2 py-1 rounded-full  font-semibold ${
                                             order.confirmed === 'pending' ? 'bg-yellow-500 text-black' :
                                             order.confirmed === 'approved' ? 'bg-green-500 text-white' :
                                             order.confirmed === 'rejected' ? 'bg-red-500 text-white' :
@@ -159,49 +158,51 @@ export default function Index({ auth,site_settings, order, error,success }) {
                                 </section>
 
                                 {/* Orders Table */}
-                                <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-                                    <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr className="text-nowrap">
-                                            <th className="px-3 py-3">{t("ID")}</th>
-                                            <th className="px-3 py-3">{t("Product Name")}</th>
-                                            <th className="px-3 py-3">{t("Orderd Quantity")}</th>
-                                            <th className="px-3 py-3">{t("Max Quantity")}</th>
-                                            <th className="px-3 py-3">{t("Category")}</th>
-                                            <th className="px-3 py-3">{t("Subcategory")}</th>
-                                            <th className="px-3 py-3">{t("Warehouse")}</th>
-                                            <th className="px-3 py-3 text-center" colSpan="3">{t("Image")}</th>
+                                <div className="overflow-auto">
+                                    <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+                                        <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr className="text-nowrap">
+                                                <th className="p-3">{t("ID")}</th>
+                                                <th className="p-3">{t("Product Name")}</th>
+                                                <th className="p-3">{t("Orderd Quantity")}</th>
+                                                <th className="p-3">{t("Max Quantity")}</th>
+                                                <th className="p-3">{t("Category")}</th>
+                                                <th className="p-3">{t("Subcategory")}</th>
+                                                <th className="p-3">{t("Warehouse")}</th>
+                                                <th className="p-3 text-center" colSpan="3">{t("Image")}</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            order.requests.map((request, index) => (
-                                                <tr
-                                                    className={`${
-                                                        index % 2 === 0 ? "bg-white" : "bg-gray-100"
-                                                        } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
-                                                    key={index}
-                                                >
-                                                    <td className="px-3 py-2">{request.id}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.product_name}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.quantity}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.max_quantity}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.product_category}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.product_subcategory}</td>
-                                                    <td className="px-3 py-2 text-nowrap">{request.warehouse_name}</td>
-                                                    <td className="flex justify-center px-3 py-2" colSpan="3">
-                                                        <img
-                                                            src={request.product_image}
-                                                            alt={request.product_name}
-                                                            className="object-cover w-32 rounded-md"
-                                                        />
-                                                    </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                order.requests.map((request, index) => (
+                                                    <tr
+                                                        className={`${
+                                                            index % 2 === 0 ? "bg-white" : "bg-gray-100"
+                                                            } border-b dark:${index % 2 === 0 ? "bg-gray-800" : "bg-gray-700"} dark:border-gray-700`}
+                                                        key={index}
+                                                    >
+                                                        <td className="p-3">{request.id}</td>
+                                                        <td className="p-3 text-nowrap">{request.product_name}</td>
+                                                        <td className="p-3 text-nowrap">{request.quantity}</td>
+                                                        <td className="p-3 text-nowrap">{request.max_quantity}</td>
+                                                        <td className="p-3 text-nowrap">{request.product_category}</td>
+                                                        <td className="p-3 text-nowrap">{request.product_subcategory}</td>
+                                                        <td className="p-3 text-nowrap">{request.warehouse_name}</td>
+                                                        <td className="flex justify-center p-3" colSpan="3">
+                                                            <img
+                                                                src={request.product_image}
+                                                                alt={request.product_name}
+                                                                className="object-cover w-32 rounded-md"
+                                                            />
+                                                        </td>
 
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </table>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
