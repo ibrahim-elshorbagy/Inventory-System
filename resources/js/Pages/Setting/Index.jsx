@@ -147,7 +147,7 @@ i18n.addResources("ar", "translation", resources.ar.translation);
             {/* Modal for editing settings */}
             {isEditModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="w-1/2 bg-white rounded-lg shadow-lg dark:bg-gray-800 animate-in">
+                    <div className="bg-white rounded-lg shadow-lg w-[95%] md:w-1/2 dark:bg-gray-800 animate-in">
                         <div className="p-4 border-b">
                             <h2 className="text-lg font-semibold">{t("Update Site Info")}</h2>
                         </div>
