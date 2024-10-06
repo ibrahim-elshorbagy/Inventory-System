@@ -133,7 +133,7 @@ export default function Create({ auth,site_settings, customer, warehouses, categ
                                         <th className="min-w-24">{t("Quantity")}</th>
                                         <th className="p-3 text-nowrap min-w-24">{t("Warehouse")}</th>
                                         <th className="p-3 text-nowrap min-w-32">{t("Upload Image")}</th>
-                                        <th className="p-3 text-nowrap min-w-24">{t("Delete")}</th>
+                                        <th className="w-12 p-3 text-nowrap">{t("Delete")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -262,7 +262,7 @@ export default function Create({ auth,site_settings, customer, warehouses, categ
                                                     )}
                                                 </div>
                                             </td>
-                                            <td className="p-1">
+                                            <td className="p-1 text-center">
                                                 <Button
                                                     type="button"
                                                     variant="outline"

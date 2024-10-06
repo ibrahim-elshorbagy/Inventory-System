@@ -129,7 +129,6 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
         >
             <Head title={site_settings.websiteName + " - " +t("Edit Order")} />
             <div className="overflow-auto">
-                {JSON.stringify(errors)}
                 <div className="mx-auto">
                     <div className="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <form onSubmit={onSubmit} className="p-4 bg-white dark:bg-gray-800 ">
@@ -144,7 +143,7 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
                                         <th className="p-3 min-w-24">{t("Quantity")}</th>
                                         <th className="p-3 text-nowrap min-w-48">{t("Warehouse")}</th>
                                         <th className="p-3 text-center text-nowrap min-w-48">{t("Upload Image")}</th>
-                                        <th className="p-3 text-nowrap min-w-48">{t("Delete")}</th>
+                                        <th className="w-12 p-3 text-nowrap">{t("Delete")}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -277,7 +276,7 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
                                                     </div>
                                                 </td>
 
-                                            <td className="p-1 mb-1">
+                                            <td className="p-1 mb-1 text-center">
                                                 <Button
                                                     type="button"
                                                     variant="outline"
