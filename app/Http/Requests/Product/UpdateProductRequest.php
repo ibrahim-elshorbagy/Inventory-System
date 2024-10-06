@@ -23,14 +23,18 @@ class UpdateProductRequest extends FormRequest
     {
 
         return [
-            'products' => ['required', 'array'],
-            'products.*.id' => ['required', 'exists:products,id'],
-            'products.*.product_name' => ['required', 'string', 'max:255'],
-            'products.*.purchase_price' => ['nullable', 'numeric', 'min:0'],
-            'products.*.minimum_price' => ['nullable', 'numeric', 'min:0'],
-            'products.*.retail_price' => ['nullable', 'numeric', 'min:0'],
-            'products.*.block_price' => ['nullable', 'numeric', 'min:0'],
-            'products.*.is_active' => ['required', 'boolean'],
+            'user_id' => ['required', 'exists:users,id'],
+            'product_quantities' => ['required', 'array', 'min:1'],
+            'product_quantities.*.name' => ['required', 'string', 'max:255'],
+            'product_quantities.*.quantity' => ['required', 'numeric', 'gt:0'],
+            'product_quantities.*.description' => ['nullable', 'string'],
+            'product_quantities.*.notes' => ['nullable', 'string'],
+            'product_quantities.*.category_id' => ['required', 'exists:product_categories,id'],
+            'product_quantities.*.subcategory_id' => ['required', 'exists:sub_categories,id'],
+            'product_quantities.*.warehouse_id' => ['required', 'exists:warehouses,id'],
+            'product_quantities.*.id' => 'nullable|exists:products,id',
+            'product_quantities.*.image_url' => ['nullable','string'],
+            'product_quantities.*.image_file' => ['nullable', 'image', 'mimes:jpeg,jpg,png,gif,jfif'],
 
         ];
     }

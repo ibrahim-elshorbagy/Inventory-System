@@ -12,6 +12,7 @@ use App\Http\Resources\Warehouse\CustomerStockResource;
 use App\Models\Product\ProductCategory;
 use App\Models\Warehouse\StockTransaction;
 use App\Http\Requests\Product\ReceiveProductRequest;
+use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Resources\Product\ProductOrderDetailsResource;
 use App\Http\Resources\Product\ProductOrdersResource;
 use App\Models\Product\ReceiveOrder;
@@ -24,6 +25,10 @@ use App\Notifications\AdditionOrder\MyAdditionOrderChangeStatusNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
+
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
+
 
 //Create Additions order controller
 class StockController extends Controller
@@ -77,15 +82,33 @@ class StockController extends Controller
 
                 // Handle the image upload
                 if (isset($productData['image_url']) && $productData['image_url']->isValid()) {
-                    // Generate the path: userid/orderid/
-                    $path = 'uploads/' . $data['user_id'] . '/' . $receiveOrder->id;
+                        // Generate the path: userid/orderid/
+                        $path = 'uploads/' . $data['user_id'] . '/' . $receiveOrder->id;
 
-                    // Get the original file name and store the image
-                    $imageName = $productData['image_url']->getClientOriginalName();
-                    $imagePath = $productData['image_url']->storeAs($path, $imageName, 'public');
+                        // Ensure the directory exists
+                        if (!Storage::disk('public')->exists($path)) {
+                            Storage::disk('public')->makeDirectory($path, 0755, true);
+                        }
 
-                    // Use Storage::url() to generate the full image URL
-                    $imageUrl = Storage::url($imagePath); // No need to manually add /storage/
+                        // Get the original file name and generate a unique filename
+                        // $originalName = $productData['image_url']->getClientOriginalName();
+                        $imageName = uniqid('product_') . '.' . $productData['image_url']->getClientOriginalExtension();
+
+                        // Generate the full image path
+                        $imagePath = $path . '/' . $imageName;
+
+                        // Create an instance of ImageManager
+                        $manager = new ImageManager(new Driver());
+
+                        // Read the image using Intervention Image
+                        $img = $manager->read($productData['image_url']);
+
+                        // Save the image with compression
+                        $fullPath = Storage::disk('public')->path($imagePath);
+                        $img->save($fullPath, 80);
+
+                        // Use Storage::url() to generate the full image URL
+                        $imageUrl = Storage::url($imagePath);
                 }
                 else {
                     // No image provided, store null
@@ -218,9 +241,10 @@ class StockController extends Controller
     /**
      *  Update the order
      */
-    public function updateOrder(ReceiveProductRequest $request, $orderId)
+    public function updateOrder(UpdateProductRequest $request, $orderId)
     {
         $data = $request->validated();
+        // dd($data);
         DB::beginTransaction();
         try {
             // Retrieve the existing order
@@ -234,15 +258,45 @@ class StockController extends Controller
 
             // Iterate over the product quantities
             foreach ($data['product_quantities'] as $productData) {
-                // Handle the image upload if a new image is provided
-                if (isset($productData['image_url']) && !is_string($productData['image_url'])) {
+                $imageUrl = $productData['image_url'] ?? 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png';
+
+                // Handle the image upload if a new image file is provided
+                if (isset($productData['image_file'])) {
                     $path = 'uploads/' . $data['user_id'] . '/' . $existingOrder->id;
-                    $imageName = $productData['image_url']->getClientOriginalName();
-                    $imagePath = $productData['image_url']->storeAs($path, $imageName, 'public');
+                    // Ensure the directory exists
+                    if (!Storage::disk('public')->exists($path)) {
+                        Storage::disk('public')->makeDirectory($path, 0755, true);
+                    }
+
+                    // Get the original file name and generate a unique filename
+                    $imageName = uniqid('product_') . '.' . $productData['image_file']->getClientOriginalExtension();
+
+                    // Generate the full image path
+                    $imagePath = $path . '/' . $imageName;
+
+                    // Create an instance of ImageManager
+                    $manager = new ImageManager(new Driver());
+
+                    // Read the image using Intervention Image
+                    $img = $manager->read($productData['image_file']);
+
+                    // Save the image with compression
+                    $fullPath = Storage::disk('public')->path($imagePath);
+                    $img->save($fullPath, 80);
+
+                    // Use Storage::url() to generate the full image URL
                     $imageUrl = Storage::url($imagePath);
-                } else {
-                    // No new image provided, keep the existing image URL
-                    $imageUrl = $productData['image_url'] ?? 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png';
+
+                    // Delete the old image if it exists and is different from the default
+                    if (isset($productData['id'])) {
+                        $existingProduct = Product::find($productData['id']);
+                        if ($existingProduct && $existingProduct->image_url !== 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png') {
+                            $oldImagePath = str_replace('/storage/', '', $existingProduct->image_url);
+                            if (Storage::disk('public')->exists($oldImagePath)) {
+                                Storage::disk('public')->delete($oldImagePath);
+                            }
+                        }
+                    }
                 }
 
                 // Update or create the product
@@ -273,7 +327,7 @@ class StockController extends Controller
                 $product = Product::find($productId);
                 if ($product) {
                     // Delete image from storage only for products marked for deletion
-                    if ($product->image_url) {
+                    if ($product->image_url && $product->image_url !== 'https://cdn-icons-png.flaticon.com/512/13271/13271401.png') {
                         $imagePath = str_replace('/storage/', '', $product->image_url);
                         if (Storage::disk('public')->exists($imagePath)) {
                             Storage::disk('public')->delete($imagePath);
@@ -297,6 +351,7 @@ class StockController extends Controller
             return to_route('stock.all.orders')->with('success', $message);
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return back()->with('danger', $e->getMessage());
         }
     }

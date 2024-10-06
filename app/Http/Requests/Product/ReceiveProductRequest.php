@@ -30,21 +30,8 @@ class ReceiveProductRequest extends FormRequest
             'product_quantities.*.category_id' => ['required', 'exists:product_categories,id'],
             'product_quantities.*.subcategory_id' => ['required', 'exists:sub_categories,id'],
             'product_quantities.*.warehouse_id' => ['required', 'exists:warehouses,id'],
-            'product_quantities.*.image_url' => ['nullable', function ($attribute, $value, $fail) {
-                // If the value is not a string (URL) and is a file, then validate the file type
-                if (!is_string($value)) {
-                    if (!$value instanceof \Illuminate\Http\UploadedFile) {
-                        $fail('The ' . $attribute . ' must be a valid image file.');
-                    } else {
-                        // If it is a String, check the mime types
-                        $mimeType = $value->getMimeType();
-                        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif', 'image/svg+xml', 'image/jfif'];
-                        if (!in_array($mimeType, $allowedMimeTypes)) {
-                            $fail('The ' . $attribute . ' must be a file of type: jpeg, png, jpg, gif, svg, jfif.');
-                        }
-                    }
-                }
-            }]
+            'product_quantities.*.id' => 'sometimes|exists:products,id',
+            'product_quantities.*.image_url' => ['nullable', 'image', 'mimes:jpeg,jpg,png,gif,jfif'],
 
 
 

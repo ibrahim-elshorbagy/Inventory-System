@@ -55,6 +55,7 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
 
         product_quantities: initialProducts.length
             ? initialProducts.map(product => ({
+                id: product.id || "",
                 name: product.name || "",
                 description: product.description || "",
                 notes: product.notes || "",
@@ -64,7 +65,7 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
                 quantity: product.quantity || "",
                 image_url: product.image_url || ""
             }))
-            : [{ name: "", description: "", notes: "", category_id: "", subcategory_id: "", warehouse_id: "", quantity: "", image_url: "" }],
+            : [{ id: "",name: "", description: "", notes: "", category_id: "", subcategory_id: "", warehouse_id: "", quantity: "", image_url: "" }],
 
         _method: "PUT"
     });
@@ -89,7 +90,7 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
     const handleImageUpload = (index, file) => {
 
         const newSelections = [...productSelections];
-        newSelections[index].image_url = file;
+        newSelections[index].image_file = file;
         newSelections[index].image_show = URL.createObjectURL(file);
 
         setProductSelections(newSelections);
@@ -99,7 +100,7 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
     const addProductSelection = () => {
         setProductSelections([
             ...productSelections,
-            { name: "", quantity: "", description: "", notes: "", category_id: "", subcategory_id: "", warehouse_id: "", image_url: "" },
+            { id: "",name: "", quantity: "", description: "", notes: "", category_id: "", subcategory_id: "", warehouse_id: "", image_url: "" },
         ]);
     };
 
@@ -128,6 +129,7 @@ export default function Edit({ auth,site_settings, customer, warehouses, product
         >
             <Head title={site_settings.websiteName + " - " +t("Edit Order")} />
             <div className="overflow-auto">
+                {JSON.stringify(errors)}
                 <div className="mx-auto">
                     <div className="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <form onSubmit={onSubmit} className="p-4 bg-white dark:bg-gray-800 ">
