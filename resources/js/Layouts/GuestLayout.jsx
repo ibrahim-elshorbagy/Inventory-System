@@ -141,21 +141,7 @@ export default function Guest({ children ,site_settings}) {
             </nav>
 
             {children}
-             <footer dir="ltr" className="py-6 text-white bg-gray-950">
-                <div className="container flex flex-col items-center justify-between px-4 mx-auto lg:gap-2">
-                    <div className="flex flex-col items-center justify-center mb-4 text-sm md:text-base md:mb-0 md:block">
-                        Inventory System By &nbsp;<a href="https://mostaql.com/u/ibrahim_shorbgy" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300">Ibrahim Elshorbagy</a>
-                    </div>
 
-                    <div className="grid grid-cols-2 gap-5">
-                        <div>All rights reserved © 2024</div>
-                            <div className="flex flex-col sm:flex-row">
-                                <div>For support</div>
-                                <div><a href="https://wa.me/201096321477" target="_blank" rel="noopener noreferrer" className="flex items-center ml-2 text-green-400 hover:text-green-300">
-                                    <FaWhatsapp className="mr-1" />+201096321477 </a></div></div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 }

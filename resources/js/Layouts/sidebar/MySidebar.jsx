@@ -277,7 +277,6 @@ const MySidebar = ({ user, direction,site_settings }) => {
                                             key={`${idx}-${link.href}`}
                                             href={route(link.href)}
                                             active={link.href === route().current()}
-                                            open
                                         >
                                                 {link.icon}
                                                 {link.text}
