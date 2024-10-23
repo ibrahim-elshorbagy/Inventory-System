@@ -66,7 +66,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth, order,site_settings, error,success,danger }) {
+export default function Index({ auth, order,site_settings, error }) {
     const { t } = useTranslation();
 
 
@@ -97,21 +97,7 @@ export default function Index({ auth, order,site_settings, error,success,danger 
     const [confirmed,setConfirmed]= useState(order.confirmed);
     const [delivered, setDelivered] = useState(order.status);
 
-    const [visibleDanger, setVisibleDanger] = useState(danger);
 
-    useEffect(() => {
-
-        if (danger) {
-
-        setVisibleDanger(danger);
-
-        const timer = setTimeout(() => {
-        setVisibleDanger(null);
-        }, 3000);
-
-        return () => clearTimeout(timer);
-    }
-    }, [danger]);
 
     return (
         <AuthenticatedLayout
@@ -217,11 +203,6 @@ export default function Index({ auth, order,site_settings, error,success,danger 
 
                                 </form>
 
-                                 {visibleDanger && (
-                                <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
-                                    {visibleDanger}
-                                </div>
-                                )}
                 <div className="overflow-auto">
 
                                 {/* Orders Table */}

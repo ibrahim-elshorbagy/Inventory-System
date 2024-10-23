@@ -26,7 +26,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth,site_settings, roles, success }) {
+export default function Index({ auth,site_settings, roles }) {
   const { t } = useTranslation();
 
   return (
@@ -45,11 +45,6 @@ export default function Index({ auth,site_settings, roles, success }) {
 
       <div className="">
         <div className="mx-auto max-w-7xl ">
-          {success && (
-            <div className="p-4 mb-4 text-white bg-green-500 rounded">
-              {success}
-            </div>
-          )}
 
           <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
 

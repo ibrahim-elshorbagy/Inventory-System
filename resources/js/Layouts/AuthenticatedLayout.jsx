@@ -4,7 +4,7 @@ import Dropdown from "@/Components/Dropdown";
 import SelectInput from "@/Components/SelectInput";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
+import { Link,usePage } from "@inertiajs/react";
 import MySidebar from "./sidebar/MySidebar";
 import ThemeToggleButton from "../Components/ThemeToggleButton";
 import { useTranslation } from "react-i18next";
@@ -19,6 +19,7 @@ import {
   AccordionTrigger,
 } from "@/Components/ui/accordion"
 import { FaBars } from "react-icons/fa6";
+import { Toaster, toast } from 'sonner';
 
 const resources = {
     en: {},
@@ -44,6 +45,9 @@ const resources = {
             "Permissions": 'الصلاحيات',
             "Additions Orders": 'طلبات الاضافة',
             "Site Info": "بيانات الموقع",
+
+            'Done Successfully': 'تم بنجاح',
+            'Error': 'حدث مشكلة',
 
         },
     },
@@ -161,6 +165,22 @@ export default function Authenticated({ user, header, children ,site_settings}) 
             return sectionPermissions.some(permission => user.permissions.includes(permission));
     };
 
+    const pageFlash = usePage().props.flash
+    useEffect(() => {
+        if (pageFlash.success) {
+                toast.success(t("Done Successfully"), {
+                    description: pageFlash.success,
+                    duration: 3000,
+                });
+            }
+
+        if(pageFlash.danger){
+                toast.error(t("Error"), {
+                    description: pageFlash.danger,
+                    duration: 3000,
+                });
+            }
+        }, [pageFlash]);
 
     return (
         <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 ${direction === "rtl" ? "rtl" : "ltr"}`}>
@@ -461,7 +481,8 @@ export default function Authenticated({ user, header, children ,site_settings}) 
                         {header}
                     </div>
                     </header>
-                )}
+                    )}
+                <Toaster richColors position="top-center" />
                 <main className="flex flex-col flex-1 bg-white dark:bg-gray-800">{children}</main>
                 </div>
             </div>

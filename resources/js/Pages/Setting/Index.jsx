@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import i18n from "@/i18nConfig";
 import { t } from "i18next";
 
-export default function SettingsPage({ auth, site_settings, settings, success }) {
+export default function SettingsPage({ auth, site_settings, settings }) {
     const { t } = useTranslation();
 
     const resources = {
@@ -39,20 +39,8 @@ i18n.addResources("ar", "translation", resources.ar.translation);
 
 
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [visibleSuccess, setVisibleSuccess] = useState(success);
-    const [operationPerformed, setOperationPerformed] = useState(false);
 
-    useEffect(() => {
-        if (success && operationPerformed) {
-            setVisibleSuccess(success);
-            const timer = setTimeout(() => {
-                setVisibleSuccess(null);
-                setOperationPerformed(false);
 
-            }, 3000);
-            return () => clearTimeout(timer);
-        }
-    }, [success,operationPerformed]);
 
     // Prepare form for edit
     const { data, setData, post, errors, reset } = useForm({
@@ -83,7 +71,6 @@ i18n.addResources("ar", "translation", resources.ar.translation);
             onSuccess: () => {
                 reset();
                 toggleEditModal();
-                setOperationPerformed(true);
 
             },
             preserveScroll: true,
@@ -112,11 +99,7 @@ i18n.addResources("ar", "translation", resources.ar.translation);
 
             <div className="">
                 <div className="mx-auto ">
-                    {visibleSuccess && (
-                        <div className="px-4 py-2 mb-4 text-white rounded bg-burntOrange">
-                            {visibleSuccess}
-                        </div>
-                    )}
+
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {/* Displaying settings in sections */}
