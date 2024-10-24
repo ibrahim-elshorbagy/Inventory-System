@@ -8,6 +8,7 @@ use App\Models\Warehouse\Stock;
 use App\Models\Warehouse\StockReleaseOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class DashboardController extends Controller
 {
@@ -18,6 +19,7 @@ class DashboardController extends Controller
         if (in_array($language, ['en', 'ar'])) {
 
             session(['app_locale' => $language]);
+
 
         }
 

@@ -1,26 +1,13 @@
 import { useState } from "react";
 import { Sidebar, Menu, SubMenu } from "react-pro-sidebar";
 import { MdDashboard, MdChevronLeft, MdChevronRight,MdOutlineCategory,MdInventory } from "react-icons/md";
-import {
-    FaChartBar,
-    FaBell,
-    FaThLarge,
-    FaShoppingCart,
-    FaRocket,
-    FaInfoCircle,
-    FaUser,
-    FaUserCircle,
-} from "react-icons/fa";
+import {FaUser,FaUserCircle,} from "react-icons/fa";
 import SideNavLink from "@/Components/SideNavLink";
 import { Link } from "@inertiajs/react";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18nConfig";
 import { AiOutlineProduct } from "react-icons/ai";
-import { TbBrandAirtable } from "react-icons/tb";
-import { CgPathUnite } from "react-icons/cg";
-import { AiFillProduct } from "react-icons/ai";
 import { FaWarehouse } from "react-icons/fa6";
-import { CiSquareQuestion } from "react-icons/ci";
 import { VscRequestChanges } from "react-icons/vsc";
 import { FaBox } from "react-icons/fa";
 import { IoLogoDropbox,IoNewspaperOutline } from "react-icons/io5";
