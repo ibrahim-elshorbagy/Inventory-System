@@ -76,7 +76,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function EditPermissions({ auth, role,site_settings, rolePermissions }) {
+function EditPermissions({ auth, role,site_settings, rolePermissions }) {
   const { t } = useTranslation();
   const { data, setData, put } = useForm({ permissions: rolePermissions });
 
@@ -94,22 +94,20 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
   };
 
   return (
-    <AuthenticatedLayout     site_settings={site_settings}
- user={auth.user}>
+    <>
       <Head title={site_settings.websiteName + " - " +t("Manage Permissions")} />
-      <div className="">
-        <div className="mx-auto max-w-7xl ">
-          <div className="p-6 overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
-            <h2 className="text-sm font-semibold md:text-lg dark:text-gray-200">
-              {t("Manage Permissions for")}: {role.name}
-            </h2>
-            <form onSubmit={handleSubmit} className="mt-6">
+          <div className="">
+               <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Manage Permissions for")}: {role.name}
+                    </h2>
+                </div>
+        <div className="mx-auto mb-5 max-w-7xl">
+          <div className="p-5 overflow-hidden bg-gray-100 shadow-sm sm:rounded-lg dark:bg-gray-700">
+            <form onSubmit={handleSubmit} >
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                  {t("Permissions")}
-                </h3>
                 <div className="overflow-auto">
-                  <table className="w-full mt-4 text-sm text-right text-gray-500 dark:text-gray-400">
+                  <table className="w-full text-sm text-right text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
                         <th className="px-6 py-3 ">{t("Permission")}</th>
@@ -558,6 +556,18 @@ export default function EditPermissions({ auth, role,site_settings, rolePermissi
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+
+EditPermissions.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default EditPermissions;

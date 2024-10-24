@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import i18n from "@/i18nConfig";
 import { t } from "i18next";
 
-export default function SettingsPage({ auth, site_settings, settings }) {
+function SettingsPage({ auth, site_settings, settings }) {
     const { t } = useTranslation();
 
     const resources = {
@@ -78,29 +78,26 @@ i18n.addResources("ar", "translation", resources.ar.translation);
     };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            site_settings={site_settings}
-            header={
-                <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
+        <>
+            <Head title={site_settings.websiteName + " - " +site_settings.websiteName + " - " + t("Site Info")} />
+
+            <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
                         {t("Site Info")}
                     </h2>
+                    <div>
                     <button
                         onClick={toggleEditModal}
                         className="px-3 py-1 text-sm text-white transition-all rounded shadow md:text-lg bg-burntOrange hover:bg-burntOrangeHover"
                     >
                         {t("Update Site Info")}
                     </button>
+                    </div>
                 </div>
-            }
-        >
-            <Head title={site_settings.websiteName + " - " +site_settings.websiteName + " - " + t("Site Info")} />
-
-            <div className="">
                 <div className="mx-auto ">
 
-                    <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 ">
+                    <div className="m-5 overflow-hidden bg-gray-100 rounded-md shadow-sm dark:bg-gray-800 ">
                         <div className="p-6 text-gray-900 dark:text-gray-100">
                             {/* Displaying settings in sections */}
                             <section className="mb-6">
@@ -201,6 +198,18 @@ i18n.addResources("ar", "translation", resources.ar.translation);
                     </div>
                 </div>
             )}
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+
+SettingsPage.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default SettingsPage;

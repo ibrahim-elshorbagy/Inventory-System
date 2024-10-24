@@ -26,32 +26,28 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth,site_settings, roles }) {
+ function Index({ auth,site_settings, roles }) {
   const { t } = useTranslation();
 
   return (
-      <AuthenticatedLayout
-    site_settings={site_settings}
-
-        header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Roles")}
-            </h2>
-        </div>
-      }
-          user={auth.user}>
+      <>
       <Head title={site_settings.websiteName + " - " +t("Roles")} />
 
-      <div className="">
+          <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Roles")}
+                    </h2>
+                </div>
+
         <div className="mx-auto max-w-7xl ">
 
-          <div className="p-6 overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="p-6 overflow-hidden bg-gray-100 shadow-sm dark:bg-gray-700 sm:rounded-lg">
 
 
-            <div className="mt-6 overflow-auto">
+            <div className="overflow-auto ">
 
-            <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+            <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                 <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
                     <th className="px-6 py-3 ">{t("Role")}</th>
@@ -83,6 +79,16 @@ export default function Index({ auth,site_settings, roles }) {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

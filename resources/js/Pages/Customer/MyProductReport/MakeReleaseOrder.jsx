@@ -145,7 +145,7 @@ const onSubmit = (e) => {
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <form
               onSubmit={onSubmit}
-              className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg"
+              className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg"
             >
               <div className="grid items-center w-full grid-cols-2 col-span-4 gap-5">
                 <div>

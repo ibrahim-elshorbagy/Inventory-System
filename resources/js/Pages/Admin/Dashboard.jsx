@@ -42,16 +42,24 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-const Dashboard = ({ auth,site_settings, adminsAndSystemAdminsCount, customersCount, ordersCount, deliveredOrdersCount }) => {
+const Dashboard = ({ site_settings,adminsAndSystemAdminsCount, customersCount, ordersCount, deliveredOrdersCount }) => {
     const { t } = useTranslation();
 
     return (
         <>
-            <Head title="Dashboard" />
+            <Head title={site_settings.websiteName + " - " +t("Dashboard")} />
+
             <div className="">
                 <div className="">
                     <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
                         <div className="gap-4 p-2 text-gray-900 dark:text-gray-100">
+
+                            <div className="p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                                <h2 >
+                                    {t("Dashboard")}
+                                </h2>
+                            </div>
+
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
 
                                 {/* Admins and System Admins Count */}
@@ -128,21 +136,13 @@ const Dashboard = ({ auth,site_settings, adminsAndSystemAdminsCount, customersCo
     );
 };
 
-const DashboardHeader = () => {
-    const { t } = useTranslation();
-    return (
-        <h2 className="text-sm font-semibold leading-tight text-white md:text-lg dark:text-gray-200">
-            {t("Dashboard")}
-        </h2>
-    );
-};
 
 Dashboard.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
         site_settings={page.props.site_settings}
 
-        header={<DashboardHeader />}
+
     >
         {page}
     </AuthenticatedLayout>

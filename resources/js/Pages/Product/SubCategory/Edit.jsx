@@ -74,7 +74,7 @@ export default function Create({ auth,site_settings, category ,mainCategories}) 
           <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
             <form
               onSubmit={onSubmit}
-              className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg"
+              className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg"
                       >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
               <div className="mt-4">

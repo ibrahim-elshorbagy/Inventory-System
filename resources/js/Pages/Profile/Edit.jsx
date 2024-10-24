@@ -11,12 +11,12 @@ const Edit = ({ auth,site_settings, mustVerifyEmail, status,  }) => {
             <Head title="Profile" />
             <div className="">
                 <div className="mx-auto space-y-6 max-w-7xl ">
-                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    <div className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg">
                         <UpdateProfileImage
                             className="max-w-xl"
                         />
                     </div>
-                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    <div className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg">
                         <UpdateProfileInformationForm
                             mustVerifyEmail={mustVerifyEmail}
                             status={status}
@@ -24,10 +24,10 @@ const Edit = ({ auth,site_settings, mustVerifyEmail, status,  }) => {
                         />
                     </div>
 
-                    <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    <div className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg">
                         <UpdatePasswordForm className="max-w-xl" />
                     </div>
-                    {/* <div className="p-4 bg-white shadow sm:p-8 dark:bg-gray-800 sm:rounded-lg">
+                    {/* <div className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg">
                         <DeleteUserForm className="max-w-xl" />
                     </div> */}
                 </div>
