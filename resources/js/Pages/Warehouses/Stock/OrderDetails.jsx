@@ -19,7 +19,7 @@ const resources = {
     },
     ar: {
         translation: {
-            "Orders": "المنتجات",
+            "Addition Order": "طلب اضافة",
             "ID": "الرقم التعريفي",
             "Product Name": "اسم المنتج",
             "Quantity": "الكمية",
@@ -43,8 +43,6 @@ const resources = {
             "Pending": "قيد الانتظار",
             "You Can't Undo This Action. Are You Sure?": "لا يمكن التراجع عن هذا الإجراء. هل أنت متاكد؟",
             "Order Description":"بيان"
-
-
         },
     },
 };
@@ -52,7 +50,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth,site_settings, products,order,danger }) {
+function Index({ auth,site_settings, products,order,danger }) {
     const { t } = useTranslation();
 
     const { data, setData, post } = useForm({
@@ -65,21 +63,6 @@ export default function Index({ auth,site_settings, products,order,danger }) {
         setData("status", e.target.value);
     };
 
-    const [visibleDanger, setVisibleDanger] = useState(danger);
-
-    useEffect(() => {
-
-        if (danger) {
-
-        setVisibleDanger(danger);
-
-        const timer = setTimeout(() => {
-        setVisibleDanger(null);
-        }, 3000);
-
-        return () => clearTimeout(timer);
-    }
-    }, [danger]);
 
     const onSubmit = (e) => {
         const confirmationMessage = t("You Can't Undo This Action. Are You Sure?");
@@ -96,24 +79,19 @@ export default function Index({ auth,site_settings, products,order,danger }) {
 
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-                          site_settings={site_settings}
-
-            header={
-                <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-                        {t("Orders")}
-                    </h2>
-                </div>
-            }
-        >
-            <Head title={site_settings.websiteName + " - " +t("Orders")} />
+        <>
+            <Head title={site_settings.websiteName + " - " +t("Addition Order")} />
 
             <div className="">
-                <div className="mx-auto ">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Addition Order")}
+                    </h2>
+                </div>
 
-                    <div className="p-6 mb-6 bg-white shadow-sm dark:text-white dark:bg-gray-800 sm:rounded-lg">
+                <div className="m-2 ">
+
+                    <div className="p-6 mb-6 bg-gray-100 rounded-md shadow-md dark:text-white dark:bg-gray-700">
                     {/* Customer Info Section */}
 
                         <h3 className="text-lg font-semibold">{t("Customer Info")}</h3>
@@ -169,13 +147,8 @@ export default function Index({ auth,site_settings, products,order,danger }) {
                     </form>
                     </div>
 
-                          {visibleDanger && (
-        <div className="px-4 py-2 mb-4 text-white bg-red-600 rounded">
-            {visibleDanger}
-        </div>
-                  )}
-                    <div className="">
-                        <div className="p-2 text-gray-900 dark:text-gray-100">
+                    <div className="bg-gray-100 rounded-md shadow-md dark:text-white dark:bg-gray-700">
+                        <div className="text-gray-900 dark:text-gray-100">
                             <div className="overflow-auto">
 
                                 {/* Orders Table */}
@@ -237,8 +210,23 @@ export default function Index({ auth,site_settings, products,order,danger }) {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

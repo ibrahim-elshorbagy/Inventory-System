@@ -19,7 +19,7 @@ import {
     en: {},
     ar: {
         translation: {
-                "Users": "العملاء",
+                "Customers": "العملاء",
                 "Add new": "إضافة جديد",
                 "ID": "الرقم التعريفي",
                 "Name": "الاسم",
@@ -31,7 +31,7 @@ import {
                 "Edit": "تعديل",
                 "Delete": "حذف",
                 "Are you sure you want to delete the user?": "هل أنت متأكد أنك تريد حذف المستخدم؟",
-                "No Users Found": "لا يوجد عملاء موجودين",
+                "No Customers Found": "لا يوجد عملاء موجودين",
                 "Phone": "الهاتف",
                 "Address": "العنوان",
                 "Info": "بيانات العميل",
@@ -51,7 +51,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, users,site_settings, queryParams = null}) {
+function Index({ auth, users,site_settings, queryParams = null}) {
 
 
   const { t } = useTranslation();
@@ -104,27 +104,26 @@ export default function Index({ auth, users,site_settings, queryParams = null}) 
   };
 
   return (
-      <AuthenticatedLayout
-              site_settings={site_settings}
+      <>
+      <Head title={site_settings.websiteName + " - " + t("Customers")} />
 
-      user={auth.user}
-      header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Users")}
-          </h2>
-          <Link
-            href={route("customer.create")}
-            className="px-3 py-1 text-sm text-white transition-all rounded shadow bg-burntOrange md:text-lg hover:bg-burntOrangeHover"
-          >
-            {t("Add new")}
-          </Link>
-        </div>
-      }
-    >
-      <Head title={site_settings.websiteName + " - " + t("Users")} />
+        <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Customers")}
+                    </h2>
+                    <div>
+                        {auth.user.permissions.includes("create-customer") && (
 
-      <div className="">
+                            <Link
+                                href={route("customer.create")}
+                                className="px-3 py-1 text-sm text-white transition-all rounded shadow bg-burntOrange md:text-lg hover:bg-burntOrangeHover"
+                            >
+                                {t("Add new")}
+                            </Link>
+                        )}
+                    </div>
+                </div>
         <div className="mx-auto ">
 
           <div className="">
@@ -327,7 +326,7 @@ export default function Index({ auth, users,site_settings, queryParams = null}) 
                     ))) : (
                             <tr>
                                 <td colSpan="5" className="p-3 text-center">
-                                    {t("No Users Found")}
+                                    {t("No Customers Found")}
                                 </td>
                             </tr>
 
@@ -340,6 +339,19 @@ export default function Index({ auth, users,site_settings, queryParams = null}) 
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

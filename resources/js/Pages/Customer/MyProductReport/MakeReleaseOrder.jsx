@@ -28,7 +28,8 @@ const resources = {
     translation: {},
   },
   ar: {
-    translation: {
+      translation: {
+      "Product Name": "اسم المنتج",
       "Add Stock to": " اضافة منتجات الي",
       "Stocks": "التخزين",
       "Stock Name": "اسم االتخزين",
@@ -132,7 +133,7 @@ const onSubmit = (e) => {
 
       header={
         <div className="flex items-center justify-between">
-          <h2 className="text-sm md:text-lg font-semibold leading-tight dark:text-gray-200">
+          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
             {t("Make Release Request")}
           </h2>
         </div>

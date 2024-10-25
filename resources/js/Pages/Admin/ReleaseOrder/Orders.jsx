@@ -50,7 +50,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth, orders,site_settings, queryParams = null }) {
+function Index({ auth, orders,site_settings, queryParams = null }) {
   const { t } = useTranslation();
 
 
@@ -102,30 +102,17 @@ const deleteorder = (order) => {
   };
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-              site_settings={site_settings}
-
-      header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Orders Report")}
-              </h2>
-              <div className="flex gap-3">
-          {/* <Link
-            href={route("customer.make-release-order")}
-            className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
-          >
-            {t("Order Orders Release")}
-              </Link> */}
-
-            </div>
-        </div>
-      }
-    >
+    <>
       <Head title={site_settings.websiteName + " - " +t("Orders Report")} />
 
-      <div className="">
+        <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Orders Report")}
+                    </h2>
+
+              </div>
+
         <div className="mx-auto ">
 
           <div className="">
@@ -292,6 +279,20 @@ const deleteorder = (order) => {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

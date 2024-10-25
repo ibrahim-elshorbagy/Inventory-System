@@ -31,7 +31,7 @@ class UpdateStockReleaseRequestValidation extends FormRequest
             ]);
         }
                 return [
-            'description' => 'nullable|string',
+            'description' => 'required|string',
             'delivery_address' => 'required|string',
             'product_quantities' => 'required|array|min:1',
             'product_quantities.*.stock_id' => 'required|exists:stocks,id',

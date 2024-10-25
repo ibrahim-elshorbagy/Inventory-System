@@ -43,7 +43,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth,site_settings, user, products, queryParams = null }) {
+ function Index({ auth,site_settings, user, products, queryParams = null }) {
   const { t } = useTranslation();
     queryParams = queryParams || {};
 
@@ -67,42 +67,36 @@ export default function Index({ auth,site_settings, user, products, queryParams 
   };
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-                        site_settings={site_settings}
-
-      header={
-        <div className="flex flex-col items-center justify-between gap-2 text-sm md:text-lg lg:flex-row">
-          <h2 className="font-semibold leading-tight text-nowrap dark:text-gray-200">
-            {t("Warehouse Report For A Customer")} <br/> {user.name} - ({user.phone})
-          </h2>
-          <div className="flex gap-3">
-            <Link
-              href={route("customer.stock.print", user.id)}
-              className="px-3 py-1 text-white transition-all bg-green-500 rounded shadow text-nowrap hover:bg-green-600"
-            >
-              {t("Print Report")}
-            </Link>
-            {auth.user.permissions.includes("add-stock-order") && (
-              <Link
-                href={route("stock.add.page", user.id)}
-                className="px-3 py-1 text-white transition-all rounded shadow text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
-              >
-                {t("New Add Order")}
-              </Link>
-            )}
-          </div>
-        </div>
-      }
-    >
+    <>
       <Head title={site_settings.websiteName + " - " +t("Warehouse Report For A Customer")} />
 
-      <div className="">
-        <div className="mx-auto ">
+        <div className="">
+                <div className="flex flex-col items-start justify-between gap-2 p-5 mb-5 text-sm font-semibold leading-tight border-b md:items-center md:flex-row md:text-lg dark:text-gray-200">
+                    <h2 >
+                        {t("Warehouse Report For A Customer")} <br/> {user.name} - ({user.phone})
+                    </h2>
+                    <div className="flex gap-3">
+                        <Link
+                        href={route("customer.stock.print", user.id)}
+                        className="px-3 py-1 text-white transition-all bg-green-500 rounded shadow text-nowrap hover:bg-green-600"
+                        >
+                        {t("Print Report")}
+                        </Link>
+                        {auth.user.permissions.includes("add-stock-order") && (
+                        <Link
+                            href={route("stock.add.page", user.id)}
+                            className="px-3 py-1 text-white transition-all rounded shadow text-nowrap bg-burntOrange hover:bg-burntOrangeHover"
+                        >
+                            {t("New Add Order")}
+                        </Link>
+                        )}
+                    </div>
+                </div>
+        <div className="m-2 ">
 
 
-          <div className="">
-                      <div className="p-2 text-gray-900 dark:text-gray-100">
+          <div className="mx-auto overflow-auto bg-gray-100 rounded-md shadow-md dark:bg-gray-700">
+                      <div className="text-gray-900 dark:text-gray-100">
 
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
@@ -190,6 +184,19 @@ export default function Index({ auth,site_settings, user, products, queryParams 
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

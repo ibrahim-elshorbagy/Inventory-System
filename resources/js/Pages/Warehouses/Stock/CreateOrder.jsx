@@ -47,7 +47,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Create({ auth,site_settings, customer, warehouses, categories = [] }) {
+function Create({ auth,site_settings, customer, warehouses, categories = [] }) {
     const { t } = useTranslation();
 
     const { data, setData, post, errors } = useForm({
@@ -103,35 +103,30 @@ export default function Create({ auth,site_settings, customer, warehouses, categ
     };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-                          site_settings={site_settings}
-
-            header={
-                <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
+        <>
+            <Head title={site_settings.websiteName + " - " +t("Stocks")} />
+            <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
                         {t("Add Items Order To")} {customer.user.name}
                     </h2>
                 </div>
-            }
-        >
-            <Head title={site_settings.websiteName + " - " +t("Stocks")} />
-            <div className="overflow-auto">
-                <div className="mx-auto">
-                    <div className="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
-                        <form onSubmit={onSubmit} className="p-4 bg-white dark:bg-gray-800 sm:rounded-lg">
+
+                <div className="m-2">
+                    <div className="mx-auto overflow-auto bg-gray-100 rounded-md shadow-md sm:p-4 dark:bg-gray-700">
+                        <form onSubmit={onSubmit} className="p-4 ">
 
 
                             <table className="w-full text-xs text-left text-gray-500 md:text-base rtl:text-right dark:text-gray-400">
                                 <thead className="text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th className="p-3 text-nowrap min-w-48">{t("Item Name")}</th>
-                                        <th className="p-3 text-nowrap min-w-48">{t("Description")}</th>
-                                        <th className="p-3 text-nowrap min-w-48">{t("Notes")}</th>
-                                        <th className="p-3 text-nowrap min-w-24">{t("Category")}</th>
-                                        <th className="p-3 text-nowrap min-w-24">{t("Subcategory")}</th>
+                                        <th className="p-3 text-nowrap min-w-60">{t("Description")}</th>
+                                        <th className="p-3 text-nowrap min-w-60">{t("Notes")}</th>
+                                        <th className="p-3 text-nowrap min-w-48">{t("Category")}</th>
+                                        <th className="p-3 text-nowrap min-w-48">{t("Subcategory")}</th>
                                         <th className="min-w-24">{t("Quantity")}</th>
-                                        <th className="p-3 text-nowrap min-w-24">{t("Warehouse")}</th>
+                                        <th className="p-3 text-nowrap min-w-48">{t("Warehouse")}</th>
                                         <th className="p-3 text-nowrap min-w-32">{t("Upload Image")}</th>
                                         <th className="w-12 p-3 text-nowrap">{t("Delete")}</th>
                                     </tr>
@@ -311,6 +306,19 @@ export default function Create({ auth,site_settings, customer, warehouses, categ
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+Create.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Create;

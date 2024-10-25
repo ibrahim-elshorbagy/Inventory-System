@@ -34,37 +34,33 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function PrintCustomerStock({ auth,site_settings, user, products }) {
+function PrintCustomerStock({ auth,site_settings, user, products }) {
   const { t } = useTranslation();
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-                        site_settings={site_settings}
+    <>
+      <Head title={site_settings.websiteName + " - " +t("Warehouse Report For A Customer")} />
 
-      header={
-        <div className="flex flex-col items-center justify-between gap-2 text-sm lg:flex-row md:text-lg">
-          <h2 className="font-semibold leading-tight text-nowrap dark:text-gray-200">
-            {t("Warehouse Report For A Customer")} - {user.name} - ({user.phone})
-          </h2>
-          {/* Print Button */}
+    <div className="flex flex-col items-start justify-between gap-2 p-5 mb-5 text-sm font-semibold leading-tight border-b md:items-center md:flex-row md:text-lg dark:text-gray-200">
+        <h2 >
+            {t("Warehouse Report For A Customer")} <br/> {user.name} - ({user.phone})
+        </h2>
+        <div className="flex gap-3">
           <button
             onClick={() => window.print()}
-            className="px-1 py-1 text-white transition-all bg-green-500 rounded shadow leading-tig hover:bg-green-600"
+            className="p-2 text-white transition-all bg-green-500 rounded shadow leading-tig hover:bg-green-600"
           >
             {t("Print")}
           </button>
         </div>
-      }
-    >
-      <Head title={site_settings.websiteName + " - " +t("Warehouse Report For A Customer")} />
-
+    </div>
       {/* Apply the 'print' class to the container */}
       <div className=" print">
         <div className="mx-auto ">
           <div className="">
-            <div className="p-2 text-gray-900 dark:text-gray-100">
-              <div className="mb-6">
+                      <div className="p-2 text-gray-900 dark:text-gray-100">
+
+              <div className="p-3 mb-6 bg-gray-100 rounded-md dark:bg-gray-700">
                 {/* Customer Information */}
                 <h3 className="text-lg font-semibold">{t("Customer Information")}</h3>
                 <p>{t("Name")}: {user.name}</p>
@@ -72,21 +68,21 @@ export default function PrintCustomerStock({ auth,site_settings, user, products 
                 <p>{t("Address")}: {user.address}</p>
               </div>
 
-              <div className="overflow-auto">
+              <div className="mx-auto overflow-auto bg-gray-100 rounded-md dark:bg-gray-700">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
                   <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr className="text-nowrap">
-                      <td className="px-1 py-1">{t("ID")}</td>
-                      <th className="px-1 py-1">{t("Warehouse")}</th>
-                      <th className="px-1 py-1">{t("Product Name")}</th>
-                      <th className="px-1 py-1">{t("Quantity")}</th>
-                      <th className="px-1 py-1">{t("Category")}</th>
-                      <th className="px-1 py-1">{t("Subcategory")}</th>
-                      <th className="px-1 py-1">{t("Description")}</th>
-                      <th className="px-1 py-1">{t("Notes")}</th>
-                      <th className="px-1 py-1">{t("Create Date")}</th>
-                      <th className="px-1 py-1">{t("Update Date")}</th>
-                      <th className="px-1 py-1 text-center">{t("Product Image")}</th>
+                      <td className="p-2">{t("ID")}</td>
+                      <th className="p-2">{t("Warehouse")}</th>
+                      <th className="p-2">{t("Product Name")}</th>
+                      <th className="p-2">{t("Quantity")}</th>
+                      <th className="p-2">{t("Category")}</th>
+                      <th className="p-2">{t("Subcategory")}</th>
+                      <th className="p-2">{t("Description")}</th>
+                      <th className="p-2">{t("Notes")}</th>
+                      <th className="p-2">{t("Create Date")}</th>
+                      <th className="p-2">{t("Update Date")}</th>
+                      <th className="p-2 text-center">{t("Product Image")}</th>
                     </tr>
                   </thead>
 
@@ -100,17 +96,17 @@ export default function PrintCustomerStock({ auth,site_settings, user, products 
 
                           key={product.id}
                         >
-                          <td className="py-2 ">{product.id}</td>
-                          <td className="py-2 text-nowrap">{product.warehouse_name}</td>
-                          <td className="py-2 text-nowrap">{product.product_name}</td>
-                          <td className="py-2 text-nowrap">{product.quantity}</td>
-                          <td className="py-2 text-nowrap">{product.category_name}</td>
-                          <td className="py-2 text-nowrap">{product.subcategory_name}</td>
-                          <td className="py-2 text-nowrap">{product.product_description}</td>
-                          <td className="py-2 text-nowrap">{product.product_notes}</td>
-                          <td className="py-2 text-nowrap">{product.created_at}</td>
-                          <td className="py-2 text-nowrap">{product.updated_at}</td>
-                          <td className="flex justify-center py-2">
+                          <td className="p-2 ">{product.id}</td>
+                          <td className="p-2 text-nowrap">{product.warehouse_name}</td>
+                          <td className="p-2 text-nowrap">{product.product_name}</td>
+                          <td className="p-2 text-nowrap">{product.quantity}</td>
+                          <td className="p-2 text-nowrap">{product.category_name}</td>
+                          <td className="p-2 text-nowrap">{product.subcategory_name}</td>
+                          <td className="p-2 text-nowrap">{product.product_description}</td>
+                          <td className="p-2 text-nowrap">{product.product_notes}</td>
+                          <td className="p-2 text-nowrap">{product.created_at}</td>
+                          <td className="p-2 text-nowrap">{product.updated_at}</td>
+                          <td className="flex justify-center p-2">
                             <img
                               src={product.product_image}
                               alt={product.product_name}
@@ -121,7 +117,7 @@ export default function PrintCustomerStock({ auth,site_settings, user, products 
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="9" className="px-1 py-2 text-center">
+                        <td colSpan="9" className="p-2 px-1 text-center">
                           {t("No products available")}
                         </td>
                       </tr>
@@ -133,6 +129,20 @@ export default function PrintCustomerStock({ auth,site_settings, user, products 
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+
+PrintCustomerStock.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default PrintCustomerStock;

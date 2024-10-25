@@ -98,7 +98,7 @@ function Index({ auth,site_settings, warehouses, queryParams = null }) {
         <div className="">
             <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
                     <h2>
-                        {t("CaWarehousestegories")}
+                        {t("Warehouses")}
                     </h2>
                     <div>
                         {auth.user.permissions.includes("create-warehouse") && (

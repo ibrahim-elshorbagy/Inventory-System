@@ -177,5 +177,15 @@ return [
         'size'                  => 'الحجم',
         'role'                  =>  "الصلاحيه",
         'is_active'                  =>  "الحالة",
+        'delivery_address' => 'عنوان التسليم',
+
+        'product_quantities'=>'اختر منتج علي الاقل',
+        'product_quantities.*.name' => 'اسم المنتج في الصف :position',
+        'product_quantities.*.quantity' => 'الكمية في الصف :position',
+        'product_quantities.*.category_id' => ' الصنف في الصف :position',
+        'product_quantities.*.subcategory_id' => 'النصف الفرعية في الصف :position',
+        'product_quantities.*.warehouse_id' => 'المستودع في الصف :position',
+        'product_quantities.*.image_url' => 'صورة المنتج في الصف :position',
+        'product_quantities.*.image_file' => 'صورة المنتج في الصف :position',
     ],
 ];

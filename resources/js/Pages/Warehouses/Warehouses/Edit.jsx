@@ -66,7 +66,7 @@ function Edit({ auth,site_settings, warehouse }) {
           <div className="m-2 overflow-hidden bg-gray-100 shadow-md dark:bg-gray-700 sm:rounded-md">
             <form
               onSubmit={onSubmit}
-              className="p-4 sm:p-4 "
+              className="p-4 "
                       >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
               <div className="mt-4">

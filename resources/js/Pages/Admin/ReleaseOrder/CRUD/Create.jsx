@@ -63,7 +63,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function MakeReleaseRequest({ auth,site_settings, products = { data: [] } ,customer}) {
+function MakeReleaseRequest({ auth,site_settings, products = { data: [] } ,customer}) {
   const { t } = useTranslation();
 
 
@@ -129,25 +129,19 @@ const onSubmit = (e) => {
 
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-              site_settings={site_settings}
-
-      header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Make Release Request For")}  {customer.user.name}
-          </h2>
-        </div>
-      }
-    >
+    <>
           <Head title={site_settings.websiteName + " - " +t("Orders")} />
-      <div className="">
+          <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Make Release Request For")}  {customer.user.name}
+                    </h2>
+                </div>
         <div className="mx-auto ">
-          <div className="bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="p-4 bg-gray-100 rounded-md shadow-md dark:text-white dark:bg-gray-700">
             <form
               onSubmit={onSubmit}
-              className="p-4 bg-white sm:p-4 dark:bg-gray-800 sm:rounded-lg"
+              className=""
             >
               <div className="grid items-center w-full grid-cols-2 col-span-4 gap-5">
                 <div>
@@ -224,10 +218,7 @@ const onSubmit = (e) => {
                                 className="block w-full mt-1 dark:bg-gray-700 dark:text-gray-200"
                                 onChange={(e) => handleProductChange(index, "quantity", e.target.value)}
                                 />
-                                <InputError
-                                message={errors[`product_quantities.${index}.quantity`]}
-                                className="mt-2"
-                                />
+
                             </td>
                             <td className="p-1">
                                 <img
@@ -251,7 +242,16 @@ const onSubmit = (e) => {
                         )}
                     </tbody>
                     </table>
-
+                            {/* Error Section */}
+                            {Object.keys(errors).length > 0 && (
+                                <div className="px-4 py-2 my-4 text-white bg-red-600 rounded">
+                                    <ul>
+                                        {Object.entries(errors).map(([field, errorMessage], index) => (
+                                            <li key={index}>{errorMessage}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
                 </div>
               <div className="flex gap-2 mt-4 text-right">
                 <Link
@@ -268,7 +268,7 @@ const onSubmit = (e) => {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
 
@@ -327,3 +327,16 @@ function ComboboxDemo({ availableProducts, onProductSelect }) {
     </Popover>
   );
 }
+
+MakeReleaseRequest.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default MakeReleaseRequest;

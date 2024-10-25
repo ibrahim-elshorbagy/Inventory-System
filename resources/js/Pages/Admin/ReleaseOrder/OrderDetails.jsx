@@ -16,7 +16,7 @@ const resources = {
     },
     ar: {
         translation: {
-            "Orders": "المنتجات",
+            "Orders": "االطلبات",
             "Add new": "إضافة جديد",
             "ID": "الرقم التعريفي",
             "Name": "الاسم",
@@ -31,7 +31,7 @@ const resources = {
             "Warehouse": "المخزن",
             "Product Name": "اسم المنتج",
             "Quantity": "الكمية",
-            "Orders Report": "تقرير الطلبات",
+            "Release Order": "طلب ارجاع منتجات",
             "Order Orders Release": "طلب ارجاع منتجات",
             "description": "البيان",
             "Status": "الحالة",
@@ -66,7 +66,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth, order,site_settings, error }) {
+function Index({ auth, order,site_settings, error }) {
     const { t } = useTranslation();
 
 
@@ -100,43 +100,32 @@ export default function Index({ auth, order,site_settings, error }) {
 
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-                site_settings={site_settings}
-
-            header={
-                <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-                        {t("Orders Report")}
-                    </h2>
-                    <div className="flex gap-3">
-                        {/* Additional buttons can go here */}
-                    </div>
-                </div>
-            }
-        >
-            <Head title={site_settings.websiteName + " - " +t("Orders Report")} />
+        <>
+            <Head title={site_settings.websiteName + " - " +t("Release Order")} />
 
 
             <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Release Order")}
+                    </h2>
+                </div>
                 <div className="mx-auto ">
 
                     <div className="">
-                        <div className="p-6 text-gray-900 dark:text-gray-100">
-                            <div className="overflow-auto">
+                        <div className="p-3 text-gray-900 dark:text-gray-100">
+                            <div>
                                 {/* Customer and Order Description Section */}
-                                <section className="mb-6">
-                                    <h3 className="text-lg font-semibold">{t("Customer Info")}</h3>
+                                <section className="p-3 mb-6 bg-gray-100 rounded-md shadow-md dark:text-white dark:bg-gray-700">
+                                    <h3 className="text-lg font-semibold">{t("Customer Info")} : </h3>
                                     <p>{t("Customer Name")}: {order.customer_name}</p>
                                     <p>{t("Customer Phone")}: {order.customer_phone}</p>
                                     <p>{t("Customer Address")}: {order.customer_address}</p>
                                     <p>{t("Order Description")}: {order.description}</p>
                                     <p>{t("Delivery Address")}: {order.delivery_address}</p>
                                     <p>{t("Notes")}: {data.notes}</p>
-                                </section>
 
-                                {/* Status Change Form */}
-                                <form onSubmit={onSubmit} >
+                                    <form onSubmit={onSubmit} >
                                     {/* <div className="grid grid-cols-8 gap-6"> */}
                                     <div className="grid grid-cols-2 gap-6 my-2 md:grid-cols-4">
 
@@ -201,58 +190,72 @@ export default function Index({ auth, order,site_settings, error }) {
                                     )}
 
 
-                                </form>
+                                    </form>
+                                </section>
 
-                <div className="overflow-auto">
+                                <div className="overflow-auto bg-gray-100 rounded-md shadow-md dark:text-white dark:bg-gray-700">
 
-                                {/* Orders Table */}
-                                <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
-                                    <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                        <tr className="text-nowrap">
-                                            <th className="p-3">{t("ID")}</th>
-                                            <th className="p-3">{t("Product Name")}</th>
-                                            <th className="p-3">{t("Orderd Quantity")}</th>
-                                            <th className="p-3">{t("Max Quantity")}</th>
-                                            <th className="p-3">{t("Category")}</th>
-                                            <th className="p-3">{t("Subcategory")}</th>
-                                            <th className="p-3">{t("Warehouse")}</th>
-                                            <th className="p-3 text-center" colSpan="3">{t("Image")}</th>
+                                    {/* Orders Table */}
+                                    <table className="w-full mt-6 text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
+                                        <thead className="text-xs text-gray-700 uppercase border-b-2 border-gray-500 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr className="text-nowrap">
+                                                <th className="p-3">{t("ID")}</th>
+                                                <th className="p-3">{t("Product Name")}</th>
+                                                <th className="p-3">{t("Orderd Quantity")}</th>
+                                                <th className="p-3">{t("Max Quantity")}</th>
+                                                <th className="p-3">{t("Category")}</th>
+                                                <th className="p-3">{t("Subcategory")}</th>
+                                                <th className="p-3">{t("Warehouse")}</th>
+                                                <th className="p-3 text-center" colSpan="3">{t("Image")}</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {
-                                            order.requests.map((request, index) => (
-                                                <tr
-                                                    className="text-base bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                                                    key={index}
-                                                >
-                                                    <td className="p-3">{request.id}</td>
-                                                    <td className="p-3 text-nowrap">{request.product_name}</td>
-                                                    <td className="p-3 text-nowrap">{request.quantity}</td>
-                                                    <td className="p-3 text-nowrap">{request.max_quantity}</td>
-                                                    <td className="p-3 text-nowrap">{request.product_category}</td>
-                                                    <td className="p-3 text-nowrap">{request.product_subcategory}</td>
-                                                    <td className="p-3 text-nowrap">{request.warehouse_name}</td>
-                                                    <td className="flex justify-center p-3" colSpan="3">
-                                                        <img
-                                                            src={request.product_image}
-                                                            alt={request.product_name}
-                                                            className="object-cover w-32 rounded-md"
-                                                        />
-                                                    </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                order.requests.map((request, index) => (
+                                                    <tr
+                                                        className="text-base bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                                                        key={index}
+                                                    >
+                                                        <td className="p-3">{request.id}</td>
+                                                        <td className="p-3 text-nowrap">{request.product_name}</td>
+                                                        <td className="p-3 text-nowrap">{request.quantity}</td>
+                                                        <td className="p-3 text-nowrap">{request.max_quantity}</td>
+                                                        <td className="p-3 text-nowrap">{request.product_category}</td>
+                                                        <td className="p-3 text-nowrap">{request.product_subcategory}</td>
+                                                        <td className="p-3 text-nowrap">{request.warehouse_name}</td>
+                                                        <td className="flex justify-center p-3" colSpan="3">
+                                                            <img
+                                                                src={request.product_image}
+                                                                alt={request.product_name}
+                                                                className="object-cover w-32 rounded-md"
+                                                            />
+                                                        </td>
 
-                                                </tr>
-                                            ))
-                                        }
-                                    </tbody>
-                                </table>
+                                                    </tr>
+                                                ))
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                        </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

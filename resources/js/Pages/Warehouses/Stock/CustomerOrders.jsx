@@ -47,7 +47,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth,site_settings, user = null, orders, queryParams = null }) {
+ function Index({ auth,site_settings, user = null, orders, queryParams = null }) {
     const { t } = useTranslation();
 
     queryParams = queryParams || {};
@@ -70,16 +70,15 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
     };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-                          site_settings={site_settings}
+        <>
+            <Head title={site_settings.websiteName + " - " +t("Additions Orders")} />
 
-            header={
-                <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
+            <div className="">
+                <div className="flex flex-col items-start justify-between gap-2 p-5 mb-5 text-sm font-semibold leading-tight border-b md:items-center md:flex-row md:text-lg dark:text-gray-200">
+                    <h2 >
                         {t("Additions Orders")}  {user ? " - " + user.name : ""}
                     </h2>
-                    <div className="flex gap-3">
+                    <div >
                         {auth.user.permissions.includes("add-stock-order") && user && (
                             <Link
                                 href={route("stock.add.page", user.id)}
@@ -90,11 +89,6 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
                         )}
                     </div>
                 </div>
-            }
-        >
-            <Head title={site_settings.websiteName + " - " +t("Additions Orders")} />
-
-            <div className="">
                 <div className="mx-auto ">
 
                     <div className="">
@@ -185,6 +179,21 @@ export default function Index({ auth,site_settings, user = null, orders, queryPa
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

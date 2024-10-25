@@ -60,7 +60,7 @@ function Create({ auth,site_settings, user }) {
           <div className="m-2 overflow-hidden bg-gray-100 rounded-md shadow-md dark:bg-gray-700">
             <form
               onSubmit={onSubmit}
-              className="p-4 sm:p-4"
+              className="p-4"
             >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
             <div className="mt-4">

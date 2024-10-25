@@ -8,7 +8,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 import { useTranslation } from "react-i18next"; // Import the useTranslation hook
 import i18n from "@/i18nConfig";
 
-export default function Create({ auth,site_settings, user }) {
+function Edit({ auth,site_settings, user }) {
 
     const resources = {
     en: {
@@ -16,8 +16,8 @@ export default function Create({ auth,site_settings, user }) {
     },
     ar: {
         translation: {
-                "Users": "المستخدمين",
-                "Edit user": "تعديل المستخدم",
+                "Customers": "العملاء",
+                "Edit Customer": "تعديل العميل",
                 "ID": "الرقم التعريفي",
                 "Name": "الاسم",
                 "Email": "البريد الإلكتروني",
@@ -50,26 +50,20 @@ i18n.addResources("ar", "translation", resources.ar.translation);
   };
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-              site_settings={site_settings}
+    <>
+      <Head title={site_settings.websiteName + " - " +t("Customers")} />
 
-      header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Edit user")} "{user.name}"
-          </h2>
-        </div>
-      }
-    >
-      <Head title={site_settings.websiteName + " - " +t("Users")} />
-
-      <div className="">
+        <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Edit Customer")} "{user.name}"
+                    </h2>
+                </div>
         <div className="mx-auto max-w-7xl ">
-          <div className="">
+          <div className="m-2 overflow-hidden bg-gray-100 shadow-md dark:bg-gray-700 sm:rounded-md">
             <form
               onSubmit={onSubmit}
-              className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg"
+              className="p-4"
                       >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
               <div className="mt-4">
@@ -165,6 +159,18 @@ i18n.addResources("ar", "translation", resources.ar.translation);
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+Edit.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+
+export default Edit;

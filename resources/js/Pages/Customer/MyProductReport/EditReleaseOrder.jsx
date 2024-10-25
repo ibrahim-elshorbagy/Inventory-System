@@ -28,7 +28,9 @@ const resources = {
     translation: {},
   },
   ar: {
-    translation: {
+      translation: {
+        "Product Name": "اسم المنتج",
+        
       "Add Stock to": " اضافة منتجات الي",
       "Stocks": "التخزين",
       "Stock Name": "اسم االتخزين",
