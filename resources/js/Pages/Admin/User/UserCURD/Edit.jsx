@@ -56,10 +56,10 @@ i18n.addResources("ar", "translation", resources.ar.translation);
                 </div>
 
         <div className="mx-auto max-w-7xl ">
-          <div className="overflow-hidden bg-gray-100 shadow-sm dark:bg-gray-700 sm:rounded-lg">
+          <div className="m-2 overflow-hidden bg-gray-100 rounded-md shadow-md dark:bg-gray-700">
             <form
               onSubmit={onSubmit}
-              className="p-4 shadow sm:p-4 sm:rounded-lg"
+              className="p-4 shadow sm:p-4 "
                       >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
                 <div className="mt-4">

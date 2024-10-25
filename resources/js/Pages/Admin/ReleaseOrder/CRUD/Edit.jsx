@@ -152,7 +152,7 @@ export default function EditReleaseRequest({ auth,site_settings, products = { da
 
       <div className="">
               <div className="mx-auto ">
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="">
             <form
               onSubmit={onSubmit}
               className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg"

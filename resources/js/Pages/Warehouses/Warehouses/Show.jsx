@@ -34,7 +34,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Show({ auth,site_settings, products, queryParams = null, success, warehouse }) {
+ function Show({ auth,site_settings, products, queryParams = null, success, warehouse }) {
   const { t } = useTranslation();
 
   queryParams = queryParams || {};
@@ -68,23 +68,18 @@ export default function Show({ auth,site_settings, products, queryParams = null,
   };
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-                        site_settings={site_settings}
-
-      header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Warehouse")} - {warehouse.name}
-          </h2>
-        </div>
-      }
-    >
+    <>
       <Head title={site_settings.websiteName + " - " +t("Warehouse")} />
 
-      <div className="">
+          <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Warehouse")} - {warehouse.name}
+                    </h2>
+
+                </div>
         <div className="mx-auto ">
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="">
             <div className="p-2 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
@@ -207,6 +202,20 @@ export default function Show({ auth,site_settings, products, queryParams = null,
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+
+Show.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Show;

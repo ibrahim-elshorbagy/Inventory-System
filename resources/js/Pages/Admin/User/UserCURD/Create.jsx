@@ -40,7 +40,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 function Create({ auth,site_settings, user, roles }) {
-  const { t } = useTranslation(); // Hook to get translations
+  const { t } = useTranslation();
 
   const { data, setData, post, errors, reset } = useForm({
     name: "",
@@ -67,10 +67,10 @@ function Create({ auth,site_settings, user, roles }) {
 
 
         <div className="mx-auto max-w-7xl ">
-            <div className="overflow-hidden bg-gray-100 dark:bg-gray-700 sm:rounded-lg">
+            <div className="m-2 overflow-hidden bg-gray-100 rounded-md shadow-md dark:bg-gray-700">
             <form
               onSubmit={onSubmit}
-              className="p-4 sm:p-4 sm:rounded-lg "
+              className="p-4 sm:p-4 "
             >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6 max-w-7xl">
                 <div className="mt-4">

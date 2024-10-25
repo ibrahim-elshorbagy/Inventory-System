@@ -34,7 +34,7 @@ import i18n from "@/i18nConfig";
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Create({ auth,site_settings, warehouse }) {
+function Edit({ auth,site_settings, warehouse }) {
   const { t } = useTranslation();
 
 
@@ -53,26 +53,20 @@ export default function Create({ auth,site_settings, warehouse }) {
   };
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-                        site_settings={site_settings}
-
-      header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Edit Warehouse")} "{data.name}"
-          </h2>
-        </div>
-      }
-    >
+    <>
           <Head title={site_settings.websiteName + " - " +t("Warehouses")} />
 
-      <div className="">
+          <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Edit Warehouse")} "{data.name}"
+                    </h2>
+                </div>
         <div className="mx-auto max-w-7xl ">
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="m-2 overflow-hidden bg-gray-100 shadow-md dark:bg-gray-700 sm:rounded-md">
             <form
               onSubmit={onSubmit}
-              className="p-4 bg-white shadow sm:p-4 dark:bg-gray-800 sm:rounded-lg"
+              className="p-4 sm:p-4 "
                       >
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-6">
               <div className="mt-4">
@@ -156,6 +150,19 @@ export default function Create({ auth,site_settings, warehouse }) {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+
+Edit.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+
+export default Edit;

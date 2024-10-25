@@ -38,7 +38,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth,site_settings, warehouses, queryParams = null }) {
+function Index({ auth,site_settings, warehouses, queryParams = null }) {
 
 
   const { t } = useTranslation();
@@ -92,33 +92,29 @@ export default function Index({ auth,site_settings, warehouses, queryParams = nu
   };
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-                        site_settings={site_settings}
-
-      header={
-        <div className="flex items-center justify-between text-sm md:text-lg">
-          <h2 className="font-semibold leading-tight dark:text-gray-200">
-            {t("Warehouses")}
-              </h2>
-              {auth.user.permissions.includes("create-warehouse") && (
-
-                  <Link
-                      href={route("warehouse.create")}
-                      className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
-                  >
-                      {t("Add new")}
-                  </Link>
-              )}
-        </div>
-      }
-    >
+    <>
       <Head title={site_settings.websiteName + " - " +t("Warehouses")} />
 
-      <div className="">
+        <div className="">
+            <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("CaWarehousestegories")}
+                    </h2>
+                    <div>
+                        {auth.user.permissions.includes("create-warehouse") && (
+
+                            <Link
+                                href={route("warehouse.create")}
+                                className="px-3 py-1 text-white transition-all rounded shadow bg-burntOrange hover:bg-burntOrangeHover"
+                            >
+                                {t("Add new")}
+                            </Link>
+                        )}
+                    </div>
+                </div>
         <div className="mx-auto ">
 
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="">
             <div className="p-2 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">
@@ -265,6 +261,19 @@ export default function Index({ auth,site_settings, warehouses, queryParams = nu
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+
+
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

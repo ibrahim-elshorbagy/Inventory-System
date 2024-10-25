@@ -51,7 +51,7 @@ const Dashboard = ({ site_settings,adminsAndSystemAdminsCount, customersCount, o
 
             <div className="">
                 <div className="">
-                    <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+                    <div className="">
                         <div className="gap-4 p-2 text-gray-900 dark:text-gray-100">
 
                             <div className="p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">

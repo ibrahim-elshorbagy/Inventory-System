@@ -115,7 +115,7 @@ export default function Index({ auth,site_settings, requests, queryParams = null
         <div className="mx-auto ">
 
 
-          <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+          <div className="">
             <div className="p-2 text-gray-900 dark:text-gray-100">
               <div className="overflow-auto">
                 <table className="w-full text-sm text-left text-gray-500 rtl:text-right dark:text-gray-400">

@@ -183,7 +183,7 @@ export default function Authenticated({ user, header, children ,site_settings}) 
         }, [pageFlash]);
 
     return (
-        <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 ${direction === "rtl" ? "rtl" : "ltr"}`}>
+        <div className={`flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800 ${direction === "rtl" ? "rtl" : "ltr"}`}>
             <nav className="fixed top-0 left-0 z-10 w-full bg-white border-b border-gray-100 dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-4 mx-auto max-w-7xl ">
                     <div className="flex justify-between h-16 ">

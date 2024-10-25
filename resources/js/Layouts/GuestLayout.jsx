@@ -47,7 +47,7 @@ export default function Guest({ children ,site_settings}) {
 
     return (
         <div
-            className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900"
+            className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800"
             style={{ direction }}
         >
             <nav className="bg-white border-b border-gray-300 shadow-lg dark:bg-gray-800 dark:border-gray-700">

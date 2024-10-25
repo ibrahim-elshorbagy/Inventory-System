@@ -46,7 +46,7 @@ const Dashboard = ({ auth,site_settings, productsCount, ordersCount, deliveredOr
             <Head title="Dashboard" />
             <div className="">
                 <div className="">
-                    <div className="overflow-hidden bg-white shadow-sm dark:bg-gray-800 sm:rounded-lg">
+                    <div className="">
                         <div className="gap-4 p-2 text-gray-900 dark:text-gray-100">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
 
