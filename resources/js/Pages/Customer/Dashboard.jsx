@@ -45,6 +45,11 @@ const Dashboard = ({ auth,site_settings, productsCount, ordersCount, deliveredOr
         <>
             <Head title="Dashboard" />
             <div className="">
+                <div className="p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2 >
+                        {t("Dashboard")}
+                    </h2>
+                </div>
                 <div className="">
                     <div className="">
                         <div className="gap-4 p-2 text-gray-900 dark:text-gray-100">
@@ -107,20 +112,11 @@ const Dashboard = ({ auth,site_settings, productsCount, ordersCount, deliveredOr
     );
 };
 
-const DashboardHeader = () => {
-    const { t } = useTranslation();
-    return (
-        <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-            {t("Dashboard")}
-        </h2>
-    );
-};
 
 Dashboard.layout = (page) => (
     <AuthenticatedLayout
         user={page.props.auth.user}
         site_settings={page.props.site_settings}
-        header={<DashboardHeader />}
     >
         {page}
     </AuthenticatedLayout>

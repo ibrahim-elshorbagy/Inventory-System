@@ -30,7 +30,7 @@ const resources = {
             "Warehouse": "المخزن",
             "Product Name": "اسم المنتج",
             "Quantity": "الكمية",
-            "Orders Report": "تقرير الطلبات",
+            "Order Report": "تقرير الطلب",
             "Order Orders Release": "طلب ارجاع منتجات",
             "description": "البيان",
             "Status": "الحالة",
@@ -65,7 +65,7 @@ const resources = {
 i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
-export default function Index({ auth,site_settings, order, error,success }) {
+function Index({ auth,site_settings, order, error,success }) {
     const { t } = useTranslation();
 
 
@@ -95,28 +95,20 @@ export default function Index({ auth,site_settings, order, error,success }) {
     const [confirmed,setConfirmed]= useState(order.confirmed);
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            site_settings={site_settings}
-            header={
-                <div className="flex items-center justify-between">
-                    <h2 className="text-sm font-semibold leading-tight md:text-lg dark:text-gray-200">
-                        {t("Orders Report")}
-                    </h2>
-                    <div className="flex gap-3">
-                        {/* Additional buttons can go here */}
-                    </div>
-                </div>
-            }
-        >
-            <Head title={site_settings.websiteName + " - " +t("Orders Report")} />
+        <>
+            <Head title={site_settings.websiteName + " - " +t("Order Report")} />
 
 
             <div className="">
-                <div className="mx-auto ">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("Order Report")}
+                    </h2>
+              </div>
+                <div className="m-2 ">
 
-                    <div className="">
-                        <div className="p-2 text-gray-900 dark:text-gray-100">
+                    <div className="mx-auto overflow-auto bg-gray-100 rounded-md shadow-md sm:p-4 dark:bg-gray-700">
+                        <div className="">
                             <div className="">
                                 {/* Customer and Order Description Section */}
                                 <section className="mb-6">
@@ -208,6 +200,18 @@ export default function Index({ auth,site_settings, order, error,success }) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
 }
+
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;

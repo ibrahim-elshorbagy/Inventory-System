@@ -50,7 +50,7 @@ i18n.addResources("en", "translation", resources.en.translation);
 i18n.addResources("ar", "translation", resources.ar.translation);
 
 
-export default function Index({ auth,site_settings, requests, queryParams = null }) {
+function Index({ auth,site_settings, requests, queryParams = null }) {
   const { t } = useTranslation();
 
 
@@ -88,30 +88,23 @@ export default function Index({ auth,site_settings, requests, queryParams = null
   };
 
   return (
-    <AuthenticatedLayout
-          user={auth.user}
-                        site_settings={site_settings}
-
-      header={
-        <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold leading-tight text-white md:text-lg ">
-            {t("My Requests Report")}
-              </h2>
-              <div className="flex gap-3">
-          <Link
-            href={route("customer.make-release-order")}
-            className="px-3 py-1 text-sm text-white transition-all rounded shadow md:text-lg bg-burntOrange hover:bg-burntOrangeHover"
-          >
-            {t("Order Requests Release")}
-              </Link>
-
-            </div>
-        </div>
-      }
-    >
+    <>
           <Head title={site_settings.websiteName + " - " +t("My Requests Report")} />
 
-      <div className="">
+          <div className="">
+                <div className="flex items-start justify-between p-5 mb-5 text-sm font-semibold leading-tight border-b md:text-lg dark:text-gray-200">
+                    <h2>
+                        {t("My Products Report")}
+                    </h2>
+                    <div>
+                        <Link
+                        href={route("customer.make-release-order")}
+                        className="px-3 py-1 text-sm text-white transition-all rounded shadow md:text-lg bg-burntOrange hover:bg-burntOrangeHover"
+                    >
+                        {t("Order Requests Release")}
+                        </Link>
+                    </div>
+              </div>
         <div className="mx-auto ">
 
 
@@ -250,6 +243,18 @@ export default function Index({ auth,site_settings, requests, queryParams = null
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+
+Index.layout = (page) => (
+    <AuthenticatedLayout
+        user={page.props.auth.user}
+        site_settings={page.props.site_settings}
+    >
+        {page}
+    </AuthenticatedLayout>
+);
+
+export default Index;
