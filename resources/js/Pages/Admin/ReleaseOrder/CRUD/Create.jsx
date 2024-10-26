@@ -137,8 +137,8 @@ const onSubmit = (e) => {
                         {t("Make Release Request For")}  {customer.user.name}
                     </h2>
                 </div>
-        <div className="mx-auto ">
-          <div className="p-4 bg-gray-100 rounded-md shadow-md dark:text-white dark:bg-gray-700">
+        <div className="m-2">
+          <div className="p-4 mx-auto bg-gray-100 rounded-md shadow-md dark:text-white dark:bg-gray-700">
             <form
               onSubmit={onSubmit}
               className=""
