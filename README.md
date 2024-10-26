@@ -14,7 +14,7 @@ Add products in both Arabic and English.
 Upload product images and descriptions.
 
 ![pic](Readme/images/s2.jpeg)
-![pic](Readme/images/s3.PNG)
+![pic](Readme/images/s3.png)
 ![pic](Readme/images/s4.jpeg)
 ![pic](Readme/images/s5.jpeg)
 
