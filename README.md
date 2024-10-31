@@ -5,7 +5,7 @@
 
 
 # Overview
-This project provides a robust solution for managing an inventory system, including product management, customer orders, and product releases. It supports both Arabic and English languages to cater to a broader audience.
+This project provides a robust solution for managing an inventory system, including product management, customer orders, and product releases.with Full Permission System for every movement on the system. It supports both Arabic and English languages ,with dark light mode.
 
 # Features
 Products
@@ -13,21 +13,22 @@ CRUD operations for managing product , Categoy , Warehouses information .
 Add products in both Arabic and English.
 Upload product images and descriptions.
 
-![pic](Readme/images/s2.jpeg)
-![pic](Readme/images/s3.png)
-![pic](Readme/images/s4.jpeg)
-![pic](Readme/images/s5.jpeg)
+![pic](Readme/images/x6-1.png)
+![pic](Readme/images/x6-2-1.jpeg)
+![pic](Readme/images/x6-2-2.jpeg)
+![pic](Readme/images/x6-2-3.jpeg)
+![pic](Readme/images/x6-2-4.jpeg)
+![pic](Readme/images/x6-2-5.png)
 
 # Product Release
 Ability to release products based on stock availability.
 Manage and track product releases.
 Option for customers to request product releases through their account.
 Automated notifications for customers when a product is released.
+![pic](Readme/images/x6-2-6.jpeg)
+![pic](Readme/images/x6-2-7.jpeg)
+![pic](Readme/images/x6-2-8.jpeg)
 
-![pic](Readme/images/s6.jpeg)
-![pic](Readme/images/s7.jpeg)
-![pic](Readme/images/s8.jpeg)
-![pic](Readme/images/s9.jpeg)
 
 # Customer Accounts
 CRUD operations for managing customer accounts.
@@ -35,7 +36,11 @@ Customers can view their products, order history, and pending releases.
 Customers can request a release of products from their account.
 Option for customers to update their information, including billing and shipping details.
 
-![pic](Readme/images/s11.jpeg)
+![pic](Readme/images/x7-1-1.jpeg)
+![pic](Readme/images/x7-1-2.jpeg)
+![pic](Readme/images/x7-1-3.jpeg)
+![pic](Readme/images/x7-1-4.jpeg)
+![pic](Readme/images/x7-1-5.jpeg)
 
 
  
@@ -46,7 +51,9 @@ Generate comprehensive reports on product stock, sales, and customer orders.
 Reports available in both Arabic and English.
 Export reports as PDF or Excel files for further analysis.
 
-![pic](Readme/images/s12.png)
+![pic](Readme/images/x6-2-4.jpeg)
+![pic](Readme/images/x6-2-5.png)
+
 
 
 # Notifications System
@@ -57,15 +64,20 @@ Comprehensive admin panel to manage the entire inventory system.
 Access to customer information, product details, stock levels, and order management.
 Role-based access control to restrict or allow specific functionalities for different admin users.
 
+![pic](Readme/images/x1.jpeg)
+![pic](Readme/images/x2.jpeg)
+![pic](Readme/images/x2-1.jpeg)
+![pic](Readme/images/x3.jpeg)
+![pic](Readme/images/x4.jpeg)
+
 # Technologies Used
 Backend: Laravel 11 <br>
 Frontend: React with Inertia.js <br>
 Database: MySQL <br>
 Languages: Arabic and English Support <br>
+theme: Dark and light mode Support <br>
+Roles: with Full Permission System for every movement on the system  <br>
 
-
-![pic](Readme/images/s1.jpeg)
-![pic](Readme/images/s10.jpeg)
 
 
 ### Installation
