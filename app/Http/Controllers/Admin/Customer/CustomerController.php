@@ -118,6 +118,7 @@ Full opertions For Customers (add,delete ,update)
      */
     public function update(UpdateCustomerRequest $request, User $customer)
     {
+
         $data = $request->validated();
 
         if (isset($data['password']) && $data['password']) {

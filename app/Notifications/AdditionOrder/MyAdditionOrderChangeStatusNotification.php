@@ -44,7 +44,8 @@ class MyAdditionOrderChangeStatusNotification extends Notification
         return [
             'message' => $message,
             'url'=> route('for-customer-my-products-report'),
-
+            'model'=>'App\Models\Product\ReceiveOrder',
+            'order_id'=>$this->order->id,
         ];
 
     }

@@ -27,42 +27,46 @@ class DashboardController extends Controller
         return back();
     }
 
-    protected $orderModels = [
-        'addition-order' =>Stock::class,
-        'release-orders' => StockReleaseOrder::class,
-    ];
-    
+
+
     public function markAsRead(Request $request)
     {
         $user = Auth::user();
-        $data = $request->validate(['url' => ['required'], 'id' => ['required']]);
-
-        // Extract path and ID from URL
-        $pathSegments = explode('/', parse_url($data['url'], PHP_URL_PATH));
-        $type = $pathSegments[2] ?? null;
-        $orderId = $pathSegments[3] ?? null;
-
-        // Find the model class for this type of order
-        $modelClass = $this->orderModels[$type] ?? null;
-
-        if ($modelClass && $modelClass::find($orderId)) {
-            $notification = $user->notifications()->where('id', $data['id'])->first();
-            if ($notification) {
-                $notification->delete();
-            }
-            return redirect($data['url']);
-        }
-
-        // Return an error if the order does not exist
-        $locale = session('app_locale', 'en');
-        $message = $locale === 'ar' ? "عذرا، الرابط غير متاح" : "The link is no longer accessible";
+        $data = $request->validate([
+            'url' => ['required', 'url'],
+            'id' => ['required', 'exists:notifications,id']
+        ]);
 
         $notification = $user->notifications()->where('id', $data['id'])->first();
-            if ($notification) {
-                $notification->delete();
-            }
+
+        if ($notification) {
+
+            $notificationData = $notification->data;
+
+            $model = $notificationData['model'];
+            $orderId = $notificationData['order_id'];
+
+            $order = $model::find($orderId);
+
+                if ($order) {
+                    $notification->delete();
+                    return redirect($data['url']);
+                } else {
+                    // The order doesn't exist, return an error message
+                    $notification->delete();
+                    $locale = session('app_locale', 'en');
+                    $message = $locale === 'ar' ? "عذرا، الطلب غير موجود" : "The order is no longer available";
+                    return back()->with('danger', $message);
+                }
+
+        }
+
+        $locale = session('app_locale', 'en');
+        $message = $locale === 'ar' ? "لا يوجد اشعار" : "Notification not found";
         return back()->with('danger', $message);
     }
+
+
 
 
 

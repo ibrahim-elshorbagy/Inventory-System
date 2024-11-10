@@ -42,7 +42,8 @@ class ReleaseOrderDoneNotification extends Notification
         return [
             'message' => $message,
             'url'=> route('customer.show-release-order', $this->order->id),
-
+            'model'=>'StockReleaseOrder',
+            'order_id'=>$this->order->id,
         ];
     }
 }

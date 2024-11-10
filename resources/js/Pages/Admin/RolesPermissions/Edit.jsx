@@ -6,7 +6,58 @@ import i18n from "@/i18nConfig";
 // Translation resources
 const resources = {
   en: {
-    translation: {},
+    translation: {
+        // Main CRUD Permissions
+        "create-main-category-desc": "Permission to create a main category",
+        "read-main-category-desc": "Permission to view main category records",
+        "update-main-category-desc": "Permission to update main category",
+        "delete-main-category-desc": "Permission to delete main category",
+        "create-sub-category-desc": "Permission to create a sub-category",
+        "read-sub-category-desc": "Permission to view sub-category records",
+        "update-sub-category-desc": "Permission to update sub-category",
+        "delete-sub-category-desc": "Permission to delete sub-category",
+        "create-customer-desc": "Permission to create a customer",
+        "read-customer-desc": "Permission to view customer records",
+        "update-customer-desc": "Permission to update customer details",
+        "delete-customer-desc": "Permission to delete customer details",
+        "create-warehouse-desc": "Permission to create a warehouse",
+        "read-warehouse-desc": "Permission to view warehouse records",
+        "update-warehouse-desc": "Permission to update warehouse details",
+        "delete-warehouse-desc": "Permission to delete a warehouse",
+        "for-SystemAdmin-manage-site-settings": "Permission to update site settings",
+
+        // Stock Order Permissions
+        "confirme-stock-order-desc": "Permission to confirm stock addition orders",
+        "add-stock-order-desc": "Permission to add a stock order",
+        "all-stock-orders-desc": "Permission to view all stock orders",
+        "show-stock-order-desc": "View stock order details",
+        "edit-stock-order-desc": "Permission to edit a stock order",
+        "delete-stock-order-desc": "Permission to delete a stock order",
+
+        "read-stock-desc": "Permission to view all products",
+
+        // Admin Release Order Permissions
+        "release-order-confirme-desc": "Permission to confirm return orders",
+        "admin-orders-index-desc": "Permission to view all return orders",
+        "admin-orders-change-status-desc": "Permission to change return order status",
+        "admin-orders-make-desc": "Permission to create a return order on behalf of the user",
+        "admin-orders-update-desc": "Permission to update a return order",
+
+        // Only Customer Permissions
+        "for-customer-view-dashboard-desc": "Access to the customer dashboard",
+        "for-customer-my-products-report-desc": "Report of customer-specific products",
+        "for-customer-make-release-repuest-desc": "Ability to create a complete return order",
+
+        // Only for System Admin
+        "for-SystemAdmin-manage-users-desc": "Ability to create system users",
+        "for-SystemAdmin-manage-roles-permissions-desc": "Assign permissions to system users",
+
+
+
+
+
+
+    },
   },
   ar: {
     translation: {

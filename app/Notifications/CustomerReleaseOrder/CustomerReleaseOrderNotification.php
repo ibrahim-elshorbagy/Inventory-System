@@ -47,6 +47,8 @@ class CustomerReleaseOrderNotification extends Notification
         return [
             'message' => $message,
             'url'=> route('admin.show.order', $this->order->id),
+            'model'=>'App\Models\Warehouse\StockReleaseOrder',
+            'order_id'=>$this->order->id,
 
         ];
 

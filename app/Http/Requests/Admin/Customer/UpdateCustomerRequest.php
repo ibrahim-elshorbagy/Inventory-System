@@ -35,7 +35,7 @@ class UpdateCustomerRequest extends FormRequest
                 'nullable',
                 Password::min(8)->letters(),
             ],
-            'phone'=>['nullable','string',Rule::unique('customer')->ignore($customer)],
+            'phone'=>['nullable','string'],
             'address'=>["nullable",'string'],
         ];
     }

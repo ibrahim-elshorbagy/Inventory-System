@@ -47,7 +47,8 @@ class ReleaseOrderAdminConfirmStatusNotification extends Notification
         return [
             'message' => $message,
             'url'=> route('customer.show-release-order', $this->order->id),
-
+            'model'=>'App\Models\Warehouse\StockReleaseOrder',
+            'order_id'=>$this->order->id,
         ];
     }
 }

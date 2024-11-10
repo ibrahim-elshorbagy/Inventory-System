@@ -48,7 +48,8 @@ class AdditionOrderChangeStatusNotification extends Notification
         return [
             'message' => $message,
             'url'=> route('stock.show.order', $this->order->id),
-
+            'model'=>'App\Models\Product\ReceiveOrder',
+            'order_id'=>$this->order->id,
         ];
 
     }

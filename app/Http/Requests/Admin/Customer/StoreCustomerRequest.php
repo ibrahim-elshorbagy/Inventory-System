@@ -29,7 +29,7 @@ class StoreCustomerRequest extends FormRequest
                 "required",
                 Password::min(8)->letters(),
             ],
-            'phone'=>['nullable','string','unique:customers,phone'],
+            'phone'=>['nullable','string'],
             'address'=>["nullable",'string'],
         ];
     }
